@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/data.ts","./src/main.tsx","./src/store.ts","./src/components/carousel3d.tsx","./src/components/cursor.tsx","./src/components/hud.tsx","./src/components/loader.tsx","./src/components/projectboard.tsx","./src/components/scene.tsx","./src/components/scramble.tsx","./src/components/sections.tsx","./src/lib/scroll.ts"],"version":"5.9.3"}
