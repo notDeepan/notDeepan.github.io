@@ -3,6 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { carousel, useStore } from '../store'
 import { CAROUSEL_PROJECTS, CarouselProject } from '../data'
+import { useT, useContent } from '../i18n'
 
 // ─────────────────────────────────────────────────────────────────────────
 //  WebGL work carousel — draggable strip of landscape poster planes that
@@ -16,11 +17,17 @@ export const PLANE_H = PLANE_W * (800 / 1280)
 const W = 1280
 const H = 800
 
+interface PosterLoc {
+  category: string
+  badge: string
+}
+
 function drawPoster(
   ctx: CanvasRenderingContext2D,
   p: CarouselProject,
   index: number,
   img: HTMLImageElement | null,
+  loc: PosterLoc,
 ) {
   const c = p.color
 
@@ -106,16 +113,16 @@ function drawPoster(
   ctx.textAlign = 'right'
   if (p.badge === 'LIVE') {
     ctx.fillStyle = '#34d399'
-    ctx.fillText('● LIVE', W - 44, 66)
+    ctx.fillText('● ' + loc.badge, W - 44, 66)
   } else if (p.badge === 'RESEARCH') {
     ctx.fillStyle = c
-    ctx.fillText('▲ RESEARCH', W - 44, 66)
+    ctx.fillText('▲ ' + loc.badge, W - 44, 66)
   } else if (p.badge === 'CONSULTING') {
     ctx.fillStyle = c
-    ctx.fillText('◆ CONSULTING', W - 44, 66)
+    ctx.fillText('◆ ' + loc.badge, W - 44, 66)
   } else {
     ctx.fillStyle = 'rgba(255,255,255,0.7)'
-    ctx.fillText('< CODE />', W - 44, 66)
+    ctx.fillText('‹ ' + loc.badge + ' ›', W - 44, 66)
   }
 
   // year (bottom-right)
@@ -127,7 +134,7 @@ function drawPoster(
   // category
   ctx.font = '500 27px "JetBrains Mono", monospace'
   ctx.fillStyle = c
-  ctx.fillText(p.category, 46, H - 158)
+  ctx.fillText(loc.category, 46, H - 158)
 
   // project name — wrapped, big
   ctx.font = '400 76px Anton, sans-serif'
@@ -192,10 +199,20 @@ const fragmentShader = /* glsl */ `
 interface PlaneData {
   texture: THREE.CanvasTexture
   material: THREE.ShaderMaterial
-  redraw: () => void
+  draw: (loc: PosterLoc) => void
 }
 
+const BADGE_KEY = {
+  LIVE: 'badgeLive',
+  RESEARCH: 'badgeResearch',
+  CONSULTING: 'badgeConsulting',
+  CODE: 'badgeCode',
+} as const
+
 function usePlanes(): PlaneData[] {
+  const content = useContent()
+  const t = useT()
+
   const planes = useMemo(
     () =>
       CAROUSEL_PROJECTS.map((p, i) => {
@@ -206,17 +223,22 @@ function usePlanes(): PlaneData[] {
         const texture = new THREE.CanvasTexture(canvas)
         texture.anisotropy = 8
         texture.colorSpace = THREE.SRGBColorSpace
-        let img: HTMLImageElement | null = null
-        const redraw = () => {
-          drawPoster(ctx, p, i, img)
+        // holder keeps the latest image + localized strings across redraws
+        const holder = {
+          img: null as HTMLImageElement | null,
+          loc: { category: p.category, badge: p.badge } as PosterLoc,
+        }
+        const draw = (loc: PosterLoc) => {
+          holder.loc = loc
+          drawPoster(ctx, p, i, holder.img, loc)
           texture.needsUpdate = true
         }
-        redraw()
+        draw(holder.loc)
         if (p.image) {
           const el = new Image()
           el.onload = () => {
-            img = el
-            redraw()
+            holder.img = el
+            draw(holder.loc)
           }
           el.src = p.image
         }
@@ -231,25 +253,41 @@ function usePlanes(): PlaneData[] {
           vertexShader,
           fragmentShader,
         })
-        return { texture, material, redraw }
+        return { texture, material, draw }
       }),
     [],
   )
 
-  // redraw once display fonts are ready (Anton / JetBrains Mono)
+  // (re)draw with localized strings whenever the language changes, and again
+  // once the display fonts (Anton / JetBrains Mono) have loaded.
   useEffect(() => {
+    const render = () =>
+      planes.forEach((pl, i) =>
+        pl.draw({
+          category: content.projects[i].category,
+          badge: t[BADGE_KEY[CAROUSEL_PROJECTS[i].badge]],
+        }),
+      )
+    render()
     let alive = true
     document.fonts.ready.then(() => {
-      if (alive) planes.forEach((p) => p.redraw())
+      if (alive) render()
     })
     return () => {
       alive = false
+    }
+  }, [planes, content, t])
+
+  // dispose GPU resources on unmount
+  useEffect(
+    () => () => {
       planes.forEach((p) => {
         p.texture.dispose()
         p.material.dispose()
       })
-    }
-  }, [planes])
+    },
+    [planes],
+  )
 
   return planes
 }

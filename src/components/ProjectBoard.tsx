@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useStore } from '../store'
 import { lockScroll, unlockScroll } from '../lib/scroll'
 import { CAROUSEL_PROJECTS, BoardNode } from '../data'
+import { useT, useContent } from '../i18n'
 
 // ─────────────────────────────────────────────────────────────────────────
 //  The Evidence Board — click a project and its case file pins up like a
@@ -15,6 +16,12 @@ const BH = 760 // design-space height
 interface Pos {
   x: number
   y: number
+}
+
+// localized text for one node (l = label, t = body), merged with structure
+interface LocalNode {
+  l: string
+  t?: string
 }
 
 function useBoardScale() {
@@ -32,34 +39,34 @@ function useBoardScale() {
   return scale
 }
 
-function NodeBody({ node, color }: { node: BoardNode; color: string }) {
+function NodeBody({ node, loc, color, lang }: { node: BoardNode; loc: LocalNode; color: string; lang: string }) {
   switch (node.kind) {
     case 'stat':
       return (
         <>
-          <span className="bnode-label mono" style={{ color }}>{node.label}</span>
+          <span className="bnode-label mono" style={{ color }} lang={lang}>{loc.l}</span>
           <span className="bnode-stat">{node.title}</span>
-          {node.text && <p className="bnode-text">{node.text}</p>}
+          {loc.t && <p className="bnode-text" lang={lang}>{loc.t}</p>}
         </>
       )
     case 'quote':
       return (
         <>
-          <span className="bnode-label mono" style={{ color }}>{node.label}</span>
-          <p className="bnode-quote">{node.text}</p>
+          <span className="bnode-label mono" style={{ color }} lang={lang}>{loc.l}</span>
+          <p className="bnode-quote" lang={lang}>{loc.t}</p>
         </>
       )
     case 'photo':
       return (
         <>
-          <img className="bnode-img" src={node.img} alt={node.label} draggable={false} />
-          <span className="bnode-caption mono">{node.label}</span>
+          <img className="bnode-img" src={node.img} alt={loc.l} draggable={false} />
+          <span className="bnode-caption mono" lang={lang}>{loc.l}</span>
         </>
       )
     case 'tags':
       return (
         <>
-          <span className="bnode-label mono" style={{ color }}>{node.label}</span>
+          <span className="bnode-label mono" style={{ color }} lang={lang}>{loc.l}</span>
           <span className="bnode-tags">
             {node.tags?.map((t) => (
               <span className="bnode-tag mono" key={t}>{t}</span>
@@ -70,8 +77,8 @@ function NodeBody({ node, color }: { node: BoardNode; color: string }) {
     default:
       return (
         <>
-          <span className="bnode-label mono" style={{ color }}>{node.label}</span>
-          <p className="bnode-text">{node.text}</p>
+          <span className="bnode-label mono" style={{ color }} lang={lang}>{loc.l}</span>
+          <p className="bnode-text" lang={lang}>{loc.t}</p>
         </>
       )
   }
@@ -80,7 +87,11 @@ function NodeBody({ node, color }: { node: BoardNode; color: string }) {
 export default function ProjectBoard() {
   const boardProject = useStore((s) => s.boardProject)
   const closeBoard = useStore((s) => s.closeBoard)
+  const lang = useStore((s) => s.lang)
+  const t = useT()
+  const content = useContent()
   const project = boardProject !== null ? CAROUSEL_PROJECTS[boardProject] : null
+  const cproject = boardProject !== null ? content.projects[boardProject] : null
 
   const scale = useBoardScale()
   const [positions, setPositions] = useState<Pos[]>([])
@@ -115,7 +126,7 @@ export default function ProjectBoard() {
     })
   }, [positions, project])
 
-  if (!project) return null
+  if (!project || !cproject) return null
 
   const onNodeDown = (i: number) => (e: React.PointerEvent) => {
     if ((e.target as HTMLElement).closest('a, button')) return
@@ -158,11 +169,11 @@ export default function ProjectBoard() {
       }}
     >
       <div className="board-topbar">
-        <span className="mono board-file">
-          CASE FILE — {String((boardProject ?? 0) + 1).padStart(2, '0')} · {project.year}
+        <span className="mono board-file" lang={lang}>
+          {t.caseFile} — {String((boardProject ?? 0) + 1).padStart(2, '0')} · {project.year}
         </span>
-        <button className="board-close mono" onClick={closeBoard} data-cursor="link">
-          CLOSE ✕
+        <button className="board-close mono" onClick={closeBoard} data-cursor="link" lang={lang}>
+          {t.close} ✕
         </button>
       </div>
 
@@ -174,10 +185,7 @@ export default function ProjectBoard() {
           transform: `perspective(1400px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         }}
       >
-        <div
-          className="board"
-          style={{ width: BW, height: BH, transform: `scale(${scale})` }}
-        >
+        <div className="board" style={{ width: BW, height: BH, transform: `scale(${scale})` }}>
           {/* threads */}
           <svg className="board-strings" viewBox={`0 0 ${BW} ${BH}`} aria-hidden>
             {strings.map((d, i) => (
@@ -193,27 +201,21 @@ export default function ProjectBoard() {
               />
             ))}
             {positions.map((p, i) => (
-              <circle
-                key={i}
-                cx={(p.x / 100) * BW}
-                cy={(p.y / 100) * BH}
-                r={4}
-                fill={project.color}
-              />
+              <circle key={i} cx={(p.x / 100) * BW} cy={(p.y / 100) * BH} r={4} fill={project.color} />
             ))}
             <circle cx={BW / 2} cy={BH / 2} r={5} fill={project.color} />
           </svg>
 
           {/* center node — the case card */}
           <div className="bnode bnode-center" style={{ left: '50%', top: '50%' }}>
-            <span className="bnode-label mono" style={{ color: project.color }}>
-              {project.category} · {project.year}
+            <span className="bnode-label mono" style={{ color: project.color }} lang={lang}>
+              {cproject.category} · {project.year}
             </span>
             <h3 className="bnode-title">{project.name.toUpperCase()}</h3>
             <div className="bnode-ctas">
               {project.live && (
-                <a className="bnode-cta mono" href={project.live} target="_blank" rel="noreferrer">
-                  OPEN LIVE SITE ↗
+                <a className="bnode-cta mono" href={project.live} target="_blank" rel="noreferrer" lang={lang}>
+                  {t.openLiveSite} ↗
                 </a>
               )}
               {project.repo && (
@@ -222,18 +224,19 @@ export default function ProjectBoard() {
                   href={project.repo}
                   target="_blank"
                   rel="noreferrer"
+                  lang={lang}
                 >
-                  VIEW SOURCE ↗
+                  {t.viewSource} ↗
                 </a>
               )}
-              {!primaryUrl && <span className="bnode-note mono">{project.note}</span>}
+              {!primaryUrl && <span className="bnode-note mono" lang={lang}>{t.onRequest}</span>}
             </div>
           </div>
 
           {/* satellite nodes */}
           {project.board.map((node, i) => (
             <div
-              key={node.label + i}
+              key={i}
               className={`bnode bnode-${node.kind}`}
               data-cursor="drag"
               style={{
@@ -247,13 +250,18 @@ export default function ProjectBoard() {
               onPointerUp={onNodeUp}
               onPointerCancel={onNodeUp}
             >
-              <NodeBody node={node} color={project.color} />
+              <NodeBody
+                node={node}
+                loc={cproject.board[i] ?? { l: node.label, t: node.text }}
+                color={project.color}
+                lang={lang}
+              />
             </div>
           ))}
         </div>
       </div>
 
-      <p className="board-hint mono">DRAG THE EVIDENCE · ESC TO CLOSE</p>
+      <p className="board-hint mono" lang={lang}>{t.boardHint}</p>
     </div>
   )
 }

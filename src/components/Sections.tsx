@@ -2,18 +2,9 @@ import { useRef, useState } from 'react'
 import { useStore, carousel } from '../store'
 import { Scramble, HoverScramble } from './Scramble'
 import { scrollTo } from '../lib/scroll'
-import {
-  PLAYER,
-  HERO_STATS,
-  MARQUEE,
-  LANGUAGES,
-  EXPERIENCE,
-  CAROUSEL_PROJECTS,
-  SKILL_GROUPS,
-  EDUCATION,
-  CERTS,
-} from '../data'
-
+import { PLAYER, HERO_STATS, MARQUEE, EXPERIENCE, CAROUSEL_PROJECTS, SKILL_GROUPS, EDUCATION } from '../data'
+import { useT, useContent } from '../i18n'
+import { Mega } from '../i18n/ui'
 import { PLANE_W } from './Carousel3D'
 
 // world-space math shared with the WebGL carousel
@@ -26,17 +17,41 @@ function carouselMetrics() {
   return { vwWorld, scale, wpp: VIEW_H / window.innerHeight }
 }
 
+function MegaHeading({ mega }: { mega: Mega }) {
+  return (
+    <h2 className="sec-mega">
+      {mega.pre}
+      <span className="accent">{mega.accent}</span>
+      {mega.post}
+    </h2>
+  )
+}
+
 // ── HERO ──────────────────────────────────────────────────────────────────
 
 export function Hero() {
   const loaded = useStore((s) => s.loaded)
+  const lang = useStore((s) => s.lang)
+  const t = useT()
 
   return (
     <section id="hero" data-scene="0" className="hero">
       <div className="hero-frame">
-        <p className="hero-eyebrow mono">
-          <Scramble text="PORTFOLIO © 2026 — KAOHSIUNG, TAIWAN" play={loaded} speed={20} />
-        </p>
+        <div className="hero-id">
+          <span className="hero-photo">
+            <img src="/deepan.jpg" alt="Deepan Goswami" />
+            <span className="hero-photo-dot" />
+          </span>
+          <div className="hero-id-text">
+            <p className="hero-eyebrow mono" lang={lang}>
+              <Scramble text={t.heroEyebrow} play={loaded} speed={20} key={t.heroEyebrow} />
+            </p>
+            <p className="hero-id-avail mono" lang={lang}>
+              {t.openToWork}
+            </p>
+          </div>
+        </div>
+
         <h1 className="mega" aria-label="Deepan Goswami">
           <span className="mega-line">
             <span className="mega-word">DEEPAN</span>
@@ -45,18 +60,22 @@ export function Hero() {
             <span className="mega-word accent">GOSWAMI</span>
           </span>
         </h1>
-        <div className="hero-sub mono">
-          <span>SENIOR ANALYST — DIGITAL & DATA TRANSFORMATION</span>
-          <span className="hero-sub-right">MBA @ NSYSU · EX-HCL TECHNOLOGIES</span>
+
+        <div className="hero-sub mono" lang={lang}>
+          <span>{t.heroRole}</span>
+          <span className="hero-sub-right">{t.heroMba}</span>
         </div>
+
         <div className="hero-stats">
-          {HERO_STATS.map((s) => (
-            <div className="hero-stat" key={s.label}>
+          {HERO_STATS.map((s, i) => (
+            <div className="hero-stat" key={i}>
               <span className="hero-stat-value">
                 {s.value}
                 {s.unit && <em>{s.unit}</em>}
               </span>
-              <span className="hero-stat-label mono">{s.label.toUpperCase()}</span>
+              <span className="hero-stat-label mono" lang={lang}>
+                {t.statLabels[i]}
+              </span>
             </div>
           ))}
         </div>
@@ -69,14 +88,17 @@ export function Hero() {
 
 export function Work() {
   const activeProject = useStore((s) => s.activeProject)
+  const lang = useStore((s) => s.lang)
+  const t = useT()
+  const content = useContent()
   const p = CAROUSEL_PROJECTS[activeProject]
+  const cp = content.projects[activeProject]
   const n = CAROUSEL_PROJECTS.length
   const drag = useRef({ on: false, startX: 0, startTarget: 0, moved: 0 })
 
   const goTo = (i: number) => {
     const idx = Math.max(0, Math.min(n - 1, i))
     carousel.target = idx * carousel.gap
-    // update the caption immediately — don't wait for the lerp to cross over
     useStore.getState().setActiveProject(idx)
   }
 
@@ -105,21 +127,16 @@ export function Work() {
     carousel.dragging = false
 
     if (d.moved < 8) {
-      // click: focus the clicked card, open it if already centered
       const { vwWorld, scale } = carouselMetrics()
       const worldX = (e.clientX / window.innerWidth - 0.5) * vwWorld
       const localX = worldX / scale
       const idx = Math.round((localX + carousel.current) / carousel.gap)
       if (idx >= 0 && idx < n && Math.abs(localX - (idx * carousel.gap - carousel.current)) < PLANE_W / 2 + 0.2) {
         const centered = Math.abs(idx * carousel.gap - carousel.current) < carousel.gap / 2
-        if (centered) {
-          useStore.getState().openBoard(idx)
-        } else {
-          goTo(idx)
-        }
+        if (centered) useStore.getState().openBoard(idx)
+        else goTo(idx)
       }
     } else {
-      // snap to nearest card
       goTo(Math.round(carousel.target / carousel.gap))
     }
   }
@@ -127,8 +144,8 @@ export function Work() {
   return (
     <section id="work" data-scene="1" className="work">
       <div className="work-head">
-        <span className="sec-tag mono">01 — SELECTED WORK · 2026 → 2023</span>
-        <span className="sec-tag mono dim">DRAG TO EXPLORE / CLICK A CARD TO OPEN ITS CASE FILE</span>
+        <span className="sec-tag mono" lang={lang}>01 — {t.workLabel}</span>
+        <span className="sec-tag mono dim" lang={lang}>{t.workHint}</span>
       </div>
 
       <div
@@ -140,30 +157,31 @@ export function Work() {
         onPointerCancel={onPointerUp}
       />
 
-      <div className="work-caption" key={activeProject}>
+      <div className="work-caption" key={`${activeProject}-${lang}`}>
         <div className="work-caption-left">
-          <span className="work-cat mono" style={{ color: p.color }}>
-            {p.category}
+          <span className="work-cat mono" style={{ color: p.color }} lang={lang}>
+            {cp.category}
           </span>
           <h3 className="work-name">{p.name.toUpperCase()}</h3>
         </div>
         <div className="work-caption-right">
-          <p className="work-desc">{p.desc}</p>
+          <p className="work-desc" lang={lang}>{cp.desc}</p>
           <div className="work-cta-row">
             <button
               className="work-cta mono"
+              lang={lang}
               onClick={() => useStore.getState().openBoard(useStore.getState().activeProject)}
             >
-              OPEN CASE FILE ▸
+              {t.openCase} ▸
             </button>
             {p.live && (
-              <a className="work-cta mono ghost" href={p.live} target="_blank" rel="noreferrer">
-                LIVE SITE ↗
+              <a className="work-cta mono ghost" href={p.live} target="_blank" rel="noreferrer" lang={lang}>
+                {t.liveSite} ↗
               </a>
             )}
             {!p.live && p.repo && (
-              <a className="work-cta mono ghost" href={p.repo} target="_blank" rel="noreferrer">
-                SOURCE ↗
+              <a className="work-cta mono ghost" href={p.repo} target="_blank" rel="noreferrer" lang={lang}>
+                {t.source} ↗
               </a>
             )}
           </div>
@@ -197,47 +215,49 @@ export function Work() {
 
 export function ExperienceSec() {
   const [open, setOpen] = useState(0)
+  const lang = useStore((s) => s.lang)
+  const t = useT()
+  const content = useContent()
 
   return (
     <section id="experience" data-scene="2" className="xp">
       <div className="sec-header">
-        <span className="sec-tag mono">02 — EXPERIENCE</span>
-        <h2 className="sec-mega">
-          WHERE I'VE
-          <br />
-          <span className="accent">DELIVERED</span>
-        </h2>
+        <span className="sec-tag mono" lang={lang}>02 — {t.expLabel}</span>
+        <MegaHeading mega={t.expMega} />
       </div>
       <div className="xp-list">
-        {EXPERIENCE.map((x, i) => (
-          <div
-            key={x.role}
-            className={`xrow ${open === i ? 'open' : ''}`}
-            onMouseEnter={() => setOpen(i)}
-            onClick={() => setOpen(i)}
-          >
-            <div className="xrow-head">
-              <span className="xrow-idx mono">{String(i + 1).padStart(2, '0')}</span>
-              <div className="xrow-main">
-                <h3 className="xrow-role">
-                  <HoverScramble text={x.role.toUpperCase()} />
-                </h3>
-                <span className="xrow-org mono">{x.org.toUpperCase()}</span>
+        {EXPERIENCE.map((x, i) => {
+          const cx = content.experience[i]
+          return (
+            <div
+              key={i}
+              className={`xrow ${open === i ? 'open' : ''}`}
+              onMouseEnter={() => setOpen(i)}
+              onClick={() => setOpen(i)}
+            >
+              <div className="xrow-head">
+                <span className="xrow-idx mono">{String(i + 1).padStart(2, '0')}</span>
+                <div className="xrow-main">
+                  <h3 className="xrow-role" lang={lang}>
+                    <HoverScramble text={cx.role.toUpperCase()} />
+                  </h3>
+                  <span className="xrow-org mono">{x.org.toUpperCase()}</span>
+                </div>
+                <span className="xrow-badge mono">{x.badge}</span>
+                <span className="xrow-period mono">{x.period.toUpperCase()}</span>
               </div>
-              <span className="xrow-badge mono">{x.badge}</span>
-              <span className="xrow-period mono">{x.period.toUpperCase()}</span>
-            </div>
-            <div className="xrow-detail">
-              <div className="xrow-detail-inner">
-                <ul>
-                  {x.bullets.map((b) => (
-                    <li key={b}>{b}</li>
-                  ))}
-                </ul>
+              <div className="xrow-detail">
+                <div className="xrow-detail-inner">
+                  <ul lang={lang}>
+                    {cx.bullets.map((b, bi) => (
+                      <li key={bi}>{b}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </section>
   )
@@ -246,6 +266,10 @@ export function ExperienceSec() {
 // ── ABOUT (statement + skills + education) ───────────────────────────────
 
 export function AboutSec() {
+  const lang = useStore((s) => s.lang)
+  const t = useT()
+  const content = useContent()
+
   return (
     <section id="about" data-scene="3" className="about">
       <div className="marquee" aria-hidden>
@@ -263,32 +287,28 @@ export function AboutSec() {
       </div>
 
       <div className="sec-header">
-        <span className="sec-tag mono">03 — ABOUT</span>
-        <h2 className="sec-mega">
-          ANALYST BY TRAINING,
-          <br />
-          <span className="accent">BUILDER</span> BY HABIT
-        </h2>
+        <span className="sec-tag mono" lang={lang}>03 — {t.aboutLabel}</span>
+        <MegaHeading mega={t.aboutMega} />
       </div>
 
       <div className="about-grid">
-        <p className="about-statement">{PLAYER.summary}</p>
+        <p className="about-statement" lang={lang}>{t.aboutStatement}</p>
 
         <div className="about-side">
           <div className="about-block">
-            <span className="about-block-title mono">LANGUAGES</span>
-            {LANGUAGES.map((l) => (
-              <div className="about-lang mono" key={l.name}>
+            <span className="about-block-title mono" lang={lang}>{t.langTitle}</span>
+            {content.languages.map((l, i) => (
+              <div className="about-lang mono" key={i} lang={lang}>
                 <span>{l.name.toUpperCase()}</span>
                 <span className="dim">{l.level.toUpperCase()}</span>
               </div>
             ))}
           </div>
           <div className="about-block">
-            <span className="about-block-title mono">CERTIFICATIONS</span>
-            {CERTS.map((c) => (
-              <div className="about-lang mono" key={c.name}>
-                <span>{c.name.toUpperCase()}</span>
+            <span className="about-block-title mono" lang={lang}>{t.certTitle}</span>
+            {content.certs.map((c, i) => (
+              <div className="about-lang mono" key={i} lang={lang}>
+                <span>{c.toUpperCase()}</span>
               </div>
             ))}
           </div>
@@ -296,9 +316,9 @@ export function AboutSec() {
       </div>
 
       <div className="skills-grid">
-        {SKILL_GROUPS.map((g) => (
-          <div className="skill-col" key={g.title}>
-            <span className="about-block-title mono">{g.title.toUpperCase()}</span>
+        {SKILL_GROUPS.map((g, gi) => (
+          <div className="skill-col" key={gi}>
+            <span className="about-block-title mono" lang={lang}>{t.skillTitles[gi]}</span>
             <div className="skill-chips">
               {g.skills.map((s) => (
                 <span className="chip mono" key={s.name}>
@@ -311,12 +331,12 @@ export function AboutSec() {
       </div>
 
       <div className="edu-strip">
-        {EDUCATION.map((e) => (
-          <div className="edu-item" key={e.school}>
+        {EDUCATION.map((e, i) => (
+          <div className="edu-item" key={i}>
             <span className="edu-period mono">{e.period}</span>
             <h3 className="edu-school">{e.school.toUpperCase()}</h3>
-            <span className="edu-degree mono">{e.degree.toUpperCase()}</span>
-            <span className="edu-detail mono dim">{e.detail.toUpperCase()}</span>
+            <span className="edu-degree mono" lang={lang}>{content.education[i].degree.toUpperCase()}</span>
+            <span className="edu-detail mono dim" lang={lang}>{content.education[i].detail.toUpperCase()}</span>
           </div>
         ))}
       </div>
@@ -327,15 +347,14 @@ export function AboutSec() {
 // ── CONTACT ───────────────────────────────────────────────────────────────
 
 export function ContactSec() {
+  const lang = useStore((s) => s.lang)
+  const t = useT()
+
   return (
     <section id="contact" data-scene="4" className="contactsec">
       <div className="sec-header">
-        <span className="sec-tag mono">04 — CONTACT</span>
-        <h2 className="sec-mega">
-          LET'S BUILD
-          <br />
-          SOMETHING <span className="accent">MEASURABLE</span>
-        </h2>
+        <span className="sec-tag mono" lang={lang}>04 — {t.contactLabel}</span>
+        <MegaHeading mega={t.contactMega} />
       </div>
 
       <a className="contact-mail" href={`mailto:${PLAYER.email}?subject=Regarding your portfolio`}>
@@ -358,10 +377,10 @@ export function ContactSec() {
 
       <footer className="site-footer mono">
         <span>© 2026 DEEPAN GOSWAMI</span>
-        <button className="dim" onClick={() => scrollTo(0)} data-cursor="link">
-          BACK TO TOP ↑
+        <button className="dim" onClick={() => scrollTo(0)} data-cursor="link" lang={lang}>
+          {t.backToTop}
         </button>
-        <span className="dim">REACT + THREE.JS / WEBGL</span>
+        <span className="dim" lang={lang}>{t.builtWith}</span>
       </footer>
     </section>
   )

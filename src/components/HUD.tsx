@@ -1,17 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { useStore, SCENE_NAMES } from '../store'
+import { useStore } from '../store'
 import { HoverScramble } from './Scramble'
 import { scrollTo } from '../lib/scroll'
 import { PLAYER } from '../data'
+import { useT, LANGS, Lang } from '../i18n'
 
 // Fixed HUD chrome: hairlines, mono labels, clock, scene index, progress.
-
-const NAV = [
-  { label: 'WORK', id: '#work' },
-  { label: 'EXPERIENCE', id: '#experience' },
-  { label: 'ABOUT', id: '#about' },
-  { label: 'CONTACT', id: '#contact' },
-]
 
 function useClock() {
   const [time, setTime] = useState('')
@@ -31,11 +25,69 @@ function useClock() {
   return time
 }
 
+function LangMenu() {
+  const lang = useStore((s) => s.lang)
+  const setLang = useStore((s) => s.setLang)
+  const [open, setOpen] = useState(false)
+  const current = LANGS.find((l) => l.code === lang) ?? LANGS[0]
+
+  useEffect(() => {
+    if (!open) return
+    const close = () => setOpen(false)
+    window.addEventListener('click', close)
+    return () => window.removeEventListener('click', close)
+  }, [open])
+
+  return (
+    <div className="hud-lang">
+      <button
+        className="hud-lang-btn mono"
+        onClick={(e) => {
+          e.stopPropagation()
+          setOpen((o) => !o)
+        }}
+        data-cursor="link"
+        aria-label="Change language"
+      >
+        <span className="hud-lang-globe" aria-hidden>◍</span>
+        {current.short}
+      </button>
+      {open && (
+        <div className="hud-lang-menu" onClick={(e) => e.stopPropagation()}>
+          {LANGS.map((l) => (
+            <button
+              key={l.code}
+              className={`hud-lang-opt ${l.code === lang ? 'active' : ''}`}
+              lang={l.code}
+              onClick={() => {
+                setLang(l.code as Lang)
+                setOpen(false)
+              }}
+            >
+              <span className="hud-lang-opt-native">{l.native}</span>
+              <span className="hud-lang-opt-short mono">{l.short}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function HUD() {
   const activeScene = useStore((s) => s.activeScene)
   const loaded = useStore((s) => s.loaded)
+  const t = useT()
   const time = useClock()
   const progress = useRef<HTMLDivElement>(null)
+
+  const nav = [
+    { label: t.navWork, id: '#work' },
+    { label: t.navExperience, id: '#experience' },
+    { label: t.navAbout, id: '#about' },
+    { label: t.navContact, id: '#contact' },
+  ]
+  const sceneNames = [t.sceneHero, t.navWork, t.navExperience, t.navAbout, t.navContact]
 
   useEffect(() => {
     const onScroll = () => {
@@ -60,13 +112,14 @@ export default function HUD() {
           DG<span className="hud-brand-dim">®</span> — PORTFOLIO
         </button>
         <nav className="hud-nav" aria-label="Primary">
-          {NAV.map((n) => (
-            <button key={n.label} className="hud-link mono" onClick={() => scrollTo(n.id)}>
+          {nav.map((n) => (
+            <button key={n.id} className="hud-link mono" onClick={() => scrollTo(n.id)}>
               <HoverScramble text={n.label} />
             </button>
           ))}
         </nav>
         <div className="hud-meta mono">
+          <LangMenu />
           <span className="hud-clock">KHH {time}</span>
         </div>
       </header>
@@ -75,17 +128,17 @@ export default function HUD() {
         <div className="hud-scene mono">
           <span className="hud-scene-num">{String(activeScene + 1).padStart(2, '0')}</span>
           <span className="hud-scene-sep">/</span>
-          <span>{SCENE_NAMES[activeScene]}</span>
+          <span>{sceneNames[activeScene]}</span>
         </div>
         <div className="hud-avail mono">
           <span className="hud-avail-dot" />
-          OPEN TO WORK — JUL 2026 · TAIWAN & APAC
+          {t.openToWork}
         </div>
         <div className="hud-hint mono">
           <a href={PLAYER.github} target="_blank" rel="noreferrer" className="hud-gh">
             GITHUB ↗
           </a>
-          <span className="hud-scroll">SCROLL</span>
+          <span className="hud-scroll">{t.scroll}</span>
         </div>
       </footer>
     </div>

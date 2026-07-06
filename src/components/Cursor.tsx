@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react'
+import { useT } from '../i18n'
 
 // Custom cursor: instant dot + inertial ring. Ring grows over interactive
 // elements; over the carousel it becomes a DRAG chip.
 
 export default function Cursor() {
+  const t = useT()
   const dot = useRef<HTMLDivElement>(null)
   const ring = useRef<HTMLDivElement>(null)
   const label = useRef<HTMLSpanElement>(null)
@@ -58,7 +60,7 @@ export default function Cursor() {
       <div ref={dot} className="cursor-dot" aria-hidden />
       <div ref={ring} className="cursor-ring" aria-hidden>
         <span ref={label} className="cursor-label mono">
-          DRAG
+          {t.drag}
         </span>
       </div>
     </>

@@ -4,6 +4,7 @@ import HUD from './components/HUD'
 import Loader from './components/Loader'
 import Cursor from './components/Cursor'
 import ProjectBoard from './components/ProjectBoard'
+import LanguageSplash from './components/LanguageSplash'
 import { Hero, Work, ExperienceSec, AboutSec, ContactSec } from './components/Sections'
 import { useStore } from './store'
 import { initScroll } from './lib/scroll'
@@ -11,6 +12,11 @@ import { initScroll } from './lib/scroll'
 export default function App() {
   const setActiveScene = useStore((s) => s.setActiveScene)
   const loaded = useStore((s) => s.loaded)
+  const lang = useStore((s) => s.lang)
+
+  useEffect(() => {
+    document.documentElement.lang = lang
+  }, [lang])
 
   useEffect(() => {
     history.scrollRestoration = 'manual'
@@ -53,6 +59,7 @@ export default function App() {
         <ContactSec />
       </main>
       <ProjectBoard />
+      <LanguageSplash />
     </div>
   )
 }
