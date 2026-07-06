@@ -3,6 +3,7 @@ import { useStore } from '../store'
 import { lockScroll, unlockScroll } from '../lib/scroll'
 import { CAROUSEL_PROJECTS, BoardNode } from '../data'
 import { useT, useContent } from '../i18n'
+import ListenButton from './ListenButton'
 
 // ─────────────────────────────────────────────────────────────────────────
 //  The Evidence Board — click a project and its case file pins up like a
@@ -37,6 +38,21 @@ function useBoardScale() {
     return () => window.removeEventListener('resize', onResize)
   }, [])
   return scale
+}
+
+// On phones the spider-web can't fit legibly, so we stack the evidence
+// vertically instead. Tracks a max-width media query.
+function useIsMobile() {
+  const [mobile, setMobile] = useState(
+    typeof window !== 'undefined' ? window.matchMedia('(max-width: 760px)').matches : false,
+  )
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 760px)')
+    const on = () => setMobile(mq.matches)
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [])
+  return mobile
 }
 
 function NodeBody({ node, loc, color, lang }: { node: BoardNode; loc: LocalNode; color: string; lang: string }) {
@@ -94,6 +110,7 @@ export default function ProjectBoard() {
   const cproject = boardProject !== null ? content.projects[boardProject] : null
 
   const scale = useBoardScale()
+  const isMobile = useIsMobile()
   const [positions, setPositions] = useState<Pos[]>([])
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
   const drag = useRef<{ i: number; startX: number; startY: number; ox: number; oy: number } | null>(null)
@@ -127,6 +144,63 @@ export default function ProjectBoard() {
   }, [positions, project])
 
   if (!project || !cproject) return null
+
+  const primaryCard = (
+    <div className="mb-center">
+      <span className="bnode-label mono" style={{ color: project.color }} lang={lang}>
+        {cproject.category} · {project.year}
+      </span>
+      <h3 className="bnode-title">{project.name.toUpperCase()}</h3>
+      <div className="bnode-ctas">
+        <ListenButton index={boardProject ?? 0} className="bnode-cta ghost" />
+        {project.live && (
+          <a className="bnode-cta mono" href={project.live} target="_blank" rel="noreferrer" lang={lang}>
+            {t.openLiveSite} ↗
+          </a>
+        )}
+        {project.repo && (
+          <a className="bnode-cta mono ghost" href={project.repo} target="_blank" rel="noreferrer" lang={lang}>
+            {t.viewSource} ↗
+          </a>
+        )}
+        {!(project.live ?? project.repo) && <span className="bnode-note mono" lang={lang}>{t.onRequest}</span>}
+      </div>
+    </div>
+  )
+
+  // ── mobile: stack the evidence vertically instead of the spider-web ──
+  if (isMobile) {
+    return (
+      <div
+        className="board-overlay mobile"
+        onPointerDown={(e) => {
+          if (e.target === e.currentTarget) closeBoard()
+        }}
+      >
+        <div className="board-topbar">
+          <span className="mono board-file" lang={lang}>
+            {t.caseFile} — {String((boardProject ?? 0) + 1).padStart(2, '0')} · {project.year}
+          </span>
+          <button className="board-close mono" onClick={closeBoard} lang={lang}>
+            {t.close} ✕
+          </button>
+        </div>
+        <div className="board-mobile" style={{ ['--pc' as string]: project.color }}>
+          {primaryCard}
+          {project.board.map((node, i) => (
+            <div key={i} className={`mb-node bnode bnode-${node.kind}`}>
+              <NodeBody
+                node={node}
+                loc={cproject.board[i] ?? { l: node.label, t: node.text }}
+                color={project.color}
+                lang={lang}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
 
   const onNodeDown = (i: number) => (e: React.PointerEvent) => {
     if ((e.target as HTMLElement).closest('a, button')) return
@@ -213,6 +287,7 @@ export default function ProjectBoard() {
             </span>
             <h3 className="bnode-title">{project.name.toUpperCase()}</h3>
             <div className="bnode-ctas">
+              <ListenButton index={boardProject ?? 0} className="bnode-cta ghost" />
               {project.live && (
                 <a className="bnode-cta mono" href={project.live} target="_blank" rel="noreferrer" lang={lang}>
                   {t.openLiveSite} ↗

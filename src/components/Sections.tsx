@@ -5,7 +5,8 @@ import { scrollTo } from '../lib/scroll'
 import { PLAYER, HERO_STATS, MARQUEE, EXPERIENCE, CAROUSEL_PROJECTS, SKILL_GROUPS, EDUCATION } from '../data'
 import { useT, useContent } from '../i18n'
 import { Mega } from '../i18n/ui'
-import { PLANE_W } from './Carousel3D'
+import { PLANE_W, carouselScale } from './Carousel3D'
+import ListenButton from './ListenButton'
 
 // world-space math shared with the WebGL carousel
 const VIEW_H = 2 * 9 * Math.tan((45 * Math.PI) / 360) // camera z=9, fov=45
@@ -13,7 +14,7 @@ const VIEW_H = 2 * 9 * Math.tan((45 * Math.PI) / 360) // camera z=9, fov=45
 function carouselMetrics() {
   const aspect = window.innerWidth / window.innerHeight
   const vwWorld = VIEW_H * aspect
-  const scale = Math.min(1, vwWorld / 10.5)
+  const scale = carouselScale(vwWorld)
   return { vwWorld, scale, wpp: VIEW_H / window.innerHeight }
 }
 
@@ -174,6 +175,7 @@ export function Work() {
             >
               {t.openCase} ▸
             </button>
+            <ListenButton index={activeProject} className="work-cta" />
             {p.live && (
               <a className="work-cta mono ghost" href={p.live} target="_blank" rel="noreferrer" lang={lang}>
                 {t.liveSite} ↗

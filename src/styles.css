@@ -1415,11 +1415,168 @@ section {
   }
 
   .splash-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .hud-lang-btn {
     padding: 6px 9px;
+  }
+}
+
+/* ── phones: keep the design, adapt the layout ── */
+
+@media (max-width: 760px) {
+  section {
+    padding: 108px 20px 84px;
+  }
+
+  /* declutter the bottom HUD bar so nothing overlaps */
+  .hud-bottom {
+    height: 44px;
+    padding: 0 16px;
+  }
+
+  .hud-avail {
+    display: none;
+  }
+
+  .hud-scroll {
+    display: none;
+  }
+
+  .hud-hint {
+    gap: 0;
+  }
+
+  .hud-top {
+    height: 52px;
+    padding: 0 16px;
+  }
+
+  .hud-clock {
+    display: none;
+  }
+
+  /* hero: give the giant type room, tighten the intro row */
+  .hero {
+    padding-top: 8vh;
+  }
+
+  .hero-sub {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .hero-sub-right {
+    order: 2;
+  }
+
+  .hero-stats {
+    gap: 20px 26px;
+  }
+
+  .work {
+    padding-top: 78px;
+  }
+
+  .work-cta-row {
+    gap: 10px;
+  }
+
+  .work-cta {
+    padding: 13px 18px;
+    font-size: 11px;
+  }
+
+  /* contact: never let the email overflow */
+  .contact-mail {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .contact-mail-text {
+    font-size: clamp(19px, 6.6vw, 40px);
+    overflow-wrap: anywhere;
+  }
+
+  .contact-links {
+    gap: 14px 22px;
+  }
+
+  /* ── stacked evidence board (replaces the spider-web on phones) ── */
+  .board-overlay.mobile {
+    display: block;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0;
+    background: rgba(6, 6, 12, 0.9);
+  }
+
+  .board-overlay.mobile .board-topbar {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    padding: 14px 16px;
+    background: rgba(8, 8, 13, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    z-index: 3;
+    pointer-events: auto;
+  }
+
+  .board-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 16px 48px;
+  }
+
+  .board-mobile .bnode,
+  .board-mobile .mb-center {
+    position: static;
+    transform: none !important;
+    width: 100%;
+    box-shadow: none;
+    animation: mbIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  .board-mobile .mb-center {
+    padding: 22px 22px;
+    background: #14141f;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 12px;
+    border-left: 3px solid var(--pc);
+  }
+
+  .board-mobile .mb-node {
+    border-left: 3px solid var(--pc);
+  }
+
+  .board-mobile .bnode-title {
+    font-size: 26px;
+  }
+
+  .board-mobile .bnode-photo {
+    padding: 12px 12px 10px;
+    max-width: 320px;
+  }
+
+  .board-mobile .bnode-stat {
+    font-size: 44px;
+  }
+
+  @keyframes mbIn {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+}
+
+@media (max-width: 520px) {
+  .splash-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1522,4 +1679,81 @@ section {
   font-size: 12px;
   letter-spacing: 1px;
   color: var(--dim);
+}
+
+/* ── listen-to-project button (spoken intro) ── */
+
+.listen-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.listen-btn.playing {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(91, 124, 255, 0.12);
+}
+
+/* keep the "playing" look even for the inverted board CTA */
+.bnode-cta.listen-btn.playing {
+  background: rgba(91, 124, 255, 0.16);
+}
+
+.listen-ic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 13px;
+}
+
+.listen-eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+
+.listen-eq i {
+  width: 2px;
+  height: 4px;
+  background: currentColor;
+  border-radius: 1px;
+  animation: eq 0.9s ease-in-out infinite;
+}
+
+.listen-eq i:nth-child(2) {
+  animation-delay: 0.18s;
+}
+.listen-eq i:nth-child(3) {
+  animation-delay: 0.36s;
+}
+.listen-eq i:nth-child(4) {
+  animation-delay: 0.54s;
+}
+
+@keyframes eq {
+  0%,
+  100% {
+    height: 3px;
+  }
+  50% {
+    height: 12px;
+  }
+}
+
+.listen-spin {
+  width: 12px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

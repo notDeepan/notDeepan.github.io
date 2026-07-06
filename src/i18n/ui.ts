@@ -25,6 +25,8 @@ export interface UIStrings {
   openCase: string
   liveSite: string
   source: string
+  listen: string
+  stopListen: string
   expLabel: string
   expMega: Mega
   aboutLabel: string
@@ -78,6 +80,8 @@ export const UI: Record<Lang, UIStrings> = {
     openCase: 'OPEN CASE FILE',
     liveSite: 'LIVE SITE',
     source: 'SOURCE',
+    listen: 'LISTEN',
+    stopListen: 'STOP',
     expLabel: 'EXPERIENCE',
     expMega: { pre: "WHERE I'VE ", accent: 'DELIVERED', post: '' },
     aboutLabel: 'ABOUT',
@@ -126,6 +130,8 @@ export const UI: Record<Lang, UIStrings> = {
     openCase: '開啟專案檔案',
     liveSite: '線上網站',
     source: '原始碼',
+    listen: '語音介紹',
+    stopListen: '停止',
     expLabel: '經歷',
     expMega: { pre: '我交付成果的', accent: '軌跡', post: '' },
     aboutLabel: '關於',
@@ -174,6 +180,8 @@ export const UI: Record<Lang, UIStrings> = {
     openCase: 'ケースファイルを開く',
     liveSite: '公開サイト',
     source: 'ソース',
+    listen: '音声で聞く',
+    stopListen: '停止',
     expLabel: '経歴',
     expMega: { pre: '成果を出して', accent: 'きた場所', post: '' },
     aboutLabel: '概要',
@@ -222,6 +230,8 @@ export const UI: Record<Lang, UIStrings> = {
     openCase: '케이스 파일 열기',
     liveSite: '라이브 사이트',
     source: '소스',
+    listen: '음성 소개',
+    stopListen: '정지',
     expLabel: '경력',
     expMega: { pre: '성과를 만들어온', accent: '현장', post: '' },
     aboutLabel: '소개',
@@ -275,6 +285,8 @@ export const UI: Record<Lang, UIStrings> = {
     openCase: 'MỞ HỒ SƠ DỰ ÁN',
     liveSite: 'TRANG TRỰC TUYẾN',
     source: 'MÃ NGUỒN',
+    listen: 'NGHE GIỚI THIỆU',
+    stopListen: 'DỪNG',
     expLabel: 'KINH NGHIỆM',
     expMega: { pre: 'NƠI TÔI ĐÃ ', accent: 'TẠO KẾT QUẢ', post: '' },
     aboutLabel: 'GIỚI THIỆU',
@@ -328,6 +340,8 @@ export const UI: Record<Lang, UIStrings> = {
     openCase: 'BUKA BERKAS KASUS',
     liveSite: 'SITUS LANGSUNG',
     source: 'KODE SUMBER',
+    listen: 'DENGARKAN',
+    stopListen: 'HENTIKAN',
     expLabel: 'PENGALAMAN',
     expMega: { pre: 'TEMPAT SAYA ', accent: 'BERKARYA', post: '' },
     aboutLabel: 'TENTANG',

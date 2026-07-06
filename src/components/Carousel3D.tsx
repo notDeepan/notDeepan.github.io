@@ -14,6 +14,13 @@ import { useT, useContent } from '../i18n'
 
 export const PLANE_W = 3.3
 export const PLANE_H = PLANE_W * (800 / 1280)
+
+// Shared by the WebGL carousel and the DOM hit-testing so clicks map correctly.
+// Portrait phones get larger relative cards so the centred poster reads well.
+export function carouselScale(vwWorld: number) {
+  const portrait = typeof window !== 'undefined' && window.innerWidth / window.innerHeight < 0.85
+  return Math.min(1, vwWorld / (portrait ? 4.7 : 10.5))
+}
 const W = 1280
 const H = 800
 
@@ -371,7 +378,7 @@ export default function Carousel3D() {
   })
 
   // responsive: smaller planes on narrow screens via group scale
-  const scale = Math.min(1, viewport.width / 10.5)
+  const scale = carouselScale(viewport.width)
 
   return (
     <group ref={group} scale={scale}>

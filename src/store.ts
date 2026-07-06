@@ -20,6 +20,8 @@ interface UIState {
   boardProject: number | null // which project's evidence board is open
   lang: Lang
   langChosen: boolean // has the visitor picked a language (splash dismissed)?
+  playingAudio: number | null // index of the project whose intro is playing
+  audioLoading: number | null // index whose clip is currently loading
   setLoaded: (v: boolean) => void
   setActiveScene: (i: number) => void
   setActiveProject: (i: number) => void
@@ -27,10 +29,24 @@ interface UIState {
   closeBoard: () => void
   chooseLang: (lang: Lang) => void
   setLang: (lang: Lang) => void
+  toggleAudio: (i: number) => void
+  stopAudio: () => void
 }
 
-export const useStore = create<UIState>((set) => {
+// A single shared <audio> element for the spoken project intros.
+let audioEl: HTMLAudioElement | null = null
+
+export const useStore = create<UIState>((set, get) => {
   const saved = storedLang()
+
+  const halt = () => {
+    if (audioEl) {
+      audioEl.pause()
+      audioEl.src = ''
+      audioEl = null
+    }
+  }
+
   return {
     loaded: false,
     activeScene: 0,
@@ -39,11 +55,23 @@ export const useStore = create<UIState>((set) => {
     // suggest the browser's language on the splash, but don't commit it
     lang: saved ?? detectLang() ?? DEFAULT_LANG,
     langChosen: saved !== null,
+    playingAudio: null,
+    audioLoading: null,
     setLoaded: (v) => set({ loaded: v }),
     setActiveScene: (i) => set({ activeScene: i }),
-    setActiveProject: (i) => set({ activeProject: i }),
+    setActiveProject: (i) => {
+      // a different card centred → stop any playing intro
+      if (get().activeProject !== i) {
+        halt()
+        set({ playingAudio: null, audioLoading: null })
+      }
+      set({ activeProject: i })
+    },
     openBoard: (i) => set({ boardProject: i }),
-    closeBoard: () => set({ boardProject: null }),
+    closeBoard: () => {
+      halt()
+      set({ boardProject: null, playingAudio: null, audioLoading: null })
+    },
     chooseLang: (lang) => {
       try {
         localStorage.setItem(LANG_STORAGE_KEY, lang)
@@ -54,13 +82,42 @@ export const useStore = create<UIState>((set) => {
       set({ lang, langChosen: true })
     },
     setLang: (lang) => {
+      // clips are language-specific — stop playback when the language changes
+      halt()
       try {
         localStorage.setItem(LANG_STORAGE_KEY, lang)
       } catch {
         /* storage blocked — fine */
       }
       document.documentElement.lang = lang
-      set({ lang })
+      set({ lang, playingAudio: null, audioLoading: null })
+    },
+    stopAudio: () => {
+      halt()
+      set({ playingAudio: null, audioLoading: null })
+    },
+    toggleAudio: (i) => {
+      const { playingAudio, lang } = get()
+      halt()
+      if (playingAudio === i) {
+        set({ playingAudio: null, audioLoading: null })
+        return
+      }
+      const a = new Audio(`${import.meta.env.BASE_URL}audio/p${i}-${lang}.mp3`)
+      audioEl = a
+      set({ audioLoading: i, playingAudio: null })
+      const done = () => {
+        if (audioEl === a) {
+          audioEl = null
+          set({ playingAudio: null, audioLoading: null })
+        }
+      }
+      a.onplaying = () => {
+        if (audioEl === a) set({ playingAudio: i, audioLoading: null })
+      }
+      a.onended = done
+      a.onerror = done
+      a.play().catch(done)
     },
   }
 })
