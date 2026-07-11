@@ -19,6 +19,8 @@ export interface UIStrings {
   heroEyebrow: string
   heroRole: string
   heroMba: string
+  seekingLabel: string
+  seekingRoles: string[]
   statLabels: [string, string, string, string]
   workLabel: string
   workHint: string
@@ -69,6 +71,8 @@ export const UI: Record<Lang, UIStrings> = {
     heroEyebrow: 'PORTFOLIO © 2026 — KAOHSIUNG, TAIWAN',
     heroRole: 'SENIOR ANALYST — DIGITAL & DATA TRANSFORMATION',
     heroMba: 'MBA @ NSYSU · EX-HCL TECHNOLOGIES',
+    seekingLabel: 'SEEKING',
+    seekingRoles: ['Data Analyst', 'Business Analyst', 'Consultant', 'Strategy Analyst', 'Digital Transformation'],
     statLabels: [
       'IT CONSULTING AT HCL',
       'MBA GPA AT NSYSU',
@@ -124,6 +128,8 @@ export const UI: Record<Lang, UIStrings> = {
     heroEyebrow: '作品集 © 2026 — 台灣高雄',
     heroRole: '資深分析師 — 數位與數據轉型',
     heroMba: '中山大學 MBA · 前 HCL Technologies',
+    seekingLabel: '尋找職位',
+    seekingRoles: ['資料分析師', '商業分析師', '顧問', '策略分析師', '數位轉型'],
     statLabels: ['HCL 資訊顧問年資', '中山大學 MBA 成績', '主導產品專案', '程式碼品質提升'],
     workLabel: '精選作品 · 2026 → 2023',
     workHint: '拖曳瀏覽 / 點擊卡片開啟專案檔案',
@@ -174,6 +180,8 @@ export const UI: Record<Lang, UIStrings> = {
     heroEyebrow: 'ポートフォリオ © 2026 — 台湾・高雄',
     heroRole: 'シニアアナリスト — デジタル＆データ変革',
     heroMba: '国立中山大学 MBA · 元 HCL Technologies',
+    seekingLabel: '希望職種',
+    seekingRoles: ['データアナリスト', 'ビジネスアナリスト', 'コンサルタント', '戦略アナリスト', 'デジタル変革'],
     statLabels: ['HCLでのITコンサル歴', '中山大学 MBA GPA', '主導したプロダクト案件', 'コード品質の改善'],
     workLabel: '主な実績 · 2026 → 2023',
     workHint: 'ドラッグして探索 / カードをクリックで詳細を表示',
@@ -224,6 +232,8 @@ export const UI: Record<Lang, UIStrings> = {
     heroEyebrow: '포트폴리오 © 2026 — 대만 가오슝',
     heroRole: '시니어 애널리스트 — 디지털 & 데이터 혁신',
     heroMba: '국립중산대 MBA · 전 HCL Technologies',
+    seekingLabel: '희망 직무',
+    seekingRoles: ['데이터 분석가', '비즈니스 분석가', '컨설턴트', '전략 분석가', '디지털 혁신'],
     statLabels: ['HCL IT 컨설팅 경력', '중산대 MBA 학점', '주도한 제품 프로젝트', '코드 품질 개선'],
     workLabel: '주요 작업 · 2026 → 2023',
     workHint: '드래그하여 탐색 / 카드를 클릭해 케이스 파일 열기',
@@ -274,6 +284,8 @@ export const UI: Record<Lang, UIStrings> = {
     heroEyebrow: 'HỒ SƠ © 2026 — CAO HÙNG, ĐÀI LOAN',
     heroRole: 'CHUYÊN VIÊN PHÂN TÍCH CẤP CAO — CHUYỂN ĐỔI SỐ & DỮ LIỆU',
     heroMba: 'MBA @ NSYSU · CỰU HCL TECHNOLOGIES',
+    seekingLabel: 'TÌM KIẾM VỊ TRÍ',
+    seekingRoles: ['Phân tích Dữ liệu', 'Phân tích Nghiệp vụ', 'Tư vấn', 'Phân tích Chiến lược', 'Chuyển đổi Số'],
     statLabels: [
       'TƯ VẤN CNTT TẠI HCL',
       'ĐIỂM MBA TẠI NSYSU',
@@ -329,6 +341,8 @@ export const UI: Record<Lang, UIStrings> = {
     heroEyebrow: 'PORTOFOLIO © 2026 — KAOHSIUNG, TAIWAN',
     heroRole: 'ANALIS SENIOR — TRANSFORMASI DIGITAL & DATA',
     heroMba: 'MBA @ NSYSU · MANTAN HCL TECHNOLOGIES',
+    seekingLabel: 'MENCARI POSISI',
+    seekingRoles: ['Analis Data', 'Analis Bisnis', 'Konsultan', 'Analis Strategi', 'Transformasi Digital'],
     statLabels: [
       'KONSULTAN TI DI HCL',
       'IPK MBA DI NSYSU',

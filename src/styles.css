@@ -115,7 +115,7 @@ a {
 }
 
 .loader-label {
-  font-size: 10px;
+  font-size: 11.5px;
   letter-spacing: 3px;
   color: var(--dim);
 }
@@ -263,7 +263,7 @@ a {
 }
 
 .hud-brand {
-  font-size: 11px;
+  font-size: 12.5px;
   letter-spacing: 2px;
   color: var(--ink);
 }
@@ -278,7 +278,7 @@ a {
 }
 
 .hud-link {
-  font-size: 10.5px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: var(--dim);
   transition: color 0.2s ease;
@@ -293,7 +293,7 @@ a {
   display: flex;
   align-items: center;
   gap: 16px;
-  font-size: 10.5px;
+  font-size: 11.5px;
   letter-spacing: 2px;
   color: var(--dim);
 }
@@ -307,7 +307,7 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 10.5px;
+  font-size: 11.5px;
   letter-spacing: 1.5px;
   color: var(--ink);
   border: 1px solid var(--line);
@@ -386,7 +386,7 @@ a {
 .hud-scene {
   display: flex;
   gap: 8px;
-  font-size: 10.5px;
+  font-size: 11.5px;
   letter-spacing: 2px;
   color: var(--dim);
 }
@@ -403,7 +403,7 @@ a {
   display: flex;
   align-items: center;
   gap: 9px;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 2px;
   color: var(--dim);
 }
@@ -424,7 +424,7 @@ a {
 .hud-hint {
   display: flex;
   gap: 20px;
-  font-size: 10.5px;
+  font-size: 11.5px;
   letter-spacing: 2px;
   color: var(--dim);
 }
@@ -446,11 +446,11 @@ a {
 
 section {
   position: relative;
-  padding: 120px clamp(18px, 4vw, 56px) 80px;
+  padding: 104px clamp(18px, 4vw, 56px) 72px;
 }
 
 .sec-tag {
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 3px;
   color: var(--accent);
 }
@@ -535,13 +535,13 @@ section {
 }
 
 .hero-id-avail {
-  font-size: 10px;
+  font-size: 11.5px;
   letter-spacing: 2px;
   color: var(--mint);
 }
 
 .hero-eyebrow {
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 3px;
   color: var(--dim);
   min-height: 14px;
@@ -588,10 +588,10 @@ section {
   justify-content: space-between;
   gap: 14px;
   flex-wrap: wrap;
-  margin-top: 3.5vh;
+  margin-top: 3.2vh;
   padding-top: 18px;
   border-top: 1px solid var(--line);
-  font-size: 11px;
+  font-size: 13.5px;
   letter-spacing: 2px;
   color: var(--dim);
   opacity: 0;
@@ -607,7 +607,7 @@ section {
 .hero-stats {
   display: flex;
   gap: clamp(26px, 5vw, 70px);
-  margin-top: 4.5vh;
+  margin-top: 3.4vh;
   flex-wrap: wrap;
   opacity: 0;
   transform: translateY(14px);
@@ -627,7 +627,7 @@ section {
 
 .hero-stat-value {
   font-family: var(--display);
-  font-size: clamp(30px, 4vw, 46px);
+  font-size: clamp(34px, 4.6vw, 54px);
   line-height: 1;
   color: var(--ink);
 }
@@ -639,9 +639,49 @@ section {
 }
 
 .hero-stat-label {
-  font-size: 9.5px;
+  font-size: 11.5px;
   letter-spacing: 2px;
   color: var(--dim);
+}
+
+/* seeking / open-to roles */
+.hero-seeking {
+  margin-top: 3vh;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.8s ease 0.62s, transform 0.8s ease 0.62s;
+}
+
+.loaded .hero-seeking {
+  opacity: 1;
+  transform: none;
+}
+
+.hero-seeking-label {
+  font-size: 12px;
+  letter-spacing: 2.5px;
+  color: var(--accent);
+  padding-right: 4px;
+}
+
+.hero-seeking-chip {
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--ink);
+  border: 1px solid rgba(91, 124, 255, 0.4);
+  background: rgba(91, 124, 255, 0.08);
+  padding: 9px 16px;
+  border-radius: 999px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.hero-seeking-chip:hover {
+  border-color: rgba(91, 124, 255, 0.75);
+  background: rgba(91, 124, 255, 0.15);
 }
 
 /* ── work ── */
@@ -683,7 +723,7 @@ section {
 }
 
 .work-cat {
-  font-size: 12.5px;
+  font-size: 14px;
   letter-spacing: 3px;
 }
 
@@ -697,10 +737,10 @@ section {
 }
 
 .work-desc {
-  font-size: 16px;
-  line-height: 1.7;
+  font-size: 18.5px;
+  line-height: 1.65;
   color: var(--dim);
-  max-width: 520px;
+  max-width: 560px;
 }
 
 .work-cta-row {
@@ -712,7 +752,7 @@ section {
 
 .work-cta {
   display: inline-block;
-  font-size: 12px;
+  font-size: 13.5px;
   letter-spacing: 2px;
   color: var(--ink);
   border: 1px solid rgba(255, 255, 255, 0.28);
@@ -767,7 +807,7 @@ section {
 }
 
 .work-index {
-  font-size: 11px;
+  font-size: 12.5px;
   letter-spacing: 2px;
   color: var(--dim);
 }
@@ -801,7 +841,7 @@ section {
 }
 
 .xrow-idx {
-  font-size: 11px;
+  font-size: 12.5px;
   color: var(--faint);
 }
 
@@ -816,14 +856,14 @@ section {
 
 .xrow-org {
   display: block;
-  margin-top: 8px;
-  font-size: 10.5px;
+  margin-top: 9px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: var(--accent);
 }
 
 .xrow-badge {
-  font-size: 9.5px;
+  font-size: 11px;
   letter-spacing: 2px;
   color: var(--dim);
   border: 1px solid var(--line);
@@ -832,7 +872,7 @@ section {
 }
 
 .xrow-period {
-  font-size: 10.5px;
+  font-size: 12px;
   letter-spacing: 1.5px;
   color: var(--dim);
   text-align: right;
@@ -863,9 +903,9 @@ section {
 
 .xrow-detail li {
   color: var(--dim);
-  font-size: 14px;
-  line-height: 1.65;
-  padding-left: 18px;
+  font-size: 16.5px;
+  line-height: 1.6;
+  padding-left: 20px;
   position: relative;
 }
 
@@ -903,7 +943,7 @@ section {
 }
 
 .marquee-item {
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 3px;
   color: var(--dim);
   white-space: nowrap;
@@ -928,7 +968,7 @@ section {
 
 .about-statement {
   font-family: var(--grotesk);
-  font-size: clamp(19px, 2.4vw, 30px);
+  font-size: clamp(22px, 2.9vw, 35px);
   line-height: 1.5;
   font-weight: 500;
   color: var(--ink);
@@ -942,7 +982,7 @@ section {
 
 .about-block-title {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 3px;
   color: var(--accent);
   margin-bottom: 14px;
@@ -952,9 +992,9 @@ section {
   display: flex;
   justify-content: space-between;
   gap: 14px;
-  font-size: 11px;
+  font-size: 12.5px;
   letter-spacing: 1.5px;
-  padding: 10px 0;
+  padding: 11px 0;
   border-bottom: 1px solid var(--line);
 }
 
@@ -972,11 +1012,11 @@ section {
 }
 
 .chip {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1.5px;
   color: var(--dim);
   border: 1px solid var(--line);
-  padding: 9px 14px;
+  padding: 10px 16px;
   border-radius: 999px;
   transition: color 0.25s ease, border-color 0.25s ease;
 }
@@ -1002,7 +1042,7 @@ section {
 }
 
 .edu-period {
-  font-size: 10px;
+  font-size: 11.5px;
   letter-spacing: 2px;
   color: var(--faint);
 }
@@ -1010,20 +1050,20 @@ section {
 .edu-school {
   font-family: var(--display);
   font-weight: 400;
-  font-size: clamp(18px, 2vw, 26px);
+  font-size: clamp(21px, 2.3vw, 29px);
   letter-spacing: 0.5px;
   line-height: 1.1;
   color: var(--ink);
 }
 
 .edu-degree {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1.5px;
   color: var(--accent);
 }
 
 .edu-detail {
-  font-size: 10px;
+  font-size: 11.5px;
   letter-spacing: 1.5px;
   line-height: 1.6;
 }
@@ -1077,7 +1117,7 @@ section {
   display: flex;
   gap: clamp(20px, 4vw, 50px);
   flex-wrap: wrap;
-  font-size: 11px;
+  font-size: 13.5px;
   letter-spacing: 2px;
 }
 
@@ -1098,13 +1138,13 @@ section {
   margin-top: clamp(60px, 12vh, 120px);
   padding-top: 24px;
   border-top: 1px solid var(--line);
-  font-size: 10px;
+  font-size: 11.5px;
   letter-spacing: 2px;
   color: var(--dim);
 }
 
 .site-footer button {
-  font-size: 10px;
+  font-size: 11.5px;
   letter-spacing: 2px;
 }
 
@@ -1145,14 +1185,14 @@ section {
 }
 
 .board-file {
-  font-size: 11px;
+  font-size: 12.5px;
   letter-spacing: 3px;
   color: var(--dim);
 }
 
 .board-close {
   pointer-events: auto;
-  font-size: 11px;
+  font-size: 12.5px;
   letter-spacing: 2px;
   color: var(--ink);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -1217,8 +1257,8 @@ section {
 .bnode {
   position: absolute;
   transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
-  width: 230px;
-  padding: 16px 18px;
+  width: 250px;
+  padding: 17px 19px;
   background: #12121c;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 8px;
@@ -1242,14 +1282,14 @@ section {
 
 .bnode-label {
   display: block;
-  font-size: 9.5px;
+  font-size: 10.5px;
   letter-spacing: 2.5px;
   margin-bottom: 9px;
 }
 
 .bnode-text {
-  font-size: 12.5px;
-  line-height: 1.6;
+  font-size: 13.5px;
+  line-height: 1.55;
   color: var(--dim);
 }
 
@@ -1264,9 +1304,9 @@ section {
 
 .bnode-quote {
   font-family: var(--grotesk);
-  font-size: 14.5px;
+  font-size: 15.5px;
   font-style: italic;
-  line-height: 1.55;
+  line-height: 1.5;
   color: var(--ink);
 }
 
@@ -1286,7 +1326,7 @@ section {
 .bnode-caption {
   display: block;
   margin-top: 8px;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 2px;
   color: #444;
   text-align: center;
@@ -1299,17 +1339,17 @@ section {
 
 .bnode-tag {
   display: inline-block;
-  font-size: 9.5px;
+  font-size: 10.5px;
   letter-spacing: 1.5px;
   color: var(--dim);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
-  padding: 7px 10px;
+  padding: 7px 11px;
   margin: 0 6px 6px 0;
 }
 
 .bnode-center {
-  width: 300px;
+  width: 322px;
   padding: 22px 24px;
   background: #14141f;
   border: 1px solid rgba(255, 255, 255, 0.22);
@@ -1321,7 +1361,7 @@ section {
 .bnode-title {
   font-family: var(--display);
   font-weight: 400;
-  font-size: 30px;
+  font-size: 32px;
   line-height: 1.02;
   letter-spacing: 0.5px;
   color: var(--ink);
@@ -1336,7 +1376,7 @@ section {
 
 .bnode-cta {
   display: inline-block;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 1.5px;
   color: var(--bg);
   background: var(--ink);
@@ -1357,7 +1397,7 @@ section {
 }
 
 .bnode-note {
-  font-size: 9.5px;
+  font-size: 10.5px;
   letter-spacing: 1.5px;
   color: var(--dim);
   border: 1px dashed rgba(255, 255, 255, 0.25);
@@ -1366,7 +1406,7 @@ section {
 }
 
 .board-hint {
-  font-size: 9.5px;
+  font-size: 11px;
   letter-spacing: 3px;
   color: var(--faint);
 }
@@ -1614,7 +1654,7 @@ section {
 }
 
 .splash-brand {
-  font-size: 10.5px;
+  font-size: 12px;
   letter-spacing: 3px;
   color: var(--dim);
 }
@@ -1655,20 +1695,20 @@ section {
 }
 
 .splash-lang-short {
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 2px;
   color: var(--accent);
 }
 
 .splash-lang-native {
   font-family: var(--grotesk);
-  font-size: 21px;
+  font-size: 23px;
   font-weight: 600;
   color: var(--ink);
 }
 
 .splash-lang-en {
-  font-size: 9.5px;
+  font-size: 11px;
   letter-spacing: 1.5px;
   color: var(--faint);
 }
@@ -1676,7 +1716,7 @@ section {
 .splash-sub {
   display: block;
   margin-top: 28px;
-  font-size: 12px;
+  font-size: 13.5px;
   letter-spacing: 1px;
   color: var(--dim);
 }

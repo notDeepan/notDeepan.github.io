@@ -67,6 +67,15 @@ export function Hero() {
           <span className="hero-sub-right">{t.heroMba}</span>
         </div>
 
+        <div className="hero-seeking mono" lang={lang}>
+          <span className="hero-seeking-label">{t.seekingLabel}</span>
+          {t.seekingRoles.map((role) => (
+            <span className="hero-seeking-chip" key={role}>
+              {role}
+            </span>
+          ))}
+        </div>
+
         <div className="hero-stats">
           {HERO_STATS.map((s, i) => (
             <div className="hero-stat" key={i}>
@@ -297,6 +306,14 @@ export function AboutSec() {
         <p className="about-statement" lang={lang}>{t.aboutStatement}</p>
 
         <div className="about-side">
+          <div className="about-block">
+            <span className="about-block-title mono" lang={lang}>{t.seekingLabel}</span>
+            {t.seekingRoles.map((r) => (
+              <div className="about-lang mono" key={r} lang={lang}>
+                <span>{r.toUpperCase()}</span>
+              </div>
+            ))}
+          </div>
           <div className="about-block">
             <span className="about-block-title mono" lang={lang}>{t.langTitle}</span>
             {content.languages.map((l, i) => (
