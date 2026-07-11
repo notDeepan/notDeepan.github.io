@@ -19,7 +19,9 @@ export const PLANE_H = PLANE_W * (800 / 1280)
 // Portrait phones get larger relative cards so the centred poster reads well.
 export function carouselScale(vwWorld: number) {
   const portrait = typeof window !== 'undefined' && window.innerWidth / window.innerHeight < 0.85
-  return Math.min(1, vwWorld / (portrait ? 4.7 : 10.5))
+  if (portrait) return Math.min(1, vwWorld / 4.7)
+  // landscape: allow cards to grow a little past 1× so they fill the stage
+  return Math.min(1.12, vwWorld / 9.6)
 }
 const W = 1280
 const H = 800
@@ -314,14 +316,15 @@ export default function Carousel3D() {
     const g = group.current
     if (!g) return
 
-    // pin the strip to the #work section as the page scrolls
-    const el = document.getElementById('work')
+    // pin the strip to the empty drag stage (not the whole section) so the
+    // cards sit centred in the visual gap, not pushed down toward the caption
+    const el = document.querySelector('.work-stage') as HTMLElement | null
     if (!el) return
     const r = el.getBoundingClientRect()
     const centerPx = r.top + r.height / 2
     const vh = state.viewport.height
-    g.position.y = ((window.innerHeight / 2 - centerPx) / window.innerHeight) * vh + 0.55
-    g.visible = r.bottom > -100 && r.top < window.innerHeight + 100
+    g.position.y = ((window.innerHeight / 2 - centerPx) / window.innerHeight) * vh
+    g.visible = r.bottom > -window.innerHeight * 0.5 && r.top < window.innerHeight * 1.5
 
     // drag physics (frame-rate normalized)
     const stiffness = carousel.dragging ? 0.32 : 0.075

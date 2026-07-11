@@ -27,9 +27,11 @@ interface LocalNode {
 
 function useBoardScale() {
   const calc = () => {
-    const sw = (window.innerWidth - 36) / BW
-    const sh = (window.innerHeight - 110) / BH
-    return Math.max(0.3, Math.min(sw, sh, 1))
+    // fill the viewport (minus the top bar + hint chrome), allowing the board
+    // to scale beyond 1× on large screens instead of floating small in the middle
+    const sw = (window.innerWidth - 24) / BW
+    const sh = (window.innerHeight - 118) / BH
+    return Math.max(0.3, Math.min(sw, sh, 1.35))
   }
   const [scale, setScale] = useState(calc)
   useEffect(() => {

@@ -460,7 +460,7 @@ section {
 }
 
 .sec-header {
-  margin-bottom: clamp(40px, 6vh, 70px);
+  margin-bottom: clamp(28px, 4vh, 48px);
 }
 
 .sec-mega {
@@ -687,11 +687,11 @@ section {
 /* ── work ── */
 
 .work {
-  min-height: 100vh;
+  min-height: 92vh;
   display: flex;
   flex-direction: column;
-  padding-top: 90px;
-  padding-bottom: 36px;
+  padding-top: 80px;
+  padding-bottom: 32px;
 }
 
 .work-head {
@@ -703,7 +703,7 @@ section {
 
 .work-stage {
   flex: 1;
-  min-height: 40vh;
+  min-height: 34vh;
   touch-action: pan-y;
 }
 
@@ -815,7 +815,7 @@ section {
 /* ── experience ── */
 
 .xp {
-  min-height: 100vh;
+  min-height: auto;
 }
 
 .xp-list {
@@ -919,7 +919,7 @@ section {
 /* ── about ── */
 
 .about {
-  min-height: 100vh;
+  min-height: auto;
 }
 
 .marquee {
@@ -927,7 +927,7 @@ section {
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   padding: 14px 0;
-  margin-bottom: clamp(50px, 8vh, 90px);
+  margin-bottom: clamp(34px, 5vh, 60px);
   margin-left: calc(clamp(18px, 4vw, 56px) * -1);
   margin-right: calc(clamp(18px, 4vw, 56px) * -1);
 }
@@ -1002,7 +1002,7 @@ section {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: clamp(20px, 3vw, 40px);
-  margin-top: clamp(50px, 8vh, 90px);
+  margin-top: clamp(38px, 5.5vh, 64px);
 }
 
 .skill-chips {
@@ -1030,7 +1030,7 @@ section {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: clamp(20px, 3vw, 40px);
-  margin-top: clamp(50px, 8vh, 90px);
+  margin-top: clamp(38px, 5.5vh, 64px);
   border-top: 1px solid var(--line);
   padding-top: 34px;
 }
@@ -1071,10 +1071,11 @@ section {
 /* ── contact ── */
 
 .contactsec {
-  min-height: 100vh;
+  min-height: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  padding-top: 12vh;
+  padding-bottom: 8vh;
 }
 
 .contact-mail {
