@@ -2,6 +2,7 @@ import { useMemo, useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import Carousel3D from './Carousel3D'
+import { useStore } from '../store'
 
 // ─────────────────────────────────────────────────────────────────────────
 //  Fixed WebGL layer: a GPU particle field that flows, parallaxes with
@@ -46,20 +47,25 @@ const particleVertex = /* glsl */ `
 `
 
 const particleFragment = /* glsl */ `
+  uniform float uDark;
   varying float vRand;
   varying float vFade;
   void main() {
     float d = length(gl_PointCoord - 0.5);
     if (d > 0.5) discard;
     float alpha = smoothstep(0.5, 0.08, d) * (0.16 + vRand * 0.4);
-    vec3 base = mix(vec3(0.30, 0.42, 1.0), vec3(0.80, 0.87, 1.0), vRand);
-    vec3 hot = vec3(0.55, 0.75, 1.0);
+    // dark theme: bright additive blues; light theme: deeper slate-blues
+    vec3 darkBase = mix(vec3(0.30, 0.42, 1.0), vec3(0.80, 0.87, 1.0), vRand);
+    vec3 lightBase = mix(vec3(0.16, 0.26, 0.72), vec3(0.34, 0.45, 0.86), vRand);
+    vec3 base = mix(lightBase, darkBase, uDark);
+    vec3 hot = mix(vec3(0.20, 0.34, 0.9), vec3(0.55, 0.75, 1.0), uDark);
     vec3 col = mix(base, hot, vFade);
-    gl_FragColor = vec4(col, alpha * (1.0 + vFade * 0.8));
+    float aMul = mix(1.7, 1.0, uDark); // more opaque on light backgrounds
+    gl_FragColor = vec4(col, alpha * (1.0 + vFade * 0.8) * aMul);
   }
 `
 
-function Particles() {
+function Particles({ dark }: { dark: boolean }) {
   const mat = useRef<THREE.ShaderMaterial>(null)
 
   const { positions, rands } = useMemo(() => {
@@ -100,12 +106,13 @@ function Particles() {
         fragmentShader={particleFragment}
         transparent
         depthWrite={false}
-        blending={THREE.AdditiveBlending}
+        blending={dark ? THREE.AdditiveBlending : THREE.NormalBlending}
         uniforms={{
           uTime: { value: 0 },
           uMouse: { value: new THREE.Vector2(0, 0) },
           uScroll: { value: 0 },
           uPixelRatio: { value: Math.min(window.devicePixelRatio, 1.75) },
+          uDark: { value: dark ? 1 : 0 },
         }}
       />
     </points>
@@ -113,6 +120,7 @@ function Particles() {
 }
 
 export default function Scene() {
+  const dark = useStore((s) => s.theme === 'dark')
   return (
     <div className="webgl" aria-hidden>
       <Canvas
@@ -120,7 +128,8 @@ export default function Scene() {
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 1.75]}
       >
-        <Particles />
+        {/* key by theme so blending/uniforms rebuild cleanly on toggle */}
+        <Particles key={dark ? 'dark' : 'light'} dark={dark} />
         <Carousel3D />
       </Canvas>
     </div>

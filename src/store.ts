@@ -13,6 +13,24 @@ function storedLang(): Lang | null {
   }
 }
 
+export type Theme = 'dark' | 'light'
+const THEME_STORAGE_KEY = 'dg-portfolio-theme'
+
+function storedTheme(): Theme {
+  try {
+    const v = localStorage.getItem(THEME_STORAGE_KEY)
+    if (v === 'light' || v === 'dark') return v
+  } catch {
+    /* storage blocked */
+  }
+  return 'dark'
+}
+
+// Reflect the theme on <html data-theme> so CSS variables switch.
+export function applyTheme(theme: Theme) {
+  document.documentElement.dataset.theme = theme
+}
+
 interface UIState {
   loaded: boolean
   activeScene: number
@@ -22,6 +40,7 @@ interface UIState {
   langChosen: boolean // has the visitor picked a language (splash dismissed)?
   playingAudio: number | null // index of the project whose intro is playing
   audioLoading: number | null // index whose clip is currently loading
+  theme: Theme
   setLoaded: (v: boolean) => void
   setActiveScene: (i: number) => void
   setActiveProject: (i: number) => void
@@ -31,6 +50,7 @@ interface UIState {
   setLang: (lang: Lang) => void
   toggleAudio: (i: number) => void
   stopAudio: () => void
+  toggleTheme: () => void
 }
 
 // A single shared <audio> element for the spoken project intros.
@@ -57,6 +77,7 @@ export const useStore = create<UIState>((set, get) => {
     langChosen: saved !== null,
     playingAudio: null,
     audioLoading: null,
+    theme: storedTheme(),
     setLoaded: (v) => set({ loaded: v }),
     setActiveScene: (i) => set({ activeScene: i }),
     setActiveProject: (i) => {
@@ -118,6 +139,16 @@ export const useStore = create<UIState>((set, get) => {
       a.onended = done
       a.onerror = done
       a.play().catch(done)
+    },
+    toggleTheme: () => {
+      const theme: Theme = get().theme === 'dark' ? 'light' : 'dark'
+      try {
+        localStorage.setItem(THEME_STORAGE_KEY, theme)
+      } catch {
+        /* storage blocked */
+      }
+      applyTheme(theme)
+      set({ theme })
     },
   }
 })
