@@ -39,37 +39,37 @@
     "file": "p1-en",
     "lang": "en",
     "voice": "en-US-ChristopherNeural",
-    "text": "A graded-reader web app for learning English, built for Chinese speakers , 25 original stories across 5 books (A1 to B1+), with word-by-word Chinese glosses and full Simplified/Traditional support."
+    "text": "A lightweight CRM for Taiwanese export manufacturers and trading SMEs , buyers, deal pipeline, quotations with A4 print, bilingual EN/繁中 UI, and AI inquiry parsing. Built for teams managing buyers in Excel, Outlook and LINE."
   },
   {
     "file": "p1-zh",
     "lang": "zh",
     "voice": "zh-TW-YunJheNeural",
-    "text": "為中文使用者打造的英語分級讀本網頁應用, , 5 本書、25 篇原創故事（A1 到 B1+），逐詞中文釋義，完整支援簡繁切換。"
+    "text": "為台灣出口製造商與貿易中小企業打造的輕量 CRM, , 買家管理、交易管線、A4 列印報價單、中英雙語介面與 AI 詢價解析。專為還在用 Excel、Outlook 和 LINE 管理買家的團隊而生。"
   },
   {
     "file": "p1-ja",
     "lang": "ja",
     "voice": "ja-JP-KeitaNeural",
-    "text": "中国語話者向けに作られた英語多読リーダーWebアプリ, , 5冊・25章の自作ストーリー（A1〜B1+）、単語ごとの中国語注釈、簡体字・繁体字の完全対応。"
+    "text": "台湾の輸出メーカー・貿易中小企業向けの軽量CRM, , バイヤー管理、商談パイプライン、A4印刷対応の見積書、英・繁体字中国語の二言語UI、AIによる引き合い解析。ExcelとOutlookとLINEでバイヤーを管理しているチームのために。"
   },
   {
     "file": "p1-ko",
     "lang": "ko",
     "voice": "ko-KR-InJoonNeural",
-    "text": "중국어 화자를 위해 만든 영어 단계별 리더 웹앱, , 5권 25편의 창작 이야기(A1~B1+), 단어별 중국어 주석, 간체·번체 완전 지원."
+    "text": "대만 수출 제조업체와 무역 중소기업을 위한 경량 CRM, , 바이어 관리, 딜 파이프라인, A4 인쇄 견적서, 영어/번체 중국어 이중 UI, AI 문의 파싱. Excel·Outlook·LINE으로 바이어를 관리하는 팀을 위해."
   },
   {
     "file": "p1-vi",
     "lang": "vi",
     "voice": "vi-VN-NamMinhNeural",
-    "text": "Ứng dụng web đọc phân cấp để học tiếng Anh, dành cho người nói tiếng Trung, , 25 câu chuyện gốc trong 5 cuốn sách (A1 đến B1+), chú thích tiếng Trung theo từng từ, hỗ trợ đầy đủ giản thể/phồn thể."
+    "text": "CRM gọn nhẹ cho nhà sản xuất xuất khẩu và SME thương mại Đài Loan, , quản lý người mua, pipeline giao dịch, báo giá in A4, giao diện song ngữ Anh/Trung phồn thể, và phân tích thư hỏi hàng bằng AI. Dành cho các đội đang quản lý người mua bằng Excel, Outlook và LINE."
   },
   {
     "file": "p1-id",
     "lang": "id",
     "voice": "id-ID-ArdiNeural",
-    "text": "Aplikasi web bacaan berjenjang untuk belajar bahasa Inggris, dibuat untuk penutur bahasa Mandarin, , 25 cerita orisinal dalam 5 buku (A1 hingga B1+), glosarium Mandarin per kata, dukungan penuh aksara Sederhana/Tradisional."
+    "text": "CRM ringan untuk produsen ekspor dan UKM dagang Taiwan, , manajemen pembeli, pipeline transaksi, penawaran siap cetak A4, UI dwibahasa Inggris/Mandarin tradisional, dan penguraian inkuiri berbasis AI. Untuk tim yang masih mengelola pembeli lewat Excel, Outlook, dan LINE."
   },
   {
     "file": "p2-en",
