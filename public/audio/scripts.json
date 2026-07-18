@@ -39,286 +39,322 @@
     "file": "p1-en",
     "lang": "en",
     "voice": "en-US-ChristopherNeural",
-    "text": "A graded-reader web application for learning Mandarin Chinese , 30 original stories from A1 to B1+ with progressive vocabulary, built from first-hand language-learning experience in Taiwan."
+    "text": "A graded-reader web app for learning English, built for Chinese speakers , 25 original stories across 5 books (A1 to B1+), with word-by-word Chinese glosses and full Simplified/Traditional support."
   },
   {
     "file": "p1-zh",
     "lang": "zh",
     "voice": "zh-TW-YunJheNeural",
-    "text": "一款學習中文的分級讀本網頁應用, , 30 篇從 A1 到 B1+、詞彙循序漸進的原創故事，源自在台灣的第一手語言學習經驗。"
+    "text": "為中文使用者打造的英語分級讀本網頁應用, , 5 本書、25 篇原創故事（A1 到 B1+），逐詞中文釋義，完整支援簡繁切換。"
   },
   {
     "file": "p1-ja",
     "lang": "ja",
     "voice": "ja-JP-KeitaNeural",
-    "text": "中国語を学ぶための多読リーダーWebアプリ, , A1からB1+まで語彙が段階的に増える30の自作ストーリー。台湾での実体験から生まれた。"
+    "text": "中国語話者向けに作られた英語多読リーダーWebアプリ, , 5冊・25章の自作ストーリー（A1〜B1+）、単語ごとの中国語注釈、簡体字・繁体字の完全対応。"
   },
   {
     "file": "p1-ko",
     "lang": "ko",
     "voice": "ko-KR-InJoonNeural",
-    "text": "중국어 학습을 위한 단계별 리더 웹앱, , A1에서 B1+까지 어휘가 점진적으로 늘어나는 30편의 창작 이야기. 대만에서의 직접 학습 경험에서 탄생."
+    "text": "중국어 화자를 위해 만든 영어 단계별 리더 웹앱, , 5권 25편의 창작 이야기(A1~B1+), 단어별 중국어 주석, 간체·번체 완전 지원."
   },
   {
     "file": "p1-vi",
     "lang": "vi",
     "voice": "vi-VN-NamMinhNeural",
-    "text": "Ứng dụng web đọc phân cấp để học tiếng Trung, , 30 câu chuyện gốc từ A1 đến B1+ với từ vựng tăng dần, xây từ trải nghiệm học ngôn ngữ thực tế ở Đài Loan."
+    "text": "Ứng dụng web đọc phân cấp để học tiếng Anh, dành cho người nói tiếng Trung, , 25 câu chuyện gốc trong 5 cuốn sách (A1 đến B1+), chú thích tiếng Trung theo từng từ, hỗ trợ đầy đủ giản thể/phồn thể."
   },
   {
     "file": "p1-id",
     "lang": "id",
     "voice": "id-ID-ArdiNeural",
-    "text": "Aplikasi web bacaan berjenjang untuk belajar bahasa Mandarin, , 30 cerita orisinal dari A1 hingga B1+ dengan kosakata bertahap, lahir dari pengalaman belajar bahasa langsung di Taiwan."
+    "text": "Aplikasi web bacaan berjenjang untuk belajar bahasa Inggris, dibuat untuk penutur bahasa Mandarin, , 25 cerita orisinal dalam 5 buku (A1 hingga B1+), glosarium Mandarin per kata, dukungan penuh aksara Sederhana/Tradisional."
   },
   {
     "file": "p2-en",
     "lang": "en",
     "voice": "en-US-ChristopherNeural",
-    "text": "Bilingual (EN/ZH) production websites for Kaohsiung F&B and tourism businesses , a café, a B&B and a specialty food brand. Client-facing freelance work."
+    "text": "A graded-reader web application for learning Mandarin Chinese , 30 original stories from A1 to B1+ with progressive vocabulary, built from first-hand language-learning experience in Taiwan."
   },
   {
     "file": "p2-zh",
     "lang": "zh",
     "voice": "zh-TW-YunJheNeural",
-    "text": "為高雄餐飲與旅遊業者打造的中英雙語正式網站, , 咖啡館、民宿與特色食品品牌。面向客戶的接案作品。"
+    "text": "一款學習中文的分級讀本網頁應用, , 30 篇從 A1 到 B1+、詞彙循序漸進的原創故事，源自在台灣的第一手語言學習經驗。"
   },
   {
     "file": "p2-ja",
     "lang": "ja",
     "voice": "ja-JP-KeitaNeural",
-    "text": "高雄の飲食・観光事業者向けの日英（中英）二言語の本番Webサイト, , カフェ、B&B、専門食品ブランド。クライアント向けの受託案件。"
+    "text": "中国語を学ぶための多読リーダーWebアプリ, , A1からB1+まで語彙が段階的に増える30の自作ストーリー。台湾での実体験から生まれた。"
   },
   {
     "file": "p2-ko",
     "lang": "ko",
     "voice": "ko-KR-InJoonNeural",
-    "text": "가오슝의 F&B 및 관광 사업자를 위한 이중 언어(영/중) 실서비스 웹사이트, , 카페, B&B, 특산 식품 브랜드. 고객 대상 프리랜스 작업."
+    "text": "중국어 학습을 위한 단계별 리더 웹앱, , A1에서 B1+까지 어휘가 점진적으로 늘어나는 30편의 창작 이야기. 대만에서의 직접 학습 경험에서 탄생."
   },
   {
     "file": "p2-vi",
     "lang": "vi",
     "voice": "vi-VN-NamMinhNeural",
-    "text": "Các website vận hành thực song ngữ (Anh/Trung) cho doanh nghiệp F&B và du lịch ở Cao Hùng, , một quán cà phê, một B&B và một thương hiệu thực phẩm đặc sản. Công việc freelance cho khách."
+    "text": "Ứng dụng web đọc phân cấp để học tiếng Trung, , 30 câu chuyện gốc từ A1 đến B1+ với từ vựng tăng dần, xây từ trải nghiệm học ngôn ngữ thực tế ở Đài Loan."
   },
   {
     "file": "p2-id",
     "lang": "id",
     "voice": "id-ID-ArdiNeural",
-    "text": "Situs web produksi dwibahasa (Ing/Mandarin) untuk bisnis F&B dan pariwisata di Kaohsiung, , sebuah kafe, sebuah B&B, dan merek makanan khas. Pekerjaan lepas menghadap klien."
+    "text": "Aplikasi web bacaan berjenjang untuk belajar bahasa Mandarin, , 30 cerita orisinal dari A1 hingga B1+ dengan kosakata bertahap, lahir dari pengalaman belajar bahasa langsung di Taiwan."
   },
   {
     "file": "p3-en",
     "lang": "en",
     "voice": "en-US-ChristopherNeural",
-    "text": "AI-enabled internal labor markets for a 35-year-old Taiwanese pro-AV manufacturer: one Taskforce initiative, ~20× ROI, and PDPA-compliant governance."
+    "text": "Bilingual (EN/ZH) production websites for Kaohsiung F&B and tourism businesses , a café, a B&B and a specialty food brand. Client-facing freelance work."
   },
   {
     "file": "p3-zh",
     "lang": "zh",
     "voice": "zh-TW-YunJheNeural",
-    "text": "為一家 35 年歷史的台灣專業影音製造商打造 AI 賦能的內部人才市場：單一專案小組計畫、約 20 倍投報，並符合個資法治理。"
+    "text": "為高雄餐飲與旅遊業者打造的中英雙語正式網站, , 咖啡館、民宿與特色食品品牌。面向客戶的接案作品。"
   },
   {
     "file": "p3-ja",
     "lang": "ja",
     "voice": "ja-JP-KeitaNeural",
-    "text": "35年の歴史を持つ台湾プロAVメーカー向けのAI活用型内部人材市場：単一のタスクフォース施策、約20倍のROI、個人情報保護法準拠のガバナンス。"
+    "text": "高雄の飲食・観光事業者向けの日英（中英）二言語の本番Webサイト, , カフェ、B&B、専門食品ブランド。クライアント向けの受託案件。"
   },
   {
     "file": "p3-ko",
     "lang": "ko",
     "voice": "ko-KR-InJoonNeural",
-    "text": "35년 역사의 대만 프로 AV 제조사를 위한 AI 기반 내부 인재 시장: 단일 태스크포스 이니셔티브, 약 20배 ROI, 개인정보보호법 준수 거버넌스."
+    "text": "가오슝의 F&B 및 관광 사업자를 위한 이중 언어(영/중) 실서비스 웹사이트, , 카페, B&B, 특산 식품 브랜드. 고객 대상 프리랜스 작업."
   },
   {
     "file": "p3-vi",
     "lang": "vi",
     "voice": "vi-VN-NamMinhNeural",
-    "text": "Thị trường nhân tài nội bộ hỗ trợ bởi AI cho nhà sản xuất AV chuyên nghiệp Đài Loan 35 năm tuổi: một sáng kiến đội đặc nhiệm, ROI ~20 lần, và quản trị tuân thủ luật bảo vệ dữ liệu cá nhân."
+    "text": "Các website vận hành thực song ngữ (Anh/Trung) cho doanh nghiệp F&B và du lịch ở Cao Hùng, , một quán cà phê, một B&B và một thương hiệu thực phẩm đặc sản. Công việc freelance cho khách."
   },
   {
     "file": "p3-id",
     "lang": "id",
     "voice": "id-ID-ArdiNeural",
-    "text": "Pasar talenta internal berbasis AI untuk produsen pro-AV Taiwan berusia 35 tahun: satu inisiatif satuan tugas, ROI ~20×, dan tata kelola patuh UU Perlindungan Data Pribadi."
+    "text": "Situs web produksi dwibahasa (Ing/Mandarin) untuk bisnis F&B dan pariwisata di Kaohsiung, , sebuah kafe, sebuah B&B, dan merek makanan khas. Pekerjaan lepas menghadap klien."
   },
   {
     "file": "p4-en",
     "lang": "en",
     "voice": "en-US-ChristopherNeural",
-    "text": "Large-scale sentiment analysis of 3+ years of Reddit discourse via topic modeling , mapping AI-adoption trends into strategic positioning for the GenAI sector."
+    "text": "AI-enabled internal labor markets for a 35-year-old Taiwanese pro-AV manufacturer: one Taskforce initiative, ~20× ROI, and PDPA-compliant governance."
   },
   {
     "file": "p4-zh",
     "lang": "zh",
     "voice": "zh-TW-YunJheNeural",
-    "text": "以主題模型對 3 年以上的 Reddit 討論進行大規模情緒分析, , 將 AI 採用趨勢轉化為生成式 AI 領域的策略定位。"
+    "text": "為一家 35 年歷史的台灣專業影音製造商打造 AI 賦能的內部人才市場：單一專案小組計畫、約 20 倍投報，並符合個資法治理。"
   },
   {
     "file": "p4-ja",
     "lang": "ja",
     "voice": "ja-JP-KeitaNeural",
-    "text": "3年以上分のReddit言説をトピックモデリングで大規模に感情分析, , AI導入トレンドを生成AI領域の戦略的ポジショニングへ。"
+    "text": "35年の歴史を持つ台湾プロAVメーカー向けのAI活用型内部人材市場：単一のタスクフォース施策、約20倍のROI、個人情報保護法準拠のガバナンス。"
   },
   {
     "file": "p4-ko",
     "lang": "ko",
     "voice": "ko-KR-InJoonNeural",
-    "text": "3년 이상의 Reddit 담론을 토픽 모델링으로 대규모 감정 분석, , AI 도입 트렌드를 생성형 AI 부문의 전략적 포지셔닝으로."
+    "text": "35년 역사의 대만 프로 AV 제조사를 위한 AI 기반 내부 인재 시장: 단일 태스크포스 이니셔티브, 약 20배 ROI, 개인정보보호법 준수 거버넌스."
   },
   {
     "file": "p4-vi",
     "lang": "vi",
     "voice": "vi-VN-NamMinhNeural",
-    "text": "Phân tích cảm xúc quy mô lớn hơn 3 năm thảo luận Reddit bằng mô hình chủ đề, , biến xu hướng ứng dụng AI thành định vị chiến lược cho lĩnh vực AI tạo sinh."
+    "text": "Thị trường nhân tài nội bộ hỗ trợ bởi AI cho nhà sản xuất AV chuyên nghiệp Đài Loan 35 năm tuổi: một sáng kiến đội đặc nhiệm, ROI ~20 lần, và quản trị tuân thủ luật bảo vệ dữ liệu cá nhân."
   },
   {
     "file": "p4-id",
     "lang": "id",
     "voice": "id-ID-ArdiNeural",
-    "text": "Analisis sentimen skala besar atas 3+ tahun wacana Reddit lewat pemodelan topik, , mengubah tren adopsi AI menjadi posisi strategis untuk sektor AI generatif."
+    "text": "Pasar talenta internal berbasis AI untuk produsen pro-AV Taiwan berusia 35 tahun: satu inisiatif satuan tugas, ROI ~20×, dan tata kelola patuh UU Perlindungan Data Pribadi."
   },
   {
     "file": "p5-en",
     "lang": "en",
     "voice": "en-US-ChristopherNeural",
-    "text": "End-to-end rebrand of a beloved Kaohsiung spring-roll stand: naming, logo, full bilingual visual system, and a new digital presence. +30% international brand engagement."
+    "text": "Large-scale sentiment analysis of 3+ years of Reddit discourse via topic modeling , mapping AI-adoption trends into strategic positioning for the GenAI sector."
   },
   {
     "file": "p5-zh",
     "lang": "zh",
     "voice": "zh-TW-YunJheNeural",
-    "text": "為高雄一家深受喜愛的春捲攤進行全面品牌再造：命名、標誌、完整雙語視覺系統與全新數位形象。國際品牌參與度提升 30%。"
+    "text": "以主題模型對 3 年以上的 Reddit 討論進行大規模情緒分析, , 將 AI 採用趨勢轉化為生成式 AI 領域的策略定位。"
   },
   {
     "file": "p5-ja",
     "lang": "ja",
     "voice": "ja-JP-KeitaNeural",
-    "text": "高雄で愛される春巻き店をエンドツーエンドでリブランディング：命名、ロゴ、完全な二言語ビジュアルシステム、新たなデジタルプレゼンス。国際的ブランドエンゲージメント30%向上。"
+    "text": "3年以上分のReddit言説をトピックモデリングで大規模に感情分析, , AI導入トレンドを生成AI領域の戦略的ポジショニングへ。"
   },
   {
     "file": "p5-ko",
     "lang": "ko",
     "voice": "ko-KR-InJoonNeural",
-    "text": "가오슝의 사랑받는 춘권 가게를 엔드투엔드로 리브랜딩: 명명, 로고, 완전한 이중 언어 비주얼 시스템, 새로운 디지털 존재감. 국제 브랜드 참여 30% 향상."
+    "text": "3년 이상의 Reddit 담론을 토픽 모델링으로 대규모 감정 분석, , AI 도입 트렌드를 생성형 AI 부문의 전략적 포지셔닝으로."
   },
   {
     "file": "p5-vi",
     "lang": "vi",
     "voice": "vi-VN-NamMinhNeural",
-    "text": "Tái định vị trọn gói một quán gỏi cuốn được yêu thích ở Cao Hùng: đặt tên, logo, hệ thống nhận diện song ngữ hoàn chỉnh và hiện diện số mới. Tăng tương tác thương hiệu quốc tế 30%."
+    "text": "Phân tích cảm xúc quy mô lớn hơn 3 năm thảo luận Reddit bằng mô hình chủ đề, , biến xu hướng ứng dụng AI thành định vị chiến lược cho lĩnh vực AI tạo sinh."
   },
   {
     "file": "p5-id",
     "lang": "id",
     "voice": "id-ID-ArdiNeural",
-    "text": "Rebranding menyeluruh sebuah kedai lumpia yang dicintai di Kaohsiung: penamaan, logo, sistem visual dwibahasa lengkap, dan kehadiran digital baru. Keterlibatan merek internasional naik 30%."
+    "text": "Analisis sentimen skala besar atas 3+ tahun wacana Reddit lewat pemodelan topik, , mengubah tren adopsi AI menjadi posisi strategis untuk sektor AI generatif."
   },
   {
     "file": "p6-en",
     "lang": "en",
     "voice": "en-US-ChristopherNeural",
-    "text": "React + Vite administrative dashboard with charts, data tables and theming , the front-end counterpart to a data-driven analyst workflow."
+    "text": "End-to-end rebrand of a beloved Kaohsiung spring-roll stand: naming, logo, full bilingual visual system, and a new digital presence. +30% international brand engagement."
   },
   {
     "file": "p6-zh",
     "lang": "zh",
     "voice": "zh-TW-YunJheNeural",
-    "text": "以 React + Vite 打造、具圖表、資料表與主題切換的管理後台, , 數據導向分析工作流程的前端呈現。"
+    "text": "為高雄一家深受喜愛的春捲攤進行全面品牌再造：命名、標誌、完整雙語視覺系統與全新數位形象。國際品牌參與度提升 30%。"
   },
   {
     "file": "p6-ja",
     "lang": "ja",
     "voice": "ja-JP-KeitaNeural",
-    "text": "グラフ・データテーブル・テーマ切替を備えたReact + Vite製の管理ダッシュボード, , データ駆動アナリストのワークフローのフロントエンド。"
+    "text": "高雄で愛される春巻き店をエンドツーエンドでリブランディング：命名、ロゴ、完全な二言語ビジュアルシステム、新たなデジタルプレゼンス。国際的ブランドエンゲージメント30%向上。"
   },
   {
     "file": "p6-ko",
     "lang": "ko",
     "voice": "ko-KR-InJoonNeural",
-    "text": "차트·데이터 테이블·테마를 갖춘 React + Vite 관리자 대시보드, , 데이터 기반 애널리스트 워크플로의 프런트엔드."
+    "text": "가오슝의 사랑받는 춘권 가게를 엔드투엔드로 리브랜딩: 명명, 로고, 완전한 이중 언어 비주얼 시스템, 새로운 디지털 존재감. 국제 브랜드 참여 30% 향상."
   },
   {
     "file": "p6-vi",
     "lang": "vi",
     "voice": "vi-VN-NamMinhNeural",
-    "text": "Bảng điều khiển quản trị React + Vite với biểu đồ, bảng dữ liệu và giao diện chủ đề, , bộ mặt front-end của quy trình phân tích dựa trên dữ liệu."
+    "text": "Tái định vị trọn gói một quán gỏi cuốn được yêu thích ở Cao Hùng: đặt tên, logo, hệ thống nhận diện song ngữ hoàn chỉnh và hiện diện số mới. Tăng tương tác thương hiệu quốc tế 30%."
   },
   {
     "file": "p6-id",
     "lang": "id",
     "voice": "id-ID-ArdiNeural",
-    "text": "Dasbor admin React + Vite dengan grafik, tabel data, dan tema, , wajah front-end dari alur kerja analis berbasis data."
+    "text": "Rebranding menyeluruh sebuah kedai lumpia yang dicintai di Kaohsiung: penamaan, logo, sistem visual dwibahasa lengkap, dan kehadiran digital baru. Keterlibatan merek internasional naik 30%."
   },
   {
     "file": "p7-en",
     "lang": "en",
     "voice": "en-US-ChristopherNeural",
-    "text": "Production-grade storefront on Payload CMS , authentication, shopping cart, checkout, paywall and an enterprise admin panel, implemented in TypeScript."
+    "text": "React + Vite administrative dashboard with charts, data tables and theming , the front-end counterpart to a data-driven analyst workflow."
   },
   {
     "file": "p7-zh",
     "lang": "zh",
     "voice": "zh-TW-YunJheNeural",
-    "text": "建構於 Payload CMS 的正式級商店, , 身分驗證、購物車、結帳、付費牆與企業級管理後台，以 TypeScript 實作。"
+    "text": "以 React + Vite 打造、具圖表、資料表與主題切換的管理後台, , 數據導向分析工作流程的前端呈現。"
   },
   {
     "file": "p7-ja",
     "lang": "ja",
     "voice": "ja-JP-KeitaNeural",
-    "text": "Payload CMS上の本番品質ストアフロント, , 認証、カート、決済、ペイウォール、エンタープライズ管理画面をTypeScriptで実装。"
+    "text": "グラフ・データテーブル・テーマ切替を備えたReact + Vite製の管理ダッシュボード, , データ駆動アナリストのワークフローのフロントエンド。"
   },
   {
     "file": "p7-ko",
     "lang": "ko",
     "voice": "ko-KR-InJoonNeural",
-    "text": "Payload CMS 기반의 프로덕션급 스토어프런트, , 인증, 장바구니, 결제, 페이월, 엔터프라이즈 관리자 패널을 TypeScript로 구현."
+    "text": "차트·데이터 테이블·테마를 갖춘 React + Vite 관리자 대시보드, , 데이터 기반 애널리스트 워크플로의 프런트엔드."
   },
   {
     "file": "p7-vi",
     "lang": "vi",
     "voice": "vi-VN-NamMinhNeural",
-    "text": "Cửa hàng cấp sản xuất trên Payload CMS, , xác thực, giỏ hàng, thanh toán, tường phí và bảng quản trị doanh nghiệp, viết bằng TypeScript."
+    "text": "Bảng điều khiển quản trị React + Vite với biểu đồ, bảng dữ liệu và giao diện chủ đề, , bộ mặt front-end của quy trình phân tích dựa trên dữ liệu."
   },
   {
     "file": "p7-id",
     "lang": "id",
     "voice": "id-ID-ArdiNeural",
-    "text": "Etalase kelas produksi di atas Payload CMS, , autentikasi, keranjang, checkout, paywall, dan panel admin enterprise, diimplementasikan dengan TypeScript."
+    "text": "Dasbor admin React + Vite dengan grafik, tabel data, dan tema, , wajah front-end dari alur kerja analis berbasis data."
   },
   {
     "file": "p8-en",
     "lang": "en",
     "voice": "en-US-ChristopherNeural",
-    "text": "A generative-AI fashion experiment , a 3D shirt configurator exploring AI-powered outfit customization, shipped while the GenAI tooling was brand-new."
+    "text": "Production-grade storefront on Payload CMS , authentication, shopping cart, checkout, paywall and an enterprise admin panel, implemented in TypeScript."
   },
   {
     "file": "p8-zh",
     "lang": "zh",
     "voice": "zh-TW-YunJheNeural",
-    "text": "一項生成式 AI 時尚實驗, , 探索 AI 服裝客製化的 3D 襯衫設定器，在生成式 AI 工具剛問世時即完成。"
+    "text": "建構於 Payload CMS 的正式級商店, , 身分驗證、購物車、結帳、付費牆與企業級管理後台，以 TypeScript 實作。"
   },
   {
     "file": "p8-ja",
     "lang": "ja",
     "voice": "ja-JP-KeitaNeural",
-    "text": "生成AIのファッション実験, , AIによる衣装カスタマイズを探る3Dシャツコンフィギュレーター。生成AIツールが登場したばかりの時期に制作。"
+    "text": "Payload CMS上の本番品質ストアフロント, , 認証、カート、決済、ペイウォール、エンタープライズ管理画面をTypeScriptで実装。"
   },
   {
     "file": "p8-ko",
     "lang": "ko",
     "voice": "ko-KR-InJoonNeural",
-    "text": "생성형 AI 패션 실험, , AI 기반 의상 커스터마이징을 탐구하는 3D 셔츠 구성기. 생성형 AI 도구가 막 등장하던 시기에 제작."
+    "text": "Payload CMS 기반의 프로덕션급 스토어프런트, , 인증, 장바구니, 결제, 페이월, 엔터프라이즈 관리자 패널을 TypeScript로 구현."
   },
   {
     "file": "p8-vi",
     "lang": "vi",
     "voice": "vi-VN-NamMinhNeural",
-    "text": "Một thử nghiệm thời trang AI tạo sinh, , bộ tùy chỉnh áo 3D khám phá việc cá nhân hóa trang phục bằng AI, làm khi công cụ AI tạo sinh vừa mới xuất hiện."
+    "text": "Cửa hàng cấp sản xuất trên Payload CMS, , xác thực, giỏ hàng, thanh toán, tường phí và bảng quản trị doanh nghiệp, viết bằng TypeScript."
   },
   {
     "file": "p8-id",
+    "lang": "id",
+    "voice": "id-ID-ArdiNeural",
+    "text": "Etalase kelas produksi di atas Payload CMS, , autentikasi, keranjang, checkout, paywall, dan panel admin enterprise, diimplementasikan dengan TypeScript."
+  },
+  {
+    "file": "p9-en",
+    "lang": "en",
+    "voice": "en-US-ChristopherNeural",
+    "text": "A generative-AI fashion experiment , a 3D shirt configurator exploring AI-powered outfit customization, shipped while the GenAI tooling was brand-new."
+  },
+  {
+    "file": "p9-zh",
+    "lang": "zh",
+    "voice": "zh-TW-YunJheNeural",
+    "text": "一項生成式 AI 時尚實驗, , 探索 AI 服裝客製化的 3D 襯衫設定器，在生成式 AI 工具剛問世時即完成。"
+  },
+  {
+    "file": "p9-ja",
+    "lang": "ja",
+    "voice": "ja-JP-KeitaNeural",
+    "text": "生成AIのファッション実験, , AIによる衣装カスタマイズを探る3Dシャツコンフィギュレーター。生成AIツールが登場したばかりの時期に制作。"
+  },
+  {
+    "file": "p9-ko",
+    "lang": "ko",
+    "voice": "ko-KR-InJoonNeural",
+    "text": "생성형 AI 패션 실험, , AI 기반 의상 커스터마이징을 탐구하는 3D 셔츠 구성기. 생성형 AI 도구가 막 등장하던 시기에 제작."
+  },
+  {
+    "file": "p9-vi",
+    "lang": "vi",
+    "voice": "vi-VN-NamMinhNeural",
+    "text": "Một thử nghiệm thời trang AI tạo sinh, , bộ tùy chỉnh áo 3D khám phá việc cá nhân hóa trang phục bằng AI, làm khi công cụ AI tạo sinh vừa mới xuất hiện."
+  },
+  {
+    "file": "p9-id",
     "lang": "id",
     "voice": "id-ID-ArdiNeural",
     "text": "Eksperimen fesyen AI generatif, , konfigurator kemeja 3D yang menjelajahi kustomisasi busana bertenaga AI, dibuat saat perkakas AI generatif baru muncul."

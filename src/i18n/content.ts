@@ -109,6 +109,17 @@ const zh: ContentT = {
     },
     {
       category: '教育科技 · 網頁應用',
+      desc: '為中文使用者打造的英語分級讀本網頁應用——5 本書、25 篇原創故事（A1 到 B1+），逐詞中文釋義，完整支援簡繁切換。',
+      board: [
+        { l: '鏡像之作', t: '為英語使用者打造 Mandarin Reader 之後，Deepan 反轉公式：同樣的分級故事學習法，重新打造給學英語的中文使用者。' },
+        { l: '故事庫', t: '5 本完整書籍、25 篇原創章節——從走失的貓（A1）到守塔人的最後一班（B1+）。' },
+        { l: '如何教學', t: '初級故事每個英文單字上方都有中文釋義，全文附完整句子翻譯與文法筆記——理解永不中斷。' },
+        { l: '技術棧' },
+        { l: '狀態', t: '已部署並公開——完全免費、無需註冊。可從此檔案開始閱讀。' },
+      ],
+    },
+    {
+      category: '教育科技 · 網頁應用',
       desc: '一款學習中文的分級讀本網頁應用——30 篇從 A1 到 B1+、詞彙循序漸進的原創故事，源自在台灣的第一手語言學習經驗。',
       board: [
         { l: '起心動念', t: '在台灣學中文時，Deepan 找不到能隨程度成長的閱讀素材——於是自己打造。' },
@@ -274,6 +285,17 @@ const ja: ContentT = {
         { l: 'モデル', t: '「コミュニティは厳しさではなく、正当性に反応する。」——正当性—反応モデル、Suchman（1995）を拡張。' },
         { l: '手法', t: 'Redditの JSON API を巡回するPythonクローラ · 約650語の感情辞書 · SPSS v28 · Cohen’s κ = .78。' },
         { l: 'ケースファイル' },
+      ],
+    },
+    {
+      category: 'EdTech · Webアプリ',
+      desc: '中国語話者向けに作られた英語多読リーダーWebアプリ——5冊・25章の自作ストーリー（A1〜B1+）、単語ごとの中国語注釈、簡体字・繁体字の完全対応。',
+      board: [
+        { l: '鏡像の一作', t: '英語話者向けのMandarin Readerを作った後、公式を反転：同じ段階的ストーリー学習法を、英語を学ぶ中国語話者向けに再構築。' },
+        { l: 'ライブラリ', t: '完結した5冊・25の自作チャプター——迷子の猫（A1）から灯台守の最後の当直（B1+）まで。' },
+        { l: '教え方', t: '初級ストーリーでは各英単語の上に中国語注釈、全文に完全な文章訳と文法ノート——理解が途切れない。' },
+        { l: '技術スタック' },
+        { l: 'ステータス', t: '公開・デプロイ済み——無料・登録不要。このボードから読み始められます。' },
       ],
     },
     {
@@ -447,6 +469,17 @@ const ko: ContentT = {
     },
     {
       category: '에듀테크 · 웹앱',
+      desc: '중국어 화자를 위해 만든 영어 단계별 리더 웹앱——5권 25편의 창작 이야기(A1~B1+), 단어별 중국어 주석, 간체·번체 완전 지원.',
+      board: [
+        { l: '미러 프로젝트', t: '영어 화자를 위한 Mandarin Reader를 만든 뒤 공식을 뒤집었다: 같은 단계별 이야기 학습법을, 영어를 배우는 중국어 화자를 위해 재구축.' },
+        { l: '라이브러리', t: '완결된 5권, 25편의 창작 챕터——길 잃은 고양이(A1)부터 등대지기의 마지막 당직(B1+)까지.' },
+        { l: '교수 방식', t: '초급 이야기에서는 모든 영어 단어 위에 중국어 주석, 전체 문장 번역과 문법 노트——이해가 끊기지 않는다.' },
+        { l: '기술 스택' },
+        { l: '상태', t: '배포·공개 완료——무료, 가입 불필요. 이 보드에서 바로 읽기 시작할 수 있습니다.' },
+      ],
+    },
+    {
+      category: '에듀테크 · 웹앱',
       desc: '중국어 학습을 위한 단계별 리더 웹앱——A1에서 B1+까지 어휘가 점진적으로 늘어나는 30편의 창작 이야기. 대만에서의 직접 학습 경험에서 탄생.',
       board: [
         { l: '계기', t: '대만에서 중국어를 배우던 Deepan은 학습자의 수준에 맞춰 성장하는 읽을거리를 찾지 못해——직접 만들었다.' },
@@ -612,6 +645,17 @@ const vi: ContentT = {
         { l: 'MÔ HÌNH', t: '"Cộng đồng phản ứng với lý do biện minh, không phải mức độ nghiêm khắc."——Mô hình Chính danh—Phản ứng, mở rộng từ Suchman (1995).' },
         { l: 'PHƯƠNG PHÁP', t: 'Trình thu thập Python trên JSON API của Reddit · từ điển cảm xúc ~650 từ · SPSS v28 · Cohen’s κ = .78.' },
         { l: 'HỒ SƠ VỤ VIỆC' },
+      ],
+    },
+    {
+      category: 'EDTECH · ỨNG DỤNG WEB',
+      desc: 'Ứng dụng web đọc phân cấp để học tiếng Anh, dành cho người nói tiếng Trung——25 câu chuyện gốc trong 5 cuốn sách (A1 đến B1+), chú thích tiếng Trung theo từng từ, hỗ trợ đầy đủ giản thể/phồn thể.',
+      board: [
+        { l: 'DỰ ÁN PHẢN CHIẾU', t: 'Sau khi làm Mandarin Reader cho người nói tiếng Anh, Deepan đảo ngược công thức: cùng phương pháp truyện phân cấp, xây lại cho người nói tiếng Trung học tiếng Anh.' },
+        { l: 'THƯ VIỆN', t: '5 cuốn sách hoàn chỉnh, 25 chương gốc——từ chú mèo đi lạc (A1) đến ca trực cuối của người gác hải đăng (B1+).' },
+        { l: 'CÁCH DẠY', t: 'Chú thích tiếng Trung trên từng từ tiếng Anh ở truyện sơ cấp, bản dịch trọn câu và ghi chú ngữ pháp——khả năng hiểu không bao giờ đứt gãy.' },
+        { l: 'CÔNG NGHỆ' },
+        { l: 'TRẠNG THÁI', t: 'Đã triển khai và công khai——miễn phí, không cần đăng ký. Bắt đầu đọc ngay từ bảng này.' },
       ],
     },
     {
@@ -784,6 +828,17 @@ const id: ContentT = {
         { l: 'MODEL', t: '"Komunitas merespons alasannya, bukan tingkat keparahannya."——Model Legitimasi-Respons, mengembangkan Suchman (1995).' },
         { l: 'METODE', t: 'Crawler Python atas JSON API Reddit · leksikon sentimen ~650 kata · SPSS v28 · Cohen’s κ = .78.' },
         { l: 'BERKAS KASUS' },
+      ],
+    },
+    {
+      category: 'EDTECH · APLIKASI WEB',
+      desc: 'Aplikasi web bacaan berjenjang untuk belajar bahasa Inggris, dibuat untuk penutur bahasa Mandarin——25 cerita orisinal dalam 5 buku (A1 hingga B1+), glosarium Mandarin per kata, dukungan penuh aksara Sederhana/Tradisional.',
+      board: [
+        { l: 'PROYEK CERMIN', t: 'Setelah membuat Mandarin Reader untuk penutur Inggris, Deepan membalik rumusnya: metode cerita berjenjang yang sama, dibangun ulang untuk penutur Mandarin yang belajar bahasa Inggris.' },
+        { l: 'PUSTAKA', t: '5 buku lengkap, 25 bab orisinal——dari kucing yang tersesat (A1) hingga jaga malam terakhir penjaga mercusuar (B1+).' },
+        { l: 'CARA MENGAJAR', t: 'Glosarium Mandarin di atas setiap kata Inggris pada cerita pemula, terjemahan kalimat penuh, dan catatan tata bahasa——pemahaman tak pernah putus.' },
+        { l: 'TEKNOLOGI' },
+        { l: 'STATUS', t: 'Sudah dirilis dan publik——gratis, tanpa daftar. Mulai membaca langsung dari papan ini.' },
       ],
     },
     {
