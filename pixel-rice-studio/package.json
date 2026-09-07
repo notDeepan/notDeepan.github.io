@@ -1,0 +1,30 @@
+{
+  "name": "pixel-rice-studio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "build:pages": "node scripts/build-pages.mjs",
+    "start": "next start --hostname 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/manrope": "^5.3.0",
+    "@fontsource/bodoni-moda": "^5.3.0",
+    "@react-three/fiber": "^9.5.0",
+    "next": "^15.5.12",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "three": "~0.170.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/three": "~0.170.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}

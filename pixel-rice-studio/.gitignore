@@ -1,0 +1,11 @@
+node_modules/
+.next/
+.next-dev/
+out/
+.env*
+!.env.example
+*.tsbuildinfo
+PRIVATE_ART_REFERENCES_DO_NOT_COMMIT/
+06_ASSETS/
+artifacts/
+*.log
