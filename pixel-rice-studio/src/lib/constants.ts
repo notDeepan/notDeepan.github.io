@@ -131,10 +131,10 @@ export const COMPOSITOR = {
 /** Sections, in order. units = viewport heights of scroll travel. */
 export const SECTIONS = [
   { id: 'founder', units: 4.0 },
-  { id: 'identity', units: 1.0 },
+  { id: 'identity', units: 1.6 },
   { id: 'projects', units: 10.0 },
-  { id: 'reviews', units: 3.0 },
-  { id: 'brand', units: 1.5 },
+  { id: 'reviews', units: 1.8 },
+  { id: 'brand', units: 1.0 },
   { id: 'contact', units: 2.0 },
 ] as const;
 

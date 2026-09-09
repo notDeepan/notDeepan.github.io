@@ -6,6 +6,8 @@ import { PROJECT_WINDOWS, SECTIONS, type SectionId } from '@/lib/constants';
 import { founders, site } from '@/data/site';
 import { projects } from '@/data/projects';
 import { assetPath } from '@/lib/assetPath';
+import PeopleDepth from './PeopleDepth';
+import { PRESENTATION } from '@/lib/presentation';
 import ContactDialog from './contact/ContactDialog';
 import ProjectDialog from './projects/ProjectDialog';
 import ProjectMedia from './projects/ProjectMedia';
@@ -27,6 +29,8 @@ export default function Studio() {
   const [section,setSection]=useState(0),[projectIndex,setProjectIndex]=useState(0),[founderIndex,setFounderIndex]=useState(-1);
   const [menu,setMenu]=useState(false),[contact,setContact]=useState(false),[projectOpen,setProjectOpen]=useState<number|null>(null);
   const [simple,setSimple]=useState(false);
+  const [systemCalm,setSystemCalm]=useState(false);
+  const calm=simple||systemCalm||webgl===false;
   const project=projects[projectIndex] || projects[0];
   const onFrame=useCallback((dt=0)=>{
     const e=scrollEngine;
@@ -58,6 +62,9 @@ export default function Studio() {
     });
     if(overlay.current){
       overlay.current.style.setProperty('--progress',String(e.overall));
+      overlay.current.style.setProperty('--hero-drift',String(e.reducedMotion?0:ip));
+      overlay.current.style.setProperty('--studio-progress',String(e.reducedMotion?1:ScrollEngine.stage(e.progressOf('identity'),.1,.7)));
+      overlay.current.style.setProperty('--people-progress',String(e.reducedMotion?0:e.progressOf('reviews')));
       overlay.current.style.setProperty('--project-reveal',String(e.reducedMotion?1:maximum));
       overlay.current.style.setProperty('--project-progress',String(p));
       overlay.current.style.setProperty('--takeover',String(ScrollEngine.stage(ip,.88,1)));
@@ -69,6 +76,9 @@ export default function Studio() {
 
   useEffect(()=>{
     if(!root.current)return;
+    const preference=window.matchMedia('(prefers-reduced-motion: reduce)');
+    const syncPreference=()=>setSystemCalm(preference.matches);
+    syncPreference();preference.addEventListener('change',syncPreference);
     scrollEngine.attach(root.current);
     layerRefs.current=Array.from(overlay.current?.querySelectorAll<HTMLElement>('[data-scene]') || []);
     let supported=false;
@@ -84,7 +94,7 @@ export default function Studio() {
       if(event.key==='Home'||event.key==='End'){event.preventDefault();scrollEngine.scrollToOffset(event.key==='Home'?0:scrollEngine.maxScroll);}
     };
     window.addEventListener('keydown',onKey);
-    return ()=>{scrollEngine.detach();window.removeEventListener('keydown',onKey);};
+    return ()=>{scrollEngine.detach();window.removeEventListener('keydown',onKey);preference.removeEventListener('change',syncPreference);};
     // Setup owns the engine; the frame callback reads current modal state through its own render loop.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
@@ -93,20 +103,20 @@ export default function Studio() {
     return ()=>scrollEngine.setMotionOverride(false);
   },[simple]);
   useEffect(()=>{
-    if(webgl!==false&&!simple)return;
+    if(!calm)return;
     let frame=0,last=performance.now();
     const draw=(time:number)=>{const dt=(time-last)/1000;scrollEngine.update(dt);last=time;onFrame(dt);frame=requestAnimationFrame(draw);};
     frame=requestAnimationFrame(draw);return ()=>cancelAnimationFrame(frame);
-  },[webgl,simple,onFrame]);
+  },[calm,onFrame]);
   const go=(id:SectionId)=>{setMenu(false);scrollEngine.scrollToSection(id,true);root.current?.focus({preventScroll:true});};
   const toProject=(index:number)=>{scrollEngine.scrollToProgress('projects',PROJECT_WINDOWS[index].peak,true);root.current?.focus({preventScroll:true});};
 
-  return <main className={`studio ${webgl===false||simple?'simple-mode':''}`}>
+  return <main className={`studio immersive-redesign ${calm?'simple-mode':''}`} style={{'--motion-micro':`${PRESENTATION.micro}ms`,'--motion-hover':`${PRESENTATION.hover}ms`,'--motion-reveal':`${PRESENTATION.reveal}ms`,'--motion-chapter':`${PRESENTATION.chapter}ms`,'--motion-ease':PRESENTATION.ease} as React.CSSProperties}>
     <a className="skip-link" href="#projects" onClick={e=>{e.preventDefault();go('projects');}}>Skip to selected work</a>
-    {webgl&&!simple ? <ExperienceCanvas onFrame={onFrame} burst={burst} projectLink={projectLink} onUnavailable={()=>setWebgl(false)}/> : <div className="ambient-fallback" aria-hidden="true"><span/><span/><span/></div>}
+    {webgl&&!calm ? <ExperienceCanvas onFrame={onFrame} burst={burst} projectLink={projectLink} onUnavailable={()=>setWebgl(false)}/> : <div className="ambient-fallback" aria-hidden="true"><span/><span/><span/></div>}
     <div id="scroll-root" ref={root} tabIndex={0} aria-label="Explore Pixel Rice. Scroll or use the arrow keys.">{SECTIONS.map(s=><div key={s.id} data-section={s.id} style={{height:`${s.units*100}svh`}}/>)}
-      {webgl&&!simple && <a ref={projectLink} className="project-artwork-link" hidden href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.title} website (opens in a new tab)`}/>}
-      {(simple||webgl===false) && section===2 && <div className="fallback-project-media"><a href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.title} website (opens in a new tab)`}><ProjectMedia project={project}/></a></div>}
+      {webgl&&!calm && <a ref={projectLink} className="project-artwork-link" hidden href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.title} website (opens in a new tab)`}/>}
+      {calm && section===2 && <div className="fallback-project-media"><a href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.title} website (opens in a new tab)`}><ProjectMedia project={project}/></a></div>}
     </div>
     <div id="overlay" ref={overlay}>
       <header className="site-header">
@@ -116,7 +126,7 @@ export default function Studio() {
       </header>
 
       <section className="scene-overlay founder-scene" data-scene="founder" aria-label="Meet the studio">
-        <div className="hero-orbit" aria-hidden="true"/><div className="hero-orbit orbit-two" aria-hidden="true"/>
+        <div className="hero-light" aria-hidden="true"/><span className="hero-coordinate" aria-hidden="true">DESIGN / TECHNOLOGY / PEOPLE</span>
         <div className={`founder-image ${founderIndex>=0?'has-focus':''}`} aria-hidden={founderIndex>=0}>
           <img src={assetPath('/assets/founders/founders.webp')} alt="Pixel Rice founders: Deepan, Junes and Shikhar" fetchPriority="high" width="1536" height="1024"/>
         </div>
@@ -132,7 +142,7 @@ export default function Studio() {
         </div>
         <div className="hero-copy">
           <span className="eyebrow"><span className="small-star">✳</span> A SHARED APPETITE FOR THE UNEXPECTED</span>
-          <h1 className={founderIndex>=0?'has-founder':''}>{founderIndex<0?<><span>Small grains.</span><em>Big ideas.</em></>:<><span>{founders[founderIndex].name}<sup>{founders[founderIndex].role}</sup></span><em className="founder-line">{founders[founderIndex].line}</em></>}</h1>
+          <h1 className={founderIndex>=0?'has-founder':''}>{founderIndex<0?<><span className="hero-first-line">Small grains.</span><em className="hero-second-line">Big ideas.</em></>:<><span>{founders[founderIndex].name}<sup>{founders[founderIndex].role}</sup></span><em className="founder-line">{founders[founderIndex].line}</em></>}</h1>
           <p className="hero-description">{founderIndex<0?site.description:founders[founderIndex].description}</p>
           <button className="text-button hero-work interactive" onClick={()=>toProject(0)}>A taste of our work <span>↗</span></button>
         </div>
@@ -143,37 +153,31 @@ export default function Studio() {
 
       <section className="scene-overlay identity-scene" data-scene="identity" aria-label="Our approach">
         <span className="eyebrow">DIFFERENT INGREDIENTS. ONE SHARED VISION.</span>
-        <h2>Thoughtfully made.<br/><em>Unexpectedly good.</em></h2>
+        <h2 className="studio-statement"><span>Different</span><em>ingredients.</em><span className="shared-vision">One shared vision.</span></h2><p className="studio-manifesto">Thoughtfully made. Unexpectedly good.</p>
         <div className="identity-bottom"><p>A small independent studio at the intersection of design and technology. We bring the curiosity. You bring the ambition. Together, we make something worth experiencing.</p><div className="service-list"><span>Brand & digital design</span><span>Websites & development</span><span>Interactive experiences</span></div></div>
       </section>
 
       <section id="projects" className="scene-overlay projects-scene" data-scene="projects" aria-label="Selected projects">
-        <div className="project-heading"><span className="eyebrow">A FEW THINGS WE’VE MADE</span><p>Selected <em>work.</em></p></div>
+        <div className="project-heading"><span className="eyebrow">A FEW THINGS WE’VE MADE</span><p>Selected <em>work.</em><span className="work-count">01—05</span></p></div>
         {project && <div ref={projectCaption} className="project-caption" data-project={projectIndex}>
-          <span className="eyebrow">{project.category}</span><h2><a className="interactive" href={project.liveUrl} target="_blank" rel="noopener noreferrer">{project.title}<span aria-hidden="true">↗</span><span className="sr-only"> website (opens in a new tab)</span></a></h2>
-          <p>{project.description}</p><div className="project-actions"><a className="text-button interactive" href={project.liveUrl} target="_blank" rel="noopener noreferrer">Visit website <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a><button className="project-details-button interactive" onClick={()=>setProjectOpen(projectIndex)}>Project details</button></div>
+          <span className="project-number" aria-hidden="true">{String(projectIndex+1).padStart(2,'0')}</span><span className="eyebrow">{project.category}</span><h2><a className="interactive" href={project.liveUrl} target="_blank" rel="noopener noreferrer">{project.title}<span aria-hidden="true">↗</span><span className="sr-only"> website (opens in a new tab)</span></a></h2>
+          <p>{project.description}</p><span className="project-status">{project.status}</span><div className="project-actions"><a className="text-button interactive" href={project.liveUrl} target="_blank" rel="noopener noreferrer">Visit website <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a><button className="project-details-button interactive" onClick={()=>setProjectOpen(projectIndex)}>Project details</button></div>
         </div>}
-        <div className="project-bottom"><span className="food-footnote">A LITTLE PLAY BETWEEN PROJECTS.<br/>KEEP SCROLLING. STAY CURIOUS.</span><div className="project-control interactive"><button aria-label="Previous project" disabled={projectIndex===0} onClick={()=>toProject(Math.max(0,projectIndex-1))}>←</button><span><b>{String(projectIndex+1).padStart(2,'0')}</b><i>/ {String(projects.length).padStart(2,'0')}</i></span><button aria-label="Next project" disabled={projectIndex===projects.length-1} onClick={()=>toProject(Math.min(projects.length-1,projectIndex+1))}>→</button><div className="project-progress"/></div></div>
+        <div className="project-bottom"><span className="food-footnote">FIVE PROJECTS. DIFFERENT POSSIBILITIES.<br/>SCROLL TO EXPLORE. CLICK TO ENTER.</span><div className="project-control interactive"><button aria-label="Previous project" disabled={projectIndex===0} onClick={()=>toProject(Math.max(0,projectIndex-1))}>←</button><span><b>{String(projectIndex+1).padStart(2,'0')}</b><i>/ {String(projects.length).padStart(2,'0')}</i></span><button aria-label="Next project" disabled={projectIndex===projects.length-1} onClick={()=>toProject(Math.min(projects.length-1,projectIndex+1))}>→</button><div className="project-progress"/></div></div>
       </section>
 
-      <section className="scene-overlay reviews-scene" data-scene="reviews" aria-label="Working together">
-        <span className="eyebrow">GOOD PEOPLE. GOOD CHEMISTRY.</span>
-        <span className="quote-mark" aria-hidden="true">“</span>
-        <h2>The best work<br/>starts with a<br/><em>good conversation.</em></h2>
-        <div className="review-note"><span className="mini-rule"/><p>Our client stories are coming soon.<br/>Yours could be next.</p><button className="text-button interactive" onClick={()=>setContact(true)}>Start a conversation ↗</button></div>
-        <span className="review-placeholder">CLIENT STORIES · COMING SOON</span>
-      </section>
+      <section className="scene-overlay reviews-scene" data-scene="reviews" aria-label="The people behind Pixel Rice"><PeopleDepth/></section>
 
       <section className="scene-overlay brand-scene" data-scene="brand" aria-label="Pixel Rice identity"><span className="eyebrow">SMALL DETAILS. A WORLD OF DIFFERENCE.</span><RiceMark className="brand-mark"/><h2>pixel rice</h2><p>{site.tagline}</p></section>
 
       <section className="scene-overlay contact-scene" data-scene="contact" aria-label="Contact Pixel Rice">
-        <span className="eyebrow">BRING YOUR NEXT BIG IDEA.</span><h2>Let’s make<br/><em>something good.</em></h2><button className="contact-circle interactive" onClick={()=>setContact(true)}>Tell us<br/>about it<span>↗</span></button>
+        <span className="eyebrow">GOOD PEOPLE. GOOD CHEMISTRY.</span><h2>Let’s make<br/><em>something good.</em></h2><p className="conversation-note">The best work starts with a good conversation.</p><div className="conversation-actions"><button className="conversation-primary interactive" onClick={()=>setContact(true)}>Start a conversation <span>↗</span></button><button className="text-button interactive" onClick={()=>toProject(0)}>See our work <span>→</span></button></div>
         <div className="contact-footer"><RiceMark/><span>© {new Date().getFullYear()} Pixel Rice</span><span>Made with a little extra flavour.</span><button className="interactive" onClick={()=>go('founder')}>Back to the top ↑</button></div>
       </section>
 
-      <div className={`chapter-nav interactive ${section>0?'is-visible':''}`} inert={section===0} aria-hidden={section===0} aria-label="Section navigation">{[['founder','Studio'],['projects','Work'],['reviews','People'],['contact','Contact']].map(([id,label])=><button key={id} onClick={()=>go(id as SectionId)} className={SECTIONS[section]?.id===id?'active':''}>{label}</button>)}</div>
+      <div className="chapter-nav interactive is-visible" aria-label="Section navigation">{[['founder','Studio'],['projects','Work'],['reviews','People'],['contact','Contact']].map(([id,label])=><button key={id} onClick={()=>go(id as SectionId)} aria-current={(SECTIONS[section]?.id===id||(id==='founder'&&section===1))?'location':undefined} className={(SECTIONS[section]?.id===id||(id==='founder'&&section===1))?'active':''}>{label}</button>)}</div>
       <div className="global-progress" aria-hidden="true"/>
-      <button className="experience-toggle interactive" aria-pressed={simple} onClick={()=>setSimple(!simple)}>{simple?'Immersive view':'Simple view'} <span>◌</span></button>
+      <button className="experience-toggle interactive" aria-pressed={calm} disabled={systemCalm} onClick={()=>setSimple(!simple)}>{systemCalm?'Reduced motion':simple?'Immersive view':'Simple view'} <span>◌</span></button>
     </div>
     {menu && <NavigationDialog close={()=>setMenu(false)} navigate={go}/>}
     {contact && <ContactDialog close={()=>setContact(false)}/>}

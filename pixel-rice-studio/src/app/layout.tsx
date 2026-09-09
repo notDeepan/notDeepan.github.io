@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { assetPath } from '@/lib/assetPath';
 import './globals.css';
+import './immersive.css';
 
 export const metadata: Metadata = {
   title: 'Pixel Rice — A little different. By design.',

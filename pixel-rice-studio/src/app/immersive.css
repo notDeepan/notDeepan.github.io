@@ -1,0 +1,133 @@
+/* Presentation layer for the isolated immersive prototype. Logo rules are inherited unchanged. */
+.immersive-redesign{--layer-navigation:20;--muted:#bfc0b0}
+.immersive-redesign #overlay:after{opacity:.035}
+.immersive-redesign .scene-overlay:before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 76% 43%,transparent 25%,#11130f36 80%);z-index:-1}
+.immersive-redesign .eyebrow{font-size:12px;letter-spacing:.14em}
+.immersive-redesign .header-descriptor{display:none}
+.immersive-redesign .chapter-nav{top:34px;bottom:auto;gap:30px;z-index:var(--layer-navigation);transform:translateX(-50%)}
+.immersive-redesign .chapter-nav button{font-size:14px;min-height:36px}
+.immersive-redesign .chapter-nav button:before{display:none}
+.immersive-redesign .chapter-nav button.active{color:var(--olive)}
+.immersive-redesign .chapter-nav button.active:after{content:'';display:block;width:14px;height:1px;background:currentColor;margin:5px auto -6px}
+.immersive-redesign .experience-toggle{font-size:12px}
+.hero-light{position:absolute;inset:8% -8% 0 28%;background:radial-gradient(ellipse at 58% 48%,#8c937828,transparent 60%);transform:translateX(calc(var(--hero-drift,0)*-4vw));pointer-events:none}
+.hero-coordinate{position:absolute;right:4.2vw;top:18%;font-size:10px;letter-spacing:.18em;color:var(--muted);writing-mode:vertical-rl}
+.immersive-redesign .hero-copy{top:24%;width:58%}
+.immersive-redesign .hero-copy h1{font-size:clamp(76px,8.5vw,156px);line-height:1.02;letter-spacing:-.065em;margin-top:20px}
+.hero-first-line{transform:translateX(calc(var(--hero-drift,0)*-18px))}
+.hero-second-line{transform:translateX(calc(var(--hero-drift,0)*30px))}
+.immersive-redesign .hero-description{font-size:17px;max-width:340px;line-height:1.7;margin-top:24px}
+.immersive-redesign .hero-work{font-size:15px;margin-top:13px}
+.immersive-redesign .founder-image{right:-5%;bottom:5%;width:68%}
+.immersive-redesign .founder-image img{filter:saturate(.65) brightness(.86)}
+.immersive-redesign .founder-caption{bottom:19%;right:6%}
+.immersive-redesign .hero-bottom{bottom:9%}
+.immersive-redesign .hero-bottom p{display:none}
+.immersive-redesign .hero-copy h1 .founder-line{font-size:.42em;max-width:450px;letter-spacing:-.04em}
+.immersive-redesign .founder-person{left:50%;--portrait-x:-50%;transform:translateX(var(--portrait-x)) scale(.68);transition:transform var(--motion-chapter) var(--motion-ease),opacity var(--motion-reveal),filter var(--motion-reveal)}
+.immersive-redesign .founder-person[data-slot=left]{left:50%;--portrait-x:-110%}
+.immersive-redesign .founder-person[data-slot=right]{left:50%;--portrait-x:10%}
+.immersive-redesign .founder-person.is-active{left:50%;--portrait-x:-50%;transform:translateX(var(--portrait-x)) scale(1.06)}
+.immersive-redesign .identity-scene{padding:17vh 8vw 12vh}
+.immersive-redesign .identity-scene>.eyebrow{font-size:11px}
+.immersive-redesign .studio-statement{position:relative;line-height:1.01;font-size:clamp(48px,6.5vw,112px);letter-spacing:-.055em;margin-top:25px;width:max-content;max-width:100%}
+.studio-statement>span,.studio-statement>em{display:block}
+.studio-statement>span:first-child{transform:translateX(calc((1 - var(--studio-progress,0))*-20px))}
+.studio-statement>em{padding-left:6vw;transform:translateX(calc((1 - var(--studio-progress,0))*30px))}
+.immersive-redesign .studio-statement .shared-vision{font-size:.53em;letter-spacing:-.04em;margin-top:22px;opacity:calc(.4 + var(--studio-progress,0)*.6);transform:translateY(calc((1 - var(--studio-progress,0))*15px))}
+.studio-manifesto{font-size:14px;color:var(--olive);margin-top:20px}
+.immersive-redesign .identity-bottom{display:block;margin-top:4vh}
+.immersive-redesign .identity-bottom p{font-size:16px;max-width:430px;line-height:1.7}
+.immersive-redesign .service-list{font-size:14px;min-width:270px;flex-direction:row;gap:26px;max-width:700px;margin-top:20px}
+.immersive-redesign .service-list span{flex:1}
+.immersive-redesign .project-heading{top:17%;right:var(--gutter)}
+.immersive-redesign .project-heading>.eyebrow{font-size:11px}
+.immersive-redesign .project-heading p{font-size:32px;letter-spacing:-.04em}
+.work-count{float:right;font-family:var(--display);font-size:23px;font-style:italic;color:var(--muted)}
+.immersive-redesign .project-caption{bottom:24%;max-width:37vw}
+.project-number{font-family:var(--display);display:block;font-size:24px;font-style:italic;color:var(--olive);margin-bottom:21px}
+.immersive-redesign .project-caption h2{font-size:clamp(45px,5vw,85px);line-height:1.04;letter-spacing:-.05em;margin:14px 0 18px}
+.project-caption h2 a>span[aria-hidden]{display:inline-block;font-family:var(--body);font-size:.35em;vertical-align:top;margin:8px 0 0 12px;transition:transform var(--motion-hover) var(--motion-ease)}
+.project-caption h2 a:hover>span[aria-hidden]{transform:translate(4px,-4px)}
+.immersive-redesign .project-caption p{font-size:16px;max-width:340px;line-height:1.65}
+.project-status{display:block;font-size:11px;color:var(--muted);margin-top:14px;line-height:1.6}
+.immersive-redesign .project-actions{gap:22px}
+.immersive-redesign .project-actions .text-button{font-size:15px}
+.immersive-redesign .project-bottom{bottom:9%}
+.immersive-redesign .project-control{border-radius:2px;gap:25px;padding:10px 16px}
+.immersive-redesign .project-control button{min-width:36px;min-height:36px}
+.immersive-redesign .food-footnote{font-size:10px}
+.immersive-redesign .reviews-scene{padding:0}
+.people-depth{position:absolute;inset:0}
+.people-intro{position:absolute;left:var(--gutter);top:19%;z-index:4}
+.immersive-redesign .people-intro h2{font-family:var(--display);font-size:clamp(50px,6.4vw,108px);font-weight:400;letter-spacing:-.045em;line-height:1.04;margin-top:22px}
+.people-stage{position:absolute;right:0;bottom:8%;width:70%;height:78%;isolation:isolate;mask-image:linear-gradient(#000 67%,transparent 100%)}
+.people-layer{position:absolute;bottom:0;left:50%;height:100%;width:60%;transform:translateX(calc(-50% + var(--person-offset)*47%)) translateY(calc(var(--people-progress,0)*14px)) scale(.72);opacity:.23;filter:saturate(.25) brightness(.65);transition:transform var(--motion-chapter) var(--motion-ease),opacity var(--motion-reveal),filter var(--motion-reveal)}
+.people-layer.is-active{transform:translateX(-50%) scale(1);opacity:1;filter:saturate(.72) brightness(.9);z-index:2}
+.people-layer img{width:100%;height:100%;object-fit:contain;object-position:bottom}
+.people-information{position:absolute;left:var(--gutter);bottom:16%;width:33%;z-index:5}
+.people-select{display:flex;gap:22px;border-bottom:1px solid var(--line)}
+.people-select button{padding:12px 0 17px;text-align:left;position:relative;flex:1;color:var(--muted)}
+.people-select button[aria-pressed=true]{color:var(--paper)}
+.people-select button[aria-pressed=true]:after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:var(--olive)}
+.people-select span{display:block;font-size:17px}
+.people-select small{font-size:10px;letter-spacing:.15em;margin-top:8px;display:block;color:var(--olive)}
+.people-select i{position:absolute;right:0;top:10px;font-size:12px;font-style:normal}
+.person-description{min-height:144px;padding-top:24px}
+.person-description>.eyebrow{display:none}
+.person-description h3{font-size:20px;font-weight:400;line-height:1.4;max-width:330px}
+.person-description p{font-size:15px;line-height:1.7;color:var(--muted);margin-top:12px;max-width:320px}
+.immersive-redesign .brand-scene>.eyebrow{font-size:11px}
+.immersive-redesign .contact-scene{padding:21vh 8vw 12vh}
+.immersive-redesign .contact-scene h2{font-size:clamp(65px,8.5vw,148px);line-height:1.03;letter-spacing:-.05em;margin-top:23px}
+.conversation-note{font-size:17px;line-height:1.6;color:var(--muted);margin-top:26px}
+.conversation-actions{display:flex;align-items:center;gap:35px;margin-top:27px}
+.conversation-primary{display:flex;gap:45px;align-items:center;background:var(--olive);color:var(--ink);padding:19px 24px;font-size:16px;border-radius:2px}
+.conversation-primary span{font-size:22px;transition:transform var(--motion-hover) var(--motion-ease)}
+.conversation-primary:hover{color:var(--ink);background:var(--paper)}
+.conversation-primary:hover span{transform:translate(3px,-3px)}
+.immersive-redesign .contact-footer{bottom:10%;font-size:12px}
+.immersive-redesign .fallback-project-media{width:50vw;top:30%;right:4%;transform:none}
+.immersive-redesign .fallback-project-media .project-cover{aspect-ratio:16/10}
+.immersive-redesign .fallback-project-media .cover-note{display:none}
+.simple-mode .hero-first-line,.simple-mode .hero-second-line,.simple-mode .studio-statement>span,.simple-mode .studio-statement>em{transform:none!important}
+.simple-mode .people-layer{transition:none}
+@media(min-width:768px) and (max-height:740px){
+  .immersive-redesign .hero-copy{top:22%}.immersive-redesign .hero-copy h1{font-size:min(8vw,105px)}.immersive-redesign .hero-description{font-size:16px;margin-top:18px;max-width:320px}.immersive-redesign .hero-bottom{bottom:7%}
+  .immersive-redesign .identity-scene{padding-top:16vh}.immersive-redesign .studio-statement{font-size:7.5vh;margin-top:15px}.immersive-redesign .identity-bottom{margin-top:22px}.immersive-redesign .identity-bottom p{font-size:15px}
+  .immersive-redesign .project-caption{bottom:23%}.project-number{margin-bottom:13px}.immersive-redesign .project-caption h2{font-size:4.8vw}.immersive-redesign .project-caption p{font-size:15px}.project-status{margin-top:10px}
+  .immersive-redesign .contact-scene{padding-top:19vh}.immersive-redesign .contact-scene h2{font-size:12vh}.conversation-note{margin-top:20px}.conversation-actions{margin-top:20px}
+}
+@media(max-width:1100px){.immersive-redesign .chapter-nav{gap:22px}.immersive-redesign .hero-description{max-width:310px}.people-select{gap:16px}.people-select span{font-size:15px}.people-select i{display:none}.person-description h3{font-size:18px}.people-information{width:37%}}
+@media(max-width:767px){
+  .immersive-redesign .chapter-nav{top:auto;bottom:27px;gap:23px}.immersive-redesign .chapter-nav button{font-size:12px}.immersive-redesign .chapter-nav button.active:after{display:none}
+  .immersive-redesign .experience-toggle{bottom:0;font-size:11px}.hero-coordinate{display:none}
+  .immersive-redesign .hero-copy{top:15%;width:90%}.immersive-redesign .hero-copy>.eyebrow{font-size:9px;letter-spacing:.07em}
+  .immersive-redesign .hero-copy h1{font-size:15.5vw;letter-spacing:-.06em;margin-top:20px}.immersive-redesign .hero-copy h1 em{padding-left:10vw}.immersive-redesign .hero-copy h1 .founder-line{padding-left:0;font-size:.5em;max-width:320px}
+  .immersive-redesign .hero-description{font-size:15px;line-height:1.6;max-width:290px;margin-top:18px}.immersive-redesign .hero-work{font-size:14px;margin-top:5px}
+  .immersive-redesign .founder-image{width:109%;right:-15%;bottom:12%}.immersive-redesign .founder-image img{filter:saturate(.65) brightness(.78)}.immersive-redesign .founder-caption{bottom:20%;font-size:9px}
+  .immersive-redesign .founder-portraits{bottom:14%;height:37%}.immersive-redesign .hero-bottom{bottom:12%}.immersive-redesign .chapter-mark{font-size:9px}
+  .immersive-redesign .identity-scene{padding:17vh 7vw 12vh}.immersive-redesign .identity-scene>.eyebrow{font-size:9px;letter-spacing:.07em}
+  .immersive-redesign .studio-statement{font-size:14vw;margin-top:25px;letter-spacing:-.05em}.studio-statement>em{padding-left:8vw}.immersive-redesign .studio-statement .shared-vision{font-size:.57em;margin-top:20px}
+  .studio-manifesto{font-size:12px;margin-top:22px}.immersive-redesign .identity-bottom{margin-top:24px;gap:16px}.immersive-redesign .identity-bottom p{font-size:14px;line-height:1.65;max-width:100%}.immersive-redesign .service-list{font-size:13px;min-width:0;flex-direction:column;gap:0;margin-top:16px}.immersive-redesign .service-list span{padding:9px 0}
+  .immersive-redesign .project-heading{top:14%}.immersive-redesign .project-heading>.eyebrow{font-size:9px}.immersive-redesign .project-heading p{font-size:25px;margin-top:4px}.work-count{font-size:18px}
+  .immersive-redesign .project-caption{top:53%;bottom:auto;max-width:88%;width:88%}.project-number{display:none}.immersive-redesign .project-caption>.eyebrow{font-size:9px;letter-spacing:.1em}
+  .immersive-redesign .project-caption h2{font-size:37px;margin:8px 0 10px;letter-spacing:-.045em}.immersive-redesign .project-caption p{font-size:14px;line-height:1.55;max-width:100%}.project-status{font-size:10px;margin-top:8px}
+  .immersive-redesign .project-actions{gap:25px}.immersive-redesign .project-actions .text-button{font-size:14px;margin-top:4px;padding:8px 0;min-height:40px}.project-details-button{font-size:12px}
+  .immersive-redesign .project-bottom{bottom:11%;justify-content:flex-end}.immersive-redesign .food-footnote{display:none}.immersive-redesign .project-control{gap:17px;padding:3px 10px}.immersive-redesign .project-control button{min-height:34px;min-width:30px}
+  .immersive-redesign .fallback-project-media{top:25%;width:88%;right:6%;transform:none}.immersive-redesign .fallback-project-media .project-cover{aspect-ratio:2/1}
+  .people-intro{top:16%;left:7%;}.people-intro>.eyebrow{font-size:9px}.immersive-redesign .people-intro h2{font-size:12vw;margin-top:17px;line-height:1.02}
+  .people-stage{width:100%;height:46%;right:-12%;bottom:24%;mask-image:linear-gradient(#000 62%,transparent 100%)}.people-layer{width:75%}
+  .people-information{left:7%;bottom:12%;width:86%}.people-select{gap:23px}.people-select span{font-size:17px}.people-select button{padding:11px 0 13px}.people-select small{font-size:9px;margin-top:6px}
+  .person-description{min-height:98px;padding-top:16px}.person-description h3{font-size:17px;max-width:100%}.person-description p{font-size:14px;line-height:1.5;margin-top:7px;max-width:100%}
+  .immersive-redesign .contact-scene{padding:22vh 7vw 12vh}.immersive-redesign .contact-scene>.eyebrow{font-size:10px}.immersive-redesign .contact-scene h2{font-size:13.2vw;line-height:1.06;letter-spacing:-.055em;margin-top:24px}
+  .conversation-note{font-size:15px;max-width:275px;margin-top:26px}.conversation-actions{flex-direction:column;align-items:flex-start;gap:10px;margin-top:25px}.conversation-primary{font-size:15px;padding:17px 20px;gap:30px}.conversation-actions .text-button{font-size:14px}
+  .immersive-redesign .contact-footer{bottom:13%;font-size:10px;gap:10px;padding-top:18px}.immersive-redesign .contact-footer span:nth-of-type(2){display:none}.immersive-redesign .contact-footer button{margin-left:auto;font-size:10px}
+}
+@media(max-width:767px) and (max-height:710px){
+  .immersive-redesign .hero-copy h1{font-size:14vw;margin-top:15px}.immersive-redesign .hero-description{font-size:14px;margin-top:12px}.immersive-redesign .founder-image{bottom:11%;width:95%;right:-12%}.immersive-redesign .founder-caption{display:none}
+  .immersive-redesign .project-caption{top:50%}.immersive-redesign .project-caption h2{font-size:31px}.immersive-redesign .project-caption p{font-size:13px;line-height:1.5}.project-status{font-size:9px}.immersive-redesign .project-actions .text-button{font-size:13px;margin-top:0}.immersive-redesign .project-control{padding:0 8px}
+  .immersive-redesign .studio-statement{font-size:12vw;margin-top:16px}.studio-manifesto{margin-top:15px}.immersive-redesign .identity-bottom{margin-top:16px;gap:10px}.immersive-redesign .identity-bottom p{font-size:13px}.immersive-redesign .service-list span{padding:7px 0}
+  .person-description{min-height:84px}.person-description h3{font-size:16px}.person-description p{font-size:13px}.conversation-note{margin-top:20px}.conversation-actions{margin-top:18px}
+}
+@media(prefers-reduced-motion:reduce){.hero-first-line,.hero-second-line,.studio-statement>span,.studio-statement>em{transform:none!important}.people-layer{transition:none!important}}

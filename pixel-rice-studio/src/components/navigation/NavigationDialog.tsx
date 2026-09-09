@@ -14,7 +14,7 @@ export default function NavigationDialog({close,navigate}:{close:()=>void;naviga
   const visit=(id:SectionId)=>{scrollEngine.unlock();navigate(id);};
   return <dialog ref={dialog} className="menu-panel" aria-label="Navigation" onCancel={event=>{event.preventDefault();close();}}>
     <span className="eyebrow">TAKE YOUR PICK</span>
-    <nav>{([['founder','The studio'],['projects','Selected work'],['reviews','Good company'],['contact','Let’s talk']] as const).map(([id,label],i)=><button key={id} onClick={()=>visit(id)}><span>0{i+1}</span>{label}<i>↗</i></button>)}</nav>
+    <nav>{([['founder','The studio'],['projects','Selected work'],['reviews','People'],['contact','Let’s talk']] as const).map(([id,label],i)=><button key={id} onClick={()=>visit(id)}><span>0{i+1}</span>{label}<i>↗</i></button>)}</nav>
     <span className="menu-tagline">{site.tagline}</span>
     <button className="round-button menu-close" onClick={close} aria-label="Close navigation">×</button>
   </dialog>;
