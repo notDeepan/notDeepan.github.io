@@ -1,6 +1,6 @@
 # Pixel Rice — reference-led review revision
 
-This prototype lives only on `feature/immersive-redesign`. The first visual proposal was rejected; this revision follows the supplied cinematic boards more closely. Production has not been merged or deployed.
+The user approved this revision, including the portraits embedded in glass, for production on 2026-09-11. The approved branch was merged into main. The notes below document the review and implementation; the live release uses https://notdeepan.github.io/pixel-rice/.
 
 ## What changed in this revision
 
@@ -30,7 +30,7 @@ npm run build:pages
 node scripts/preview-pages.mjs 3004
 ```
 
-Open [the local review](http://127.0.0.1:3004/pixel-rice/). This address works on the machine running the preview. The production site remains unchanged.
+Open [the local review](http://127.0.0.1:3004/pixel-rice/). This address works on the machine running the preview. The production version is available at https://notdeepan.github.io/pixel-rice/.
 
 For development: `npm run dev -- --port 3003`.
 
@@ -68,3 +68,4 @@ The earlier Graphify scan remains in the ignored local `artifacts/redesign-analy
 ![Phone contact](review/mobile-390-contact-v2.png)
 
 The earlier unversioned screenshots remain in `review/` for comparison; they show the rejected first prototype.
+
