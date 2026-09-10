@@ -11,7 +11,7 @@ type MaterialSceneOptions = { width: number; height: number; mobile: boolean; re
 type RiceField = { mesh: THREE.Mesh; material: THREE.ShaderMaterial };
 
 const TAU = Math.PI * 2;
-const CHARCOAL = '#11130f';
+const CHARCOAL = '#080b0c';
 const UP = new THREE.Vector3(0, 1, 0);
 
 /** Small seeded generator: every reload and screenshot receives the same composition. */
@@ -34,28 +34,35 @@ function riceField(count: number, seed: number, kind: 'edges' | 'cloud' | 'galle
   const data = new Float32Array(count * 4);
   const colors = new Float32Array(count * 3);
   const ivory = new THREE.Color('#e2d5b1');
-  const olive = new THREE.Color('#8b9673');
-  const amber = new THREE.Color('#d19f5c');
+  const olive = new THREE.Color('#b5aea1');
+  const amber = new THREE.Color('#c9ae88');
   const shade = new THREE.Color();
   for (let i = 0; i < count; i++) {
     const angle = rnd() * TAU;
-    const y = kind === 'gallery' ? 4 - rnd() * 59 : (rnd() - .5) * 13;
-    let x: number, z: number;
-    if (kind === 'edges') {
-      x = (rnd() > .5 ? 1 : -1) * (3.2 + rnd() * 7.8);
-      z = -2 - rnd() * 11;
-    } else if (kind === 'halo') {
-      const radius = 2.3 + rnd() * 1.7;
-      x = Math.cos(angle) * radius;
-      z = Math.sin(angle) * radius;
-    } else {
-      // Loose ingredient dust, never strands or a double helix.
-      const radius = 2.1 + Math.sqrt(rnd()) * (kind === 'gallery' ? 11 : 7);
-      x = Math.cos(angle) * radius;
-      z = Math.sin(angle) * radius;
+    let x:number,y:number,z:number;
+    if(kind==='gallery'){
+      // Rice wreaths share each real project's camera frame, so imagery emerges inside the field.
+      const peak=PROJECT_WINDOWS[i%PROJECT_WINDOWS.length].peak;
+      const eye=cameraPoint(peak,new THREE.Vector3()),center=cameraTarget(peak,new THREE.Vector3());
+      const forward=center.clone().sub(eye).normalize(),right=forward.clone().cross(UP).normalize(),up=right.clone().cross(forward);
+      const radius=2.45+Math.pow(rnd(),4)*1.7+Math.sin(angle*3)*.16;
+      center.addScaledVector(right,-1.65+Math.cos(angle)*radius*1.3).addScaledVector(up,Math.sin(angle)*radius*.85).addScaledVector(forward,(rnd()-.5)*2.4);
+      x=center.x;y=center.y;z=center.z;
+    }else if(kind==='edges'){
+      const radius=4+Math.pow(rnd(),2)*3;
+      x=2.5+Math.cos(angle)*radius*1.35;y=Math.sin(angle)*radius*.8;z=-1+rnd()*8;
+      if(seed===71&&x>-4&&x<.5&&y>-1.8&&y<2.7)x+=6;
+    }else{
+      // Flattened toroidal stream: dense inner curve, loose edge, empty center for type.
+      const radius=2.7+Math.pow(rnd(),4)*1.7+Math.sin(angle*3)*.2;
+      x=Math.cos(angle)*radius*(kind==='halo'?1.45:1.12);
+      y=Math.sin(angle)*radius*.92;
+      z=Math.sin(angle*2)*.65+(rnd()-.5)*1.6;
+      if(kind==='cloud'){x-=2.1;y+=Math.sin(angle)*.35;}
     }
-    offsets.set([x, y, z], i * 3);
-    data.set([rnd() * TAU, rnd() * TAU, .62 + rnd() * .8, rnd()], i * 4);
+    offsets.set([x,y,z],i*3);
+    const foreground=kind==='edges'&&seed===71&&i%17===0;
+    data.set([rnd()*TAU,rnd()*TAU,foreground?1.8+rnd()*1.8:.26+rnd()*.85,rnd()],i*4);
     shade.copy(ivory).lerp(i % 11 === 0 ? amber : olive, rnd() * .42);
     colors.set([shade.r, shade.g, shade.b], i * 3);
   }
@@ -66,7 +73,7 @@ function riceField(count: number, seed: number, kind: 'edges' | 'cloud' | 'galle
   const material = new THREE.ShaderMaterial({
     uniforms: {
       uTime: { value: 0 }, uVelocity: { value: 0 }, uMotion: { value: 1 },
-      uBurst: { value: 0 }, uBurstY: { value: 0 }, uOpacity: { value: kind === 'edges' ? .48 : .7 },
+      uBurst: { value: 0 }, uBurstY: { value: 0 }, uOpacity: { value: kind === 'edges' ? .78 : .94 },
       uFog: { value: new THREE.Color(CHARCOAL) },
     },
     vertexShader: `
@@ -130,11 +137,11 @@ function riceField(count: number, seed: number, kind: 'edges' | 'cloud' | 'galle
 }
 
 function lighting(scene: THREE.Scene) {
-  scene.add(new THREE.HemisphereLight('#fff0dc', '#343b2c', .75));
+  scene.add(new THREE.HemisphereLight('#fff0dc', '#252c32', .55));
   const key = new THREE.DirectionalLight('#ffecd3', 2.4);
   key.position.set(4, 10, 6);
   scene.add(key);
-  const rim = new THREE.DirectionalLight('#b4c797', 1.8);
+  const rim = new THREE.DirectionalLight('#d3dbe2', 1.6);
   rim.position.set(-6, 4, -4);
   scene.add(rim);
   const fill = new THREE.DirectionalLight('#fff6e2', .7);
@@ -170,15 +177,38 @@ export function createMaterialScenes(engine: ScrollEngine, options: MaterialScen
     const field = riceField(options.mobile ? Math.floor(count * .55) : count, 71 + index * 183, kind);
     scene.add(field.mesh);
     fields.push(field);
-    const sculpture=index===1?materialIngredient(2,options.mobile):null;
-    if(sculpture){lighting(scene);scene.add(sculpture.group);sculpture.group.position.set(options.mobile?2.3:3.8,.5,-.8);sculpture.group.scale.setScalar(options.mobile?.65:1.35);}
+    const sculpture=index===0?materialIngredient(0,options.mobile):index===1?materialIngredient(2,options.mobile):null;
+    if(sculpture){
+      lighting(scene);scene.add(sculpture.group);
+      sculpture.group.position.set(index===0?(options.mobile?4.8:8.4):(options.mobile?-1.4:-2.3),index===0?-1.4:.1,index===0?-1:-.4);
+      sculpture.group.scale.setScalar(index===0?1:options.mobile?.8:1.3);
+    }
+    const entryField=index===0?riceField(options.mobile?760:2200,254,'cloud'):null;
+    if(entryField){scene.add(entryField.mesh);fields.push(entryField);}
+    if(options.mobile&&kind==='halo')field.mesh.scale.x=.64;
+    if(options.mobile&&kind==='edges')field.mesh.scale.x=.48;
     let elapsed = 0;
     return {
       scene, camera,
       update(dt: number) {
         const motion = reduced() ? 0 : 1;
         elapsed += Math.min(dt, .1) * motion;
-        if(sculpture){const progress=engine.progressOf('identity');sculpture.group.rotation.set(.12,(-.45+progress*.9)*motion,.1);sculpture.fade(1);}
+        const heroProgress=engine.progressOf('founder');
+        const entry=THREE.MathUtils.smoothstep(heroProgress,.34,.62)*motion;
+        const vision=THREE.MathUtils.smoothstep(engine.progressOf('identity'),.43,.62)*motion;
+        if(sculpture){
+          sculpture.group.rotation.y=(index===0?-.2:-.25+engine.progressOf('identity')*.45)*motion;
+          sculpture.fade(index===0?1-entry:1-vision*.85);
+        }
+        if(entryField){
+          entryField.material.uniforms.uOpacity.value=entry*.95;
+          entryField.material.uniforms.uTime.value=elapsed;
+          entryField.material.uniforms.uVelocity.value=engine.velocity;
+          entryField.mesh.rotation.z=entry*.13;
+          if(options.mobile)entryField.mesh.scale.set(.72,1,1);
+        }
+        if(index===1){field.mesh.position.x=vision*2.1;field.mesh.rotation.z=vision*.18;}
+        if(index===5||index===4){field.mesh.rotation.z=engine.progressOf(index===5?'contact':'brand')*.12*motion;}
         field.material.uniforms.uTime.value = elapsed;
         field.material.uniforms.uMotion.value = motion;
         field.material.uniforms.uVelocity.value = engine.velocity;
@@ -189,29 +219,18 @@ export function createMaterialScenes(engine: ScrollEngine, options: MaterialScen
     };
   };
 
-  const founder = atmosphere(0, 'edges', 90);
-  const identity = atmosphere(1, 'cloud', 190);
+  const founder = atmosphere(0, 'edges', 200);
+  const identity = atmosphere(1, 'cloud', 2200);
   const { scene: projectScene, camera: projectCamera } = makeScene();
   lighting(projectScene);
   projectScene.fog = new THREE.FogExp2(CHARCOAL, .036);
-  const projectField = riceField(options.mobile ? 340 : 1100, 202609, 'gallery');
+  const projectField = riceField(options.mobile ? 1200 : 2800, 202609, 'gallery');
   projectScene.add(projectField.mesh);
   fields.push(projectField);
   const target=new THREE.Vector3();
   const position=new THREE.Vector3();
   const materialCentres:THREE.Vector3[]=[];
-  const ingredients=portfolioProjects.map((_,i)=>{
-    const peak=Math.min(.975,PROJECT_WINDOWS[i].peak+.084);
-    cameraPoint(peak,position);cameraTarget(peak,target);
-    const sculpture=materialIngredient(i,options.mobile);
-    sculpture.group.position.copy(target);
-    sculpture.group.lookAt(position);
-    sculpture.group.rotateZ(i%2===0?.15:-.12);
-    sculpture.group.scale.setScalar(options.mobile?.62:1.1);
-    materialCentres.push(target.clone());
-    projectScene.add(sculpture.group);
-    return {...sculpture,peak,rotation:sculpture.group.rotation.clone()};
-  });
+  portfolioProjects.forEach((_,i)=>materialCentres.push(cameraTarget(PROJECT_WINDOWS[i].peak,new THREE.Vector3())));
 
   let disposed = false;
   const textureLoader = new THREE.TextureLoader();
@@ -229,10 +248,12 @@ export function createMaterialScenes(engine: ScrollEngine, options: MaterialScen
       float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
       void main(){
         vec2 uv=(vUv-.5)/(1.+(1.-uFocal)*uCrop)+.5;
-        uv.x=(uv.x-.5)*min(1.,1.6/uImageAspect)+.5;
-        uv.y=(uv.y-.5)*min(1.,uImageAspect/1.6)+.5;
+        uv.x=(uv.x-.5)*max(1.,1.6/uImageAspect)+.5;
+        uv.y=(uv.y-.5)*max(1.,uImageAspect/1.6)+.5;
         uv.x+=sin(uv.y*8.)*uDistortion*.012;
         vec3 c=texture2D(uMap,clamp(uv,0.,1.)).rgb;
+        float inside=step(0.,uv.x)*step(uv.x,1.)*step(0.,uv.y)*step(uv.y,1.);
+        c=mix(vec3(.0025,.0034,.0037),c,inside);
         float axis=mix(vUv.x,vUv.y,uAxis);
         float grain=hash(floor(vUv*vec2(240.,140.)))*.045;
         float mask=1.-smoothstep(uFocal-.055,uFocal+.055,axis*.92+grain);
@@ -243,10 +264,11 @@ export function createMaterialScenes(engine: ScrollEngine, options: MaterialScen
     const mesh = new THREE.Mesh(geometry,material);
     cameraPoint(PROJECT_WINDOWS[index].peak,position);cameraTarget(PROJECT_WINDOWS[index].peak,target);
     const right=new THREE.Vector3().subVectors(target,position).cross(UP).normalize();
-    mesh.position.copy(target).addScaledVector(right, options.mobile ? 0 : 2.0);
-    if(options.mobile)mesh.position.y+=1.0;
-    mesh.lookAt(position);mesh.rotateZ(PROJECT_MOTION[index].tilt);
-    if(options.mobile)mesh.scale.setScalar(.52);
+    mesh.position.copy(target).addScaledVector(right, options.mobile ? 0 : -2.0);
+    if(options.mobile)mesh.position.y+=1.4;
+    mesh.lookAt(position);mesh.rotateY(-.14);mesh.rotateZ(PROJECT_MOTION[index].tilt*.45);
+    if(options.mobile)mesh.scale.setScalar(Math.min(.72,.52*width/390));
+    else mesh.scale.setScalar(.9);
     mesh.visible=false;projectScene.add(mesh);
     return {mesh,material,started:false,load(){
       if(this.started)return;this.started=true;
@@ -283,12 +305,6 @@ export function createMaterialScenes(engine: ScrollEngine, options: MaterialScen
       projectField.material.uniforms.uVelocity.value = engine.velocity;
       projectField.material.uniforms.uBurst.value = burst;
       projectField.material.uniforms.uBurstY.value = materialCentres[burstIndex].y;
-      ingredients.forEach(ingredient=>{
-        const opacity=1-THREE.MathUtils.smoothstep(Math.abs(p-ingredient.peak),.018,.065);
-        ingredient.fade(opacity);
-        ingredient.group.rotation.y=ingredient.rotation.y+(p-ingredient.peak)*2.5*motion;
-        ingredient.group.rotation.z=ingredient.rotation.z+(p-ingredient.peak)*1.4*motion;
-      });
       projectPlanes.forEach((plane,index)=>{
         const distance=Math.abs(p-PROJECT_WINDOWS[index].peak);
         const focus=1-THREE.MathUtils.smoothstep(distance,.035,.078);
@@ -299,9 +315,9 @@ export function createMaterialScenes(engine: ScrollEngine, options: MaterialScen
       });
     },
   };
-  const reviews = atmosphere(3, 'edges', 160);
-  const brand = atmosphere(4, 'halo', 560);
-  const contact = atmosphere(5, 'edges', 75);
+  const reviews = atmosphere(3, 'edges', 330);
+  const brand = atmosphere(4, 'halo', 1550);
+  const contact = atmosphere(5, 'halo', 1550);
   const sections = [founder, identity, projects, reviews, brand, contact];
 
   return {

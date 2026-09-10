@@ -3,9 +3,8 @@ import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { scrollEngine, ScrollEngine } from '@/lib/scrollEngine';
 import { PROJECT_WINDOWS, SECTIONS, type SectionId } from '@/lib/constants';
-import { founders, site } from '@/data/site';
+import { site } from '@/data/site';
 import { projects } from '@/data/projects';
-import { assetPath } from '@/lib/assetPath';
 import PeopleDepth from './PeopleDepth';
 import { PRESENTATION } from '@/lib/presentation';
 import ContactDialog from './contact/ContactDialog';
@@ -23,10 +22,10 @@ export default function Studio() {
   const layerRefs=useRef<Array<HTMLElement>>([]);
   const projectCaption=useRef<HTMLDivElement>(null);
   const projectLink=useRef<HTMLAnchorElement>(null);
-  const lastFrame=useRef({section:-1,project:-1,founder:-2});
+  const lastFrame=useRef({section:-1,project:-1});
   const burst=useRef({value:0,index:0});
   const [webgl,setWebgl]=useState<boolean|null>(null);
-  const [section,setSection]=useState(0),[projectIndex,setProjectIndex]=useState(0),[founderIndex,setFounderIndex]=useState(-1);
+  const [section,setSection]=useState(0),[projectIndex,setProjectIndex]=useState(0);
   const [menu,setMenu]=useState(false),[contact,setContact]=useState(false),[projectOpen,setProjectOpen]=useState<number|null>(null);
   const [simple,setSimple]=useState(false);
   const [systemCalm,setSystemCalm]=useState(false);
@@ -49,8 +48,6 @@ export default function Studio() {
     }
     if(maximum>.2 && lastFrame.current.project!==closest){lastFrame.current.project=closest;setProjectIndex(closest);}
     const ip=ScrollEngine.stage(e.progressOf('founder'),.12,.9);
-    const fi=founders.findIndex(f=>ip>=f.range[0] && ip<f.range[1]);
-    if(lastFrame.current.founder!==fi){lastFrame.current.founder=fi;setFounderIndex(fi);}
     const aspect=window.innerWidth/window.innerHeight,slant=-.099*aspect;
     const cutLeft=(1-e.transition)*(1-slant)*100,cutRight=cutLeft+slant*100;
     layerRefs.current.forEach((el,i)=>{
@@ -63,9 +60,14 @@ export default function Studio() {
     if(overlay.current){
       overlay.current.style.setProperty('--progress',String(e.overall));
       overlay.current.style.setProperty('--hero-drift',String(e.reducedMotion?0:ip));
+      const grainEntry=e.reducedMotion?0:ScrollEngine.stage(ip,.26,.54);
+      overlay.current.style.setProperty('--grain-entry',String(grainEntry));
+      const hero=layerRefs.current[0]?.querySelector<HTMLElement>('.hero-copy');
+      if(hero)hero.inert=grainEntry>.95;
+      overlay.current.style.setProperty('--vision-entry',String(e.reducedMotion?0:ScrollEngine.stage(e.progressOf('identity'),.43,.62)));
       overlay.current.style.setProperty('--studio-progress',String(e.reducedMotion?1:ScrollEngine.stage(e.progressOf('identity'),.1,.7)));
       overlay.current.style.setProperty('--people-progress',String(e.reducedMotion?0:e.progressOf('reviews')));
-      overlay.current.style.setProperty('--project-reveal',String(e.reducedMotion?1:maximum));
+      overlay.current.style.setProperty('--project-reveal',String(e.reducedMotion?1:ScrollEngine.stage(maximum,.05,.4)));
       overlay.current.style.setProperty('--project-progress',String(p));
       overlay.current.style.setProperty('--takeover',String(ScrollEngine.stage(ip,.88,1)));
       overlay.current.style.setProperty('--pointer-x',`${e.pointer.x*8}px`);
@@ -108,12 +110,12 @@ export default function Studio() {
     const draw=(time:number)=>{const dt=(time-last)/1000;scrollEngine.update(dt);last=time;onFrame(dt);frame=requestAnimationFrame(draw);};
     frame=requestAnimationFrame(draw);return ()=>cancelAnimationFrame(frame);
   },[calm,onFrame]);
-  const go=(id:SectionId)=>{setMenu(false);scrollEngine.scrollToSection(id,true);root.current?.focus({preventScroll:true});};
+  const go=(id:SectionId)=>{setMenu(false);if(id==='projects')scrollEngine.scrollToProgress('projects',PROJECT_WINDOWS[0].peak,true);else scrollEngine.scrollToSection(id,true);root.current?.focus({preventScroll:true});};
   const toProject=(index:number)=>{scrollEngine.scrollToProgress('projects',PROJECT_WINDOWS[index].peak,true);root.current?.focus({preventScroll:true});};
 
   return <main className={`studio immersive-redesign ${calm?'simple-mode':''}`} style={{'--motion-micro':`${PRESENTATION.micro}ms`,'--motion-hover':`${PRESENTATION.hover}ms`,'--motion-reveal':`${PRESENTATION.reveal}ms`,'--motion-chapter':`${PRESENTATION.chapter}ms`,'--motion-ease':PRESENTATION.ease} as React.CSSProperties}>
     <a className="skip-link" href="#projects" onClick={e=>{e.preventDefault();go('projects');}}>Skip to selected work</a>
-    {webgl&&!calm ? <ExperienceCanvas onFrame={onFrame} burst={burst} projectLink={projectLink} onUnavailable={()=>setWebgl(false)}/> : <div className="ambient-fallback" aria-hidden="true"><span/><span/><span/></div>}
+    {webgl&&!calm ? <ExperienceCanvas onFrame={onFrame} burst={burst} projectLink={projectLink} onUnavailable={()=>setWebgl(false)}/> : <div className="ambient-fallback" aria-hidden="true">{Array.from({length:42},(_,i)=><i key={i} className="still-grain" style={{left:`${(i*37.7)%100}%`,top:`${(i*23.3)%100}%`,rotate:`${i*47}deg`,opacity:.12+(i%5)*.045}}/>)}</div>}
     <div id="scroll-root" ref={root} tabIndex={0} aria-label="Explore Pixel Rice. Scroll or use the arrow keys.">{SECTIONS.map(s=><div key={s.id} data-section={s.id} style={{height:`${s.units*100}svh`}}/>)}
       {webgl&&!calm && <a ref={projectLink} className="project-artwork-link" hidden href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.title} website (opens in a new tab)`}/>}
       {calm && section===2 && <div className="fallback-project-media"><a href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.title} website (opens in a new tab)`}><ProjectMedia project={project}/></a></div>}
@@ -126,39 +128,25 @@ export default function Studio() {
       </header>
 
       <section className="scene-overlay founder-scene" data-scene="founder" aria-label="Meet the studio">
-        <div className="hero-light" aria-hidden="true"/><span className="hero-coordinate" aria-hidden="true">DESIGN / TECHNOLOGY / PEOPLE</span>
-        <div className={`founder-image ${founderIndex>=0?'has-focus':''}`} aria-hidden={founderIndex>=0}>
-          <img src={assetPath('/assets/founders/founders.webp')} alt="Pixel Rice founders: Deepan, Junes and Shikhar" fetchPriority="high" width="1536" height="1024"/>
-        </div>
-        <div className={`founder-portraits ${founderIndex>=0?'is-focused':''}`} aria-hidden={founderIndex<0}>
-          {founders.map((founder,index)=>{
-            const active=index===founderIndex;
-            const others=founders.map((_,i)=>i).filter(i=>i!==founderIndex);
-            const slot=active?'center':others.indexOf(index)===0?'left':'right';
-            return <img key={founder.name} className={`founder-person ${active?'is-active':''}`} data-slot={slot}
-              src={assetPath(`/assets/founders/${founder.name.toLowerCase()}-portrait.webp`)} alt={`${founder.name}, ${founder.role}`}
-              width="1024" height="1536" decoding="async"/>;
-          })}
-        </div>
+        <div className="hero-light" aria-hidden="true"/>
         <div className="hero-copy">
-          <span className="eyebrow"><span className="small-star">✳</span> A SHARED APPETITE FOR THE UNEXPECTED</span>
-          <h1 className={founderIndex>=0?'has-founder':''}>{founderIndex<0?<><span className="hero-first-line">Small grains.</span><em className="hero-second-line">Big ideas.</em></>:<><span>{founders[founderIndex].name}<sup>{founders[founderIndex].role}</sup></span><em className="founder-line">{founders[founderIndex].line}</em></>}</h1>
-          <p className="hero-description">{founderIndex<0?site.description:founders[founderIndex].description}</p>
-          <button className="text-button hero-work interactive" onClick={()=>toProject(0)}>A taste of our work <span>↗</span></button>
+          <span className="eyebrow">A SHARED APPETITE<br/>FOR THE UNEXPECTED</span>
+          <h1><span className="hero-first-line">Small<br/>grains.</span><span className="hero-second-line">Big ideas.</span></h1>
+          <p className="sr-only">{site.description}</p>
+          <button className="text-button hero-work interactive" onClick={()=>toProject(0)}>Explore our work <span>↗</span></button>
         </div>
-        <div className="founder-caption"><span>THREE MINDS. ONE STUDIO.</span><div>Deepan <i>·</i> Junes <i>·</i> Shikhar</div></div>
-        <div className="hero-bottom"><button className="scroll-invite interactive" onClick={()=>scrollEngine.scrollToProgress('founder',.34)}><span className="scroll-circle">↓</span><span>SCROLL FOR<br/>THE GOOD STUFF</span></button><p>Good things start<br/>with a little curiosity.</p><span className="chapter-mark">THE STUDIO <i>01 / 06</i></span></div>
-        <div className="founder-takeover" aria-hidden="true">pixel rice<span>DESIGN · BUILD · GROW</span></div>
+        <div className="grain-field-copy"><span className="eyebrow">CURIOSITY<br/>DESIGN<br/>TECHNOLOGY<br/>PEOPLE<br/>A BRIGHTER TOMORROW</span><span className="mini-rule"/><p>Small grains.<br/>A world of possibilities.</p></div>
+        <div className="hero-bottom"><button className="scroll-invite interactive" onClick={()=>scrollEngine.scrollToProgress('founder',.6)}><span className="scroll-circle">↓</span><span>SCROLL<br/>TO EXPLORE</span></button><span className="chapter-mark">THE STUDIO <i>01 / 06</i></span></div>
       </section>
 
       <section className="scene-overlay identity-scene" data-scene="identity" aria-label="Our approach">
-        <span className="eyebrow">DIFFERENT INGREDIENTS. ONE SHARED VISION.</span>
-        <h2 className="studio-statement"><span>Different</span><em>ingredients.</em><span className="shared-vision">One shared vision.</span></h2><p className="studio-manifesto">Thoughtfully made. Unexpectedly good.</p>
-        <div className="identity-bottom"><p>A small independent studio at the intersection of design and technology. We bring the curiosity. You bring the ambition. Together, we make something worth experiencing.</p><div className="service-list"><span>Brand & digital design</span><span>Websites & development</span><span>Interactive experiences</span></div></div>
+        <div className="ingredients-copy"><h2 className="studio-statement">Different<br/>ingredients.</h2><span className="mini-rule"/><p className="material-index">TYPE<br/>IMAGE<br/>MOTION<br/>CODE<br/>IDEAS<br/>PEOPLE</p><p className="studio-manifesto">Thoughtfully made.<br/>Unexpectedly good.</p></div>
+        <div className="vision-copy"><h2>One<br/>shared<br/>vision.</h2><span className="mini-rule"/></div>
+        <div className="identity-bottom"><p>A small independent studio at the intersection of design and technology. We bring the curiosity. You bring the ambition.</p><div className="service-list"><span>Brand & digital design</span><span>Websites & development</span><span>Interactive experiences</span></div></div>
       </section>
 
       <section id="projects" className="scene-overlay projects-scene" data-scene="projects" aria-label="Selected projects">
-        <div className="project-heading"><span className="eyebrow">A FEW THINGS WE’VE MADE</span><p>Selected <em>work.</em><span className="work-count">01—05</span></p></div>
+        <div className="project-heading"><span className="eyebrow">A FEW THINGS WE’VE MADE</span><span className="work-count">01—05</span></div>
         {project && <div ref={projectCaption} className="project-caption" data-project={projectIndex}>
           <span className="project-number" aria-hidden="true">{String(projectIndex+1).padStart(2,'0')}</span><span className="eyebrow">{project.category}</span><h2><a className="interactive" href={project.liveUrl} target="_blank" rel="noopener noreferrer">{project.title}<span aria-hidden="true">↗</span><span className="sr-only"> website (opens in a new tab)</span></a></h2>
           <p>{project.description}</p><span className="project-status">{project.status}</span><div className="project-actions"><a className="text-button interactive" href={project.liveUrl} target="_blank" rel="noopener noreferrer">Visit website <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a><button className="project-details-button interactive" onClick={()=>setProjectOpen(projectIndex)}>Project details</button></div>
@@ -171,7 +159,7 @@ export default function Studio() {
       <section className="scene-overlay brand-scene" data-scene="brand" aria-label="Pixel Rice identity"><span className="eyebrow">SMALL DETAILS. A WORLD OF DIFFERENCE.</span><RiceMark className="brand-mark"/><h2>pixel rice</h2><p>{site.tagline}</p></section>
 
       <section className="scene-overlay contact-scene" data-scene="contact" aria-label="Contact Pixel Rice">
-        <span className="eyebrow">GOOD PEOPLE. GOOD CHEMISTRY.</span><h2>Let’s make<br/><em>something good.</em></h2><p className="conversation-note">The best work starts with a good conversation.</p><div className="conversation-actions"><button className="conversation-primary interactive" onClick={()=>setContact(true)}>Start a conversation <span>↗</span></button><button className="text-button interactive" onClick={()=>toProject(0)}>See our work <span>→</span></button></div>
+        <span className="eyebrow">GOOD PEOPLE. GOOD CHEMISTRY.</span><h2>Let’s make<br/>something good.</h2><p className="conversation-note">The best work starts with a good conversation.</p><div className="conversation-actions"><button className="conversation-primary interactive" onClick={()=>setContact(true)}>Start a conversation <span>↗</span></button><button className="text-button interactive" onClick={()=>toProject(0)}>See our work <span>→</span></button></div>
         <div className="contact-footer"><RiceMark/><span>© {new Date().getFullYear()} Pixel Rice</span><span>Made with a little extra flavour.</span><button className="interactive" onClick={()=>go('founder')}>Back to the top ↑</button></div>
       </section>
 

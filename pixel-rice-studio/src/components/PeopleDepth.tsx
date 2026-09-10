@@ -9,7 +9,7 @@ export default function PeopleDepth() {
   return <div className="people-depth">
     <div className="people-intro"><span className="eyebrow">THE PEOPLE BEHIND THE PIXELS</span><h2>Three minds.<br/><em>One studio.</em></h2></div>
     <div className="people-stage" aria-hidden="true">
-      {founders.map((founder, i) => <div key={founder.name} className={`people-layer ${i === active ? 'is-active' : ''}`} style={{'--person-offset': i === active ? 0 : founders.map((_, index) => index).filter(index => index !== active).indexOf(i) === 0 ? -1 : 1} as React.CSSProperties}>
+      {founders.map((founder, i) => <div key={founder.name} className={`people-layer ${i === active ? 'is-active' : ''}`} style={{'--person-offset': i-1} as React.CSSProperties}>
         <img src={assetPath(`/assets/founders/${founder.name.toLowerCase()}-portrait.webp`)} alt="" width="1024" height="1536" loading="lazy" decoding="async"/>
       </div>)}
     </div>

@@ -1,17 +1,19 @@
-# Pixel Rice immersive redesign — review prototype
+# Pixel Rice — reference-led review revision
 
-This implementation lives on `feature/immersive-redesign`. It is ready for visual review; no merge or production deployment has been performed.
+This prototype lives only on `feature/immersive-redesign`. The first visual proposal was rejected; this revision follows the supplied cinematic boards more closely. Production has not been merged or deployed.
 
-## What changed
+## What changed in this revision
 
-- Replaced literal food models with a shared family of paper, stone, glass and metal compositions, using the existing renderer and descending camera path.
-- Preserved the rice instancing system with a lighter density, coordinated studio typography and project masks, plus restrained project-specific distortion/cropping.
-- Added a dedicated People section. Mouse hover, keyboard focus and clicking/tapping each name select that founder; the others recede. The original hero's group and individual portraits remain.
-- Enlarged supporting text, made desktop navigation persistent and simplified the final conversation actions.
-- Added screenshots of four public project websites; preserved Harborside Coffee's existing screenshot. All five projects link directly to their websites. CRM remains excluded. Demo/concept status remains explicit.
-- Added an automatic calm presentation for the OS reduced-motion preference, paused the renderer while the document is hidden and capped mobile rendering resolution. Fixed a cleanup bug that could prevent returning from Simple view to the immersive renderer.
+- Replaced the oversized serif presentation with light, uppercase Manrope, wide tracking and quieter compositions. The navigation logo's markup and original styles remain unchanged.
+- Made the hero a grain-led entry. It develops into a curved grain field on the existing founder timeline. The original team now appears as three staggered portrait planes in People; their original image files are unchanged. Selecting a name with a mouse, keyboard or touch enlarges and emphasizes that person.
+- Restored production section durations: 4 / 1 / 10 / 3 / 1.5 / 2, with the existing 1.05 padding. Retained ScrollEngine, scroll math, descending project camera, focal windows and compositor architecture.
+- Retained the instanced rice geometry, shader spin/drift, velocity response and burst behavior. Repositioned grains into curved fields and project wreaths, with varied scale and density. Increased the field density selectively; phone counts and render resolution remain capped.
+- Replaced the first prototype's frames/slats with a shared stone, thin reflective glass, chrome and paper composition. Stone uses procedural surface detail; glass uses an inexpensive coated transparent material. No new runtime dependency or external material asset was added.
+- Kept the original diagonal scene wipe, but removed its RGB separation and bright flash, and reduced noise/displacement for the quieter material direction. These are shader presentation changes, not changes to scroll timing or progression.
+- Positioned real project imagery on the left and metadata on the right. Image sampling preserves the full screenshot at rest; rice-edged reveals and the existing camera connect each project. Removed unrelated sculptural interludes between projects. Work navigation now lands at the first project's readable focal point.
+- Centered the contact statement and pill CTA within a calm rice ring. Simple view and the OS reduced-motion preference use static rice shapes, complete project imagery, all project links and the same team controls.
 
-## Preview locally
+## Review locally
 
 From `pixel-rice-studio`:
 
@@ -21,40 +23,41 @@ npm run build:pages
 node scripts/preview-pages.mjs 3004
 ```
 
-Open http://127.0.0.1:3004/pixel-rice/ . This is a local review server, not the production website.
+Open [the local review](http://127.0.0.1:3004/pixel-rice/). This address works on the machine running the preview. The production site remains unchanged.
 
-For development, use `npm run dev -- --port 3003`.
+For development: `npm run dev -- --port 3003`.
 
 ## Verification
 
-- TypeScript and production compilation passed. Static export passed with the `/pixel-rice` base path; first-load route JavaScript is 115 kB, with the Three.js scene loaded separately.
-- All 12 existing contact, native-scroll, descending-camera, transition and lifecycle tests passed.
-- Browser checked at 1440×900, 390×844 and 375×667: hero, project navigation, project details, People selection, contact dialog and calm mode. No horizontal document overflow was observed at the tested phone widths.
-- All five website destinations were inspected in the rendered navigation. Clicking the Takao artwork opened its public website in a new tab. Escape closed the project dialog and restored the trigger focus. Tab reached the calm-mode artwork link.
-- Tested Simple view on → off after renderer disposal: canvas removed in Simple view and restored when immersive mode resumes.
-- Static assets loaded successfully under the production-style base path. No WebGL shader errors were observed in browser checks.
-- Logo markup and original logo styles were retained. All four founder image files are unchanged from the branch base.
+- Production-style static build passed under `/pixel-rice/`, including TypeScript validation. Initial route JavaScript is approximately 115 kB; Three.js is loaded separately.
+- All 12 existing contact, motion, descending-camera, transition and lifecycle tests passed.
+- Chromium browser checks covered 1440×900 desktop and touch layouts at 390×844, 375×667 and 652×698. No horizontal document overflow or project-caption/control overlap was found at those sizes.
+- Clicked all five project title links. KAO MING, Sunset Bar, Harborside Coffee, Tide House and Takao Pantry opened their public websites and returned HTTP 200. Links never target repository pages; CRM remains excluded.
+- Checked project dialog Escape/focus restoration, founder selection, contact dialog, native wheel scrolling in both directions over artwork, document endpoints and Simple view off/on renderer recovery.
+- Emulated the OS reduced-motion preference: no canvas, static rice, complete project image and accessible project links. Mobile menus were exercised with touch emulation.
+- No JavaScript or shader errors were observed. Original logo markup and all four founder image files were checked against main; the three visible identities were also compared with the original team image.
 
-Real Safari/iOS hardware, low-end Android performance, a throttled network and the OS preference switch were not exercised in this environment. The preference logic is covered by the existing tests; the equivalent calm presentation was exercised in the browser. No universal FPS claim is made.
+These are local Chromium and touch-emulation checks. Real Safari/iOS, low-end Android GPU behavior and throttled-network performance still require device review. The procedural materials are a prototype interpretation of the boards, not photorealistic replicas. No universal FPS claim is made.
 
-The contact inbox remains unconfigured. The current preview clearly offers to save a project brief and does not claim to send an inquiry.
+The contact inbox is still unconfigured. The static preview offers to save a project brief and does not claim that an inquiry was sent.
 
-## Graphify
+## Architecture and Graphify
 
-The final `src` scan contains 25 files, 131 nodes, 308 relationships and seven communities. No import cycles were detected. Structural extraction reported 20 dangling endpoints and three collapsed relationship pairs; these are recorded as limitations of the generated map, not treated as proven application defects. The local report, graph JSON and interactive HTML are in `artifacts/redesign-analysis/graphify-out/` and are excluded from the site bundle and Git.
+See `reference-revision-plan.md` for the plan written before this revision. The first prototype's `immersive-redesign.md` is retained as historical context; the decisions above supersede its rejected visual direction.
 
-The most connected nodes are `ScrollEngine`, `clamp`, `SectionId`, `assetPath` and `SectionCompositor`. The map links `createMaterialScenes` to the existing camera functions, and `PeopleDepth` to the shared base-path helper. It supports tracing how the single scroll engine coordinates navigation, UI, scenes and compositing.
+The earlier Graphify scan remains in the ignored local `artifacts/redesign-analysis/graphify-out/` folder. It mapped the single scroll engine, scene compositor, project data and components. That snapshot predates this visual revision and is not a fresh validation of the current source.
 
-## Screenshots
+## Current screenshots
 
-Desktop hero:
+![Desktop hero](review/desktop-hero-v2.png)
+![Grain field](review/desktop-field-v2.png)
+![Ingredients](review/desktop-ingredients-v2.png)
+![Work](review/desktop-work-v2.png)
+![People](review/desktop-people-v2.png)
+![Contact](review/desktop-contact-v2.png)
+![Phone hero](review/mobile-390-hero-v2.png)
+![Phone work](review/mobile-390-work-v2.png)
+![Phone people](review/mobile-390-people-v2.png)
+![Phone contact](review/mobile-390-contact-v2.png)
 
-![Desktop hero](review/desktop-hero.png)
-
-Desktop work:
-
-![Desktop work](review/desktop-work.png)
-
-Phone hero:
-
-![Phone hero](review/mobile-hero.png)
+The earlier unversioned screenshots remain in `review/` for comparison; they show the rejected first prototype.
