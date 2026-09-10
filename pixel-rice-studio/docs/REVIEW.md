@@ -13,6 +13,13 @@ This prototype lives only on `feature/immersive-redesign`. The first visual prop
 - Positioned real project imagery on the left and metadata on the right. Image sampling preserves the full screenshot at rest; rice-edged reveals and the existing camera connect each project. Removed unrelated sculptural interludes between projects. Work navigation now lands at the first project's readable focal point.
 - Centered the contact statement and pill CTA within a calm rice ring. Simple view and the OS reduced-motion preference use static rice shapes, complete project imagery, all project links and the same team controls.
 
+## Portraits embedded in the material scene
+
+The three existing glass panels now contain the original Junes, Deepan and Shikhar portraits. The images are mounted in each pane's local coordinates, beneath the reflective surface, with restrained color and soft edge transparency. Face-preserving crops retain the original image proportions. Portrait textures load when the material scene first becomes active and are disposed with that scene. The phone composition is slightly smaller to keep all three portraits in view. The dedicated People section and original image files are unchanged.
+
+![Portraits in glass](review/glass-portraits-desktop.png)
+![Phone portraits in glass](review/glass-portraits-mobile.png)
+
 ## Review locally
 
 From `pixel-rice-studio`:

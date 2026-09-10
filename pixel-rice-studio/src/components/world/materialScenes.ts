@@ -158,6 +158,7 @@ export function createMaterialScenes(engine: ScrollEngine, options: MaterialScen
   const cameras: THREE.PerspectiveCamera[] = [];
   const allScenes: THREE.Scene[] = [];
   const fields: RiceField[] = [];
+  const disposeSculptures:Array<()=>void>=[];
   const makeScene = () => {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(CHARCOAL);
@@ -179,9 +180,9 @@ export function createMaterialScenes(engine: ScrollEngine, options: MaterialScen
     fields.push(field);
     const sculpture=index===0?materialIngredient(0,options.mobile):index===1?materialIngredient(2,options.mobile):null;
     if(sculpture){
-      lighting(scene);scene.add(sculpture.group);
-      sculpture.group.position.set(index===0?(options.mobile?4.8:8.4):(options.mobile?-1.4:-2.3),index===0?-1.4:.1,index===0?-1:-.4);
-      sculpture.group.scale.setScalar(index===0?1:options.mobile?.8:1.3);
+      lighting(scene);scene.add(sculpture.group);disposeSculptures.push(sculpture.dispose);
+      sculpture.group.position.set(index===0?(options.mobile?4.8:8.4):(options.mobile?-1.05:-2.3),index===0?-1.4:.1,index===0?-1:-.4);
+      sculpture.group.scale.setScalar(index===0?1:options.mobile?.6:1.3);
     }
     const entryField=index===0?riceField(options.mobile?760:2200,254,'cloud'):null;
     if(entryField){scene.add(entryField.mesh);fields.push(entryField);}
@@ -190,6 +191,7 @@ export function createMaterialScenes(engine: ScrollEngine, options: MaterialScen
     let elapsed = 0;
     return {
       scene, camera,
+      onWake(){sculpture?.loadPortraits();},
       update(dt: number) {
         const motion = reduced() ? 0 : 1;
         elapsed += Math.min(dt, .1) * motion;
@@ -348,6 +350,7 @@ export function createMaterialScenes(engine: ScrollEngine, options: MaterialScen
     },
     dispose() {
       disposed=true;
+      disposeSculptures.forEach(dispose=>dispose());
       mediaTextures.forEach(texture=>texture.dispose());
       const geometries = new Set<THREE.BufferGeometry>();
       const disposableMaterials = new Set<THREE.Material>();
