@@ -165,3 +165,43 @@
 .ingredients-copy,.preview-copy{isolation:isolate}
 .ingredients-copy:before,.preview-copy:before{content:'';position:absolute;inset:-28px -20px;z-index:-1;pointer-events:none;background:radial-gradient(ellipse,#080b0ce0 15%,#080b0c90 55%,transparent 75%)}
 .immersive-redesign .identity-bottom p{text-shadow:0 1px 5px #080b0c,0 0 16px #080b0c}
+
+/* Reference composition pass: the type and planes hold the frame, not UI ornament. */
+.immersive-redesign .hero-copy{left:33%;top:23%;width:65%;transform:translate3d(calc(var(--hero-drift,0)*-18px),0,0)}
+.immersive-redesign .hero-copy h1{font-size:clamp(48px,6.25vw,100px);font-weight:300;letter-spacing:.1em;line-height:1.12;margin:0}
+.immersive-redesign .hero-second-line{margin-top:.72em}
+.immersive-redesign .hero-copy>.eyebrow{position:fixed;right:6vw;bottom:9vh;text-align:right;font-size:10px;line-height:1.8;letter-spacing:.16em}
+.immersive-redesign .hero-work{font-size:10px;letter-spacing:.16em;margin-top:26px;opacity:.55}
+.immersive-redesign .hero-bottom .chapter-mark{display:none}
+.immersive-redesign .grain-field-copy{left:66%;top:40%}
+.immersive-redesign .grain-field-copy .eyebrow{font-size:11px;letter-spacing:.24em;line-height:2.4}
+.immersive-redesign .grain-field-copy p{display:none}
+.immersive-redesign .vision-copy{top:50%}
+.immersive-redesign .vision-copy h2{font-size:clamp(26px,2.2vw,38px);line-height:1.55;letter-spacing:.2em}
+.immersive-redesign .people-stage{left:13%;top:14%;width:77%;height:59%;perspective:1500px}
+.immersive-redesign .people-layer{width:35%;height:100%;border-color:#b8c2c538;opacity:.88;transform:translateX(calc(-50% + var(--person-offset)*86%)) translateY(calc(var(--person-offset)*15px)) rotateY(-24deg) skewY(-10deg);filter:saturate(.18);background:linear-gradient(125deg,#818c9022,#0b101155 48%,#b6c3cc0a)}
+.immersive-redesign .people-layer.is-active{transform:translateX(calc(-50% + var(--person-offset)*86%)) translateY(calc(var(--person-offset)*15px)) rotateY(-19deg) skewY(-10deg) scale(1.04);opacity:1;filter:saturate(.3);z-index:2}
+.immersive-redesign .people-layer img{position:absolute;width:115%;left:-7.5%;height:148%;top:4%;object-position:50% 0%;transform:skewY(10deg);filter:brightness(.73) contrast(1.07);mask-image:linear-gradient(#000 62%,transparent 94%)}
+.immersive-redesign .people-layer:before{opacity:.54;background-size:37px 53px,61px 79px,83px 103px;mask-image:linear-gradient(135deg,#000,transparent 34%,transparent 60%,#000)}
+.immersive-redesign .people-layer:after{background:linear-gradient(128deg,#cdd8df0a,transparent 43%,#cdd8df18 70%,transparent 72%);box-shadow:inset 0 0 25px #080b0c30}
+.immersive-redesign .people-intro{bottom:13%;left:13%}
+.immersive-redesign .people-intro>.eyebrow{display:none}
+.immersive-redesign .people-intro h2{font-size:clamp(28px,3vw,45px);line-height:1.4;letter-spacing:.13em}
+.immersive-redesign .people-information{right:7%;width:31%;bottom:6%}
+@media(max-width:767px){
+ .immersive-redesign .hero-copy{left:24%;top:28%;width:73%}.immersive-redesign .hero-copy h1{font-size:clamp(35px,9.6vw,65px);line-height:1.18;letter-spacing:.09em}.immersive-redesign .hero-copy>.eyebrow{bottom:12%;right:7%;font-size:9px}.immersive-redesign .hero-work{font-size:9px;margin-top:28px}
+ .immersive-redesign .grain-field-copy{left:54%;top:42%}.immersive-redesign .grain-field-copy .eyebrow{font-size:9px;letter-spacing:.18em}
+ .immersive-redesign .vision-copy{top:45%}.immersive-redesign .vision-copy h2{font-size:26px}
+ .immersive-redesign .people-stage{left:4%;width:92%;top:25%;height:33%}.immersive-redesign .people-layer{width:37%;transform:translateX(calc(-50% + var(--person-offset)*82%)) translateY(calc(var(--person-offset)*9px)) rotateY(-20deg) skewY(-9deg)}.immersive-redesign .people-layer.is-active{transform:translateX(calc(-50% + var(--person-offset)*82%)) translateY(calc(var(--person-offset)*9px)) rotateY(-14deg) skewY(-9deg) scale(1.03)}
+ .immersive-redesign .people-layer img{height:145%;transform:skewY(9deg)}.immersive-redesign .people-intro{left:7%;top:13%;bottom:auto}.immersive-redesign .people-intro h2{font-size:23px}.immersive-redesign .people-information{left:7%;right:7%;width:auto;bottom:8%}
+}
+.immersive-redesign.simple-mode .hero-copy>.eyebrow{position:static;text-align:left;margin-bottom:20px;display:block}
+.immersive-redesign .hero-tagline{position:absolute;right:0;bottom:0;font-size:10px;text-align:right;color:var(--muted);line-height:1.8}
+.immersive-redesign .people-stage{top:17%;height:53%}
+.immersive-redesign .people-layer:before{background-image:var(--portrait-grain);background-size:100% 100%;opacity:.75;mask-image:linear-gradient(125deg,#000,transparent 32%,transparent 59%,#000)}
+.immersive-redesign .people-layer img{height:151%;top:1%}
+@media(max-width:767px){.immersive-redesign .hero-tagline{font-size:8px;max-width:45%;line-height:1.9}.immersive-redesign .people-stage{top:25%;height:31%}.immersive-redesign .people-layer img{height:148%}.immersive-redesign .people-information{bottom:8%}}
+/* The supplied frames use a quiet logo/menu header; destinations remain in the menu. */
+.immersive-redesign .chapter-nav,.immersive-redesign .header-actions .contact-link{display:none}
+.immersive-redesign:not(.simple-mode) .hero-work{display:none}
+.immersive-redesign .hero-tagline{font-size:9px;letter-spacing:.16em}

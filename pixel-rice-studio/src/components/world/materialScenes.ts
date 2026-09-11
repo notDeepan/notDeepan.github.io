@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { riceField, type RiceField } from './grainField';
 import { storyProgress } from '@/lib/storyTimeline';
+import { depthGrains } from './depthGrains';
 import { materialIngredient } from './materialIngredients';
 import { PROJECT_MOTION } from '@/lib/presentation';
 import type { ScrollEngine } from '@/lib/scrollEngine';
@@ -78,11 +79,12 @@ export function createMaterialScenes(engine: ScrollEngine, options: MaterialScen
   // Both chapter slots reference this exact renderable: no renderer swap or wipe.
   const {scene: storyScene, camera: storyCamera}=makeScene();
   lighting(storyScene);
-  const storyField=riceField(options.mobile?720:2100,71,'story');
+  const storyField=riceField(options.mobile?1100:3900,71,'story');
   storyScene.add(storyField.mesh);fields.push(storyField);
   if(options.mobile)storyField.material.uniforms.uWidth.value=.47;
   const ingredients=materialIngredient(options.mobile);
   storyScene.add(ingredients.group);disposeSculptures.push(ingredients.dispose);
+  const depth=depthGrains(options.mobile);storyScene.add(depth.group);
   let storyTime=0,flow=0;
   const founder:SectionRenderable={scene:storyScene,camera:storyCamera,
     update(dt){
@@ -97,6 +99,7 @@ export function createMaterialScenes(engine: ScrollEngine, options: MaterialScen
       storyCamera.position.set(options.mobile?0:Math.sin(p*Math.PI)*.25,0,12-travel*(options.mobile?.3:1));
       storyCamera.lookAt(0,0,0);
       ingredients.update(p,options.mobile);
+      depth.update(p,width/height);
     }
   };
   const identity=founder;

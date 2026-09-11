@@ -138,13 +138,12 @@ export default function Studio() {
       <section className="scene-overlay founder-scene" data-scene="founder" aria-label="Meet the studio">
         <div className="hero-light" aria-hidden="true"/>
         <div className="hero-copy">
-          <span className="eyebrow">A SHARED APPETITE<br/>FOR THE UNEXPECTED</span>
           <h1><span className="hero-first-line">Small<br/>grains.</span><span className="hero-second-line">Big ideas.</span></h1>
           <p className="sr-only">{site.description}</p>
           <button className="text-button hero-work interactive" onClick={()=>toProject(0)}>Explore our work <span>↗</span></button>
         </div>
         <div className="grain-field-copy"><span className="eyebrow">CURIOSITY<br/>DESIGN<br/>TECHNOLOGY<br/>PEOPLE<br/>A BRIGHTER TOMORROW</span><span className="mini-rule"/><p>Small grains.<br/>A world of possibilities.</p></div>
-        <div className="hero-bottom"><button className="scroll-invite interactive" onClick={()=>scrollEngine.scrollToProgress('founder',.6)}><span className="scroll-circle">↓</span><span>SCROLL<br/>TO EXPLORE</span></button><span className="chapter-mark">THE STUDIO <i>01 / 06</i></span></div>
+        <div className="hero-bottom"><span className="hero-tagline eyebrow">A SHARED APPETITE<br/>FOR THE UNEXPECTED</span><button className="scroll-invite interactive" onClick={()=>scrollEngine.scrollToProgress('founder',.6)}><span className="scroll-circle">↓</span><span>SCROLL<br/>TO EXPLORE</span></button><span className="chapter-mark">THE STUDIO <i>01 / 06</i></span></div>
       </section>
 
       <section className="scene-overlay identity-scene" data-scene="identity" aria-label="Our approach">

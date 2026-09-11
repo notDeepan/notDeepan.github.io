@@ -19,7 +19,7 @@ function random(seed: number) {
 
 export function riceField(count: number, seed: number, kind: 'edges' | 'cloud' | 'gallery' | 'halo' | 'story'): RiceField {
   const rnd = random(seed);
-  const base = new THREE.SphereGeometry(1, kind==='story'?(count<1000?8:10):5, kind==='story'?(count<1000?6:7):4);
+  const base = new THREE.SphereGeometry(1, kind==='story'?7:5, kind==='story'?5:4);
   const geometry = new THREE.InstancedBufferGeometry();
   geometry.index = base.index;
   geometry.setAttribute('position', base.getAttribute('position'));
@@ -59,13 +59,13 @@ export function riceField(count: number, seed: number, kind: 'edges' | 'cloud' |
       // Eighteen quiet foreground grains; the rest arrive from outside the camera frustum.
       const heroAngle=i*2.39996;
       x=Math.cos(heroAngle)*(4.5+rnd()*3.5);y=Math.sin(heroAngle)*(3.2+rnd()*2);z=-1+rnd()*5;
-      if(i>=18){x*=5;y*=5;z=-100-rnd()*30;}
-      storyData.set([angle,rnd(),rnd(),i<18?1:0],i*4);
+      if(i>=8){x*=5;y*=5;z=-100-rnd()*30;}
+      storyData.set([angle,rnd(),rnd(),i<8?1:0],i*4);
     }
     offsets.set([x,y,z],i*3);
     const foreground=kind==='edges'&&seed===71&&i%17===0;
-    data.set([rnd()*TAU,rnd()*TAU,kind==='story'?(i<18?1.2+rnd()*1.3:.18+rnd()*.63):foreground?1.8+rnd()*1.8:.26+rnd()*.85,rnd()],i*4);
-    shade.copy(ivory).lerp(i % 11 === 0 ? amber : olive, rnd() * .42);
+    data.set([rnd()*TAU,rnd()*TAU,kind==='story'?(i<8?.6+rnd()*.6:.055+Math.pow(rnd(),2)*.65):foreground?1.8+rnd()*1.8:.26+rnd()*.85,rnd()],i*4);
+    shade.copy(kind==='story'?new THREE.Color('#d4c9bb'):ivory).lerp(i % 11 === 0 ? amber : olive, rnd() * .42);
     colors.set([shade.r, shade.g, shade.b], i * 3);
   }
   geometry.setAttribute('aStory', new THREE.InstancedBufferAttribute(storyData, 4));
@@ -113,10 +113,15 @@ export function riceField(count: number, seed: number, kind: 'edges' | 'cloud' |
           float ring=smoothstep(.51,.73,uStory);
           float phase=mod(aStory.x + uFlow*(.55+aStory.y*.45),6.283185);
           float theta=mix(.55+phase/6.283185*5.1,phase,ring);
-          float tube=(aStory.z-.5)*(.3+pow(aStory.y,3.)*1.4);
-          float radius=2.8+tube;
-          vec3 stream=vec3(-1.65+cos(theta)*radius*1.22, sin(theta)*radius*1.03, sin(theta*1.5)*1.7+tube);
-          vec3 wreath=vec3(cos(theta)*radius*1.43,sin(theta)*radius*.96,sin(theta*2.)*.6+tube);
+          float strand=floor(aStory.y*5.);
+          float strandWidth=sin(theta*3.+strand*1.7)*.16;
+          float tube=(aStory.z-.5)*(.2+pow(aStory.y,2.)*2.1)+strandWidth;
+          float radius=2.65+tube;
+          // Separate flowing ribbons, not an evenly populated circular outline.
+          float t=phase/6.283185;
+          vec3 stream=vec3(-.5-3.4*sin(t*3.141593)+3.*t*t+tube*.8,
+            5.7-10.7*t+tube*.45,sin(t*3.141593)*1.5+(t-.5)*2.+sin(theta*3.+strand)*.3+tube);
+          vec3 wreath=vec3(cos(theta)*radius*1.2,sin(theta)*radius*.9,sin(theta*2.)*.9+tube);
           offset=mix(aOffset,mix(stream,wreath,ring),arrival);
           offset.x-=smoothstep(.78,.94,uStory)*1.4;
           // The very same larger hero grains join the stream and settle into its scale.
@@ -138,12 +143,14 @@ export function riceField(count: number, seed: number, kind: 'edges' | 'cloud' |
     `,
     fragmentShader: `
       uniform float uOpacity;
+      uniform float uIsStory;
       uniform vec3 uFog;
       varying vec3 vColor;
       varying vec3 vNormal;
       varying float vDepth;
       void main() {
-        float diffuse = .48 + max(0., dot(normalize(vNormal), normalize(vec3(-.4, .8, .6)))) * .55;
+        float diffuse = .28 + max(0., dot(normalize(vNormal), normalize(vec3(-.4, .8, .6)))) * .8;
+        if(uIsStory<.5)diffuse=.48+max(0.,dot(normalize(vNormal),normalize(vec3(-.4,.8,.6))))*.55;
         float fog = 1. - exp(-vDepth * vDepth * .0011);
         float nearFade = smoothstep(1.8, 4.0, vDepth);
         gl_FragColor = vec4(mix(vColor * diffuse, uFog, fog), uOpacity * nearFade * (1. - fog * .75));
