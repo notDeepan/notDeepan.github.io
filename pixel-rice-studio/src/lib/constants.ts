@@ -129,9 +129,10 @@ export const COMPOSITOR = {
 } as const;
 
 /** Sections, in order. units = viewport heights of scroll travel. */
+export const INGREDIENTS_READING_UNITS = 1;
 export const SECTIONS = [
   { id: 'founder', units: 3.4 },
-  { id: 'identity', units: 3.4 },
+  { id: 'identity', units: 3.4 + INGREDIENTS_READING_UNITS },
   { id: 'projects', units: 10.0 },
   { id: 'reviews', units: 2.0 },
   { id: 'brand', units: 1.0 },
@@ -188,4 +189,4 @@ export const REDUCED_MOTION_OVERRIDES = {
 } as const;
 
 /** Shorter touch story; Work retains room for all five existing focal windows. */
-export const MOBILE_SECTION_UNITS = [2.1, 2.4, 7.5, 1.35, 1, 1.15] as const;
+export const MOBILE_SECTION_UNITS = [2.1, 2.4 + INGREDIENTS_READING_UNITS, 7.5, 1.35, 1, 1.15] as const;
