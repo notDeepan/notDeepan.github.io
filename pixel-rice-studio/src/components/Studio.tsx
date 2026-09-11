@@ -136,17 +136,19 @@ export default function Studio() {
       </header>
 
       <section className="scene-overlay founder-scene" data-scene="founder" aria-label="Meet the studio">
-        <div className="hero-light" aria-hidden="true"/>
+        <div className="hero-light" aria-hidden="true"/><div className="scene-index hero-index" aria-hidden="true">01<span/></div>
         <div className="hero-copy">
           <h1><span className="hero-first-line">Small<br/>grains.</span><span className="hero-second-line">Big ideas.</span></h1>
           <p className="sr-only">{site.description}</p>
           <button className="text-button hero-work interactive" onClick={()=>toProject(0)}>Explore our work <span>↗</span></button>
         </div>
-        <div className="grain-field-copy"><span className="eyebrow">CURIOSITY<br/>DESIGN<br/>TECHNOLOGY<br/>PEOPLE<br/>A BRIGHTER TOMORROW</span><span className="mini-rule"/><p>Small grains.<br/>A world of possibilities.</p></div>
+        <div className="scene-index flow-index" aria-hidden="true">02<span/></div>
+        <div className="grain-field-copy"><h2 className="flow-statement"><span>CURIOSITY</span><span>DESIGN</span><span>TECHNOLOGY</span><span>PEOPLE</span><span>A BRIGHTER TOMORROW</span></h2><span className="mini-rule"/><p>Small grains.<br/>A world of possibilities.</p></div>
         <div className="hero-bottom"><span className="hero-tagline eyebrow">A SHARED APPETITE<br/>FOR THE UNEXPECTED</span><button className="scroll-invite interactive" onClick={()=>scrollEngine.scrollToProgress('founder',.6)}><span className="scroll-circle">↓</span><span>SCROLL<br/>TO EXPLORE</span></button><span className="chapter-mark">THE STUDIO <i>01 / 06</i></span></div>
       </section>
 
       <section className="scene-overlay identity-scene" data-scene="identity" aria-label="Our approach">
+        <div className="scene-index ingredients-index" aria-hidden="true">03<span/></div><div className="scene-index vision-index" aria-hidden="true">04<span/></div>
         <div className="ingredients-copy"><h2 className="studio-statement">Different<br/>ingredients.</h2><span className="mini-rule"/><p className="material-index">TYPE<br/>IMAGE<br/>MOTION<br/>CODE<br/>IDEAS<br/>PEOPLE</p><p className="studio-manifesto">Thoughtfully made.<br/>Unexpectedly good.</p></div>
         <div className="vision-copy"><h2>One<br/>shared<br/>vision.</h2><span className="mini-rule"/></div>
         <div className="preview-copy"><span className="eyebrow">FROM IDEAS TO EXPERIENCES</span><h2>Made<br/>to matter.</h2><p>KAO MING · DIGITAL SHOWROOM</p></div>

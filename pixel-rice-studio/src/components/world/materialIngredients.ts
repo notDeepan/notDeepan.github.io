@@ -67,24 +67,33 @@ export function materialIngredient(mobile: boolean) {
       const preview=THREE.MathUtils.smoothstep(p,.78,.94);
       if(p>.3)load();
       group.visible=enter>.001;
-      group.scale.setScalar(isMobile?THREE.MathUtils.lerp(.48,.58,vision):1);
-      group.position.x=THREE.MathUtils.lerp(isMobile?-.8:-1.65,0,vision);
-      group.position.y=isMobile?.45:0;
+      group.scale.setScalar(isMobile?THREE.MathUtils.lerp(.53,.58,vision):THREE.MathUtils.lerp(1.22,1.1,vision)*(1-preview)+preview);
+      group.position.x=THREE.MathUtils.lerp(isMobile?-1.05:-1.65,0,vision);
+      group.position.y=isMobile?.45:.3*(1-vision);
       glass.opacity=.42*enter;edge.opacity=.5*enter;
       planes.forEach(({root,imageMaterial,portraitMap,projectMap},i)=>{
         const map=p<.7?portraitMap:projectMap;
         if(imageMaterial.map!==map){imageMaterial.map=map;imageMaterial.needsUpdate=true;}
-        const angle=[1.95,3.55,5.5][i];
+        const angle=[1.95,3.15,5.5][i];
         const x=THREE.MathUtils.lerp([-1.1,1.1,.5][i],Math.cos(angle)*2.9,vision);
-        const y=THREE.MathUtils.lerp([1.25,.7,-1.65][i],Math.sin(angle)*2.4,vision);
+        const y=THREE.MathUtils.lerp([1.25,.7,-1.65][i],Math.sin(angle)*(isMobile?3.1:2.4),vision);
         root.position.set(THREE.MathUtils.lerp(x,i===0?(isMobile?0:-1.6):x*1.45,preview),THREE.MathUtils.lerp(y,i===0?(isMobile?1:0):y,preview),i===0?preview*1.3:0);
-        root.rotation.set([.24,-.38,.35][i]*(1-preview),[.5,-.7,.45][i]*(1-preview*.7),[.35,-.32,.24][i]*(1-preview));
-        root.scale.setScalar(THREE.MathUtils.lerp(enter,i===0?(isMobile?1.42:1.7):.65,preview));
+        root.rotation.set(
+          THREE.MathUtils.lerp([.24,-.38,.35][i],[1.12,.12,.35][i],vision)*(1-preview),
+          THREE.MathUtils.lerp([.5,-.7,.45][i],[-.25,1.0,.45][i],vision)*(1-preview*.7),
+          THREE.MathUtils.lerp([.35,-.32,.24][i],[.15,-.1,.24][i],vision)*(1-preview));
+        root.scale.setScalar(THREE.MathUtils.lerp(enter,i===0?(isMobile?1.42:1.7):.65,preview)*(isMobile?1-.16*vision*(1-preview):1));
         imageMaterial.opacity=p<.7?THREE.MathUtils.smoothstep(p,.44,.51)*.42:THREE.MathUtils.smoothstep(p,.7+i*.025,.84+i*.025)*(i===0?.94:.6);
       });
       sheet.position.set(.75,1.15,-.6);sheet.rotation.set(.4,.8,-.22);sheet.scale.set(.65,1.05,1).multiplyScalar(enter*(1-vision));
       sphere.position.set(-.5,-.2,.85);sphere.scale.setScalar(enter*(1-vision));
-      shards.forEach((mesh,i)=>{const angle=[.65,4.7][i];mesh.position.set(Math.cos(angle)*2.85,Math.sin(angle)*2.45,0);mesh.rotation.set([.6,-.55][i],[-.7,.5][i],[.55,-.4][i]);mesh.scale.setScalar(enter*(.45+vision*.55)*(1-preview));});
+      shards.forEach((mesh,i)=>{
+        const angle=[.8,4.7][i];
+        mesh.position.set(Math.cos(angle)*(i===0?3.2:2.85),Math.sin(angle)*(i===0?2.75:2.45),0);
+        mesh.rotation.set(THREE.MathUtils.lerp([.6,-.55][i],[.35,1.1][i],vision),[-.7,.5][i],THREE.MathUtils.lerp([.55,-.4][i],[.12,-1.25][i],vision));
+        mesh.scale.setScalar(enter*(.45+vision*.55)*(1-preview));
+        if(i===0)mesh.scale.y*=1+vision*1.15;
+      });
     },
     dispose(){disposed=true;textures.forEach(texture=>texture.dispose());}
   };
