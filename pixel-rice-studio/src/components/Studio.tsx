@@ -67,8 +67,7 @@ export default function Studio() {
       const beat=(a:number,b:number,c:number,d:number)=>ScrollEngine.stage(story,a,b)*(1-ScrollEngine.stage(story,c,d));
       overlay.current.style.setProperty('--flow-copy',String(e.reducedMotion?0:beat(.21,.28,.37,.43)));
       overlay.current.style.setProperty('--ingredients-copy',String(e.reducedMotion?1:beat(.39,.45,.59,.65)));
-      overlay.current.style.setProperty('--vision-copy',String(e.reducedMotion?1:beat(.62,.69,.77,.83)));
-      overlay.current.style.setProperty('--preview-copy',String(e.reducedMotion?0:ScrollEngine.stage(story,.85,.92)));
+      overlay.current.style.setProperty('--vision-copy',String(e.reducedMotion?1:ScrollEngine.stage(story,.62,.69)));
       overlay.current.style.setProperty('--grain-entry',String(grainEntry));
       const hero=layerRefs.current[0]?.querySelector<HTMLElement>('.hero-copy');
       if(hero)hero.inert=grainEntry>.95;
@@ -151,7 +150,6 @@ export default function Studio() {
         <div className="scene-index ingredients-index" aria-hidden="true">03<span/></div><div className="scene-index vision-index" aria-hidden="true">04<span/></div>
         <div className="ingredients-copy"><h2 className="studio-statement">Different<br/>ingredients.</h2><span className="mini-rule"/><p className="material-index">TYPE<br/>IMAGE<br/>MOTION<br/>CODE<br/>IDEAS<br/>PEOPLE</p><p className="studio-manifesto">Thoughtfully made.<br/>Unexpectedly good.</p></div>
         <div className="vision-copy"><h2>One<br/>shared<br/>vision.</h2><span className="mini-rule"/></div>
-        <div className="preview-copy"><span className="eyebrow">FROM IDEAS TO EXPERIENCES</span><h2>Made<br/>to matter.</h2><p>KAO MING · DIGITAL SHOWROOM</p></div>
         <div className="identity-bottom"><p>A small independent studio at the intersection of design and technology. We bring the curiosity. You bring the ambition.</p><div className="service-list"><span>Brand & digital design</span><span>Websites & development</span><span>Interactive experiences</span></div></div>
       </section>
 

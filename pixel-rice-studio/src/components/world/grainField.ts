@@ -56,10 +56,14 @@ export function riceField(count: number, seed: number, kind: 'edges' | 'cloud' |
       if(kind==='cloud'){x-=2.1;y+=Math.sin(angle)*.35;}
     }
     if(kind==='story'){
-      // Eighteen quiet foreground grains; the rest arrive from outside the camera frustum.
+      // A few hero grains and a fine peripheral layer gather into the same stream.
       const heroAngle=i*2.39996;
       x=Math.cos(heroAngle)*(4.5+rnd()*3.5);y=Math.sin(heroAngle)*(3.2+rnd()*2);z=-1+rnd()*5;
-      if(i>=8){x*=5;y*=5;z=-100-rnd()*30;}
+      if(i>=8&&i<72){
+        // Peripheral depth around the title, concentrated toward the lower-left.
+        const edgeAngle=2.05+rnd()*3.5;
+        x=Math.cos(edgeAngle)*(5+rnd()*2.5);y=Math.sin(edgeAngle)*(4+rnd()*1.8);z=-3+rnd()*3;
+      }else if(i>=72){x*=5;y*=5;z=-100-rnd()*30;}
       storyData.set([angle,rnd(),rnd(),i<8?1:0],i*4);
     }
     offsets.set([x,y,z],i*3);
@@ -114,16 +118,16 @@ export function riceField(count: number, seed: number, kind: 'edges' | 'cloud' |
           float phase=mod(aStory.x + uFlow*(.55+aStory.y*.45),6.283185);
           float theta=mix(.55+phase/6.283185*5.1,phase,ring);
           float strand=floor(aStory.y*5.);
-          float strandWidth=sin(theta*3.+strand*1.7)*.16;
-          float tube=(aStory.z-.5)*(.2+pow(aStory.y,2.)*2.1)+strandWidth;
-          float radius=2.65+tube;
+          float strandWidth=sin(theta*3.+strand*1.7)*.24;
+          float tube=(aStory.z-.5)*(.65+pow(aStory.y,2.)*3.4)+strandWidth;
+          float radius=2.78+tube*.66+sin(theta*3.+.4)*.18;
           // Separate flowing ribbons, not an evenly populated circular outline.
           float t=phase/6.283185;
-          vec3 stream=vec3(-.5-3.4*sin(t*3.141593)+3.*t*t+tube*.8,
-            5.7-10.7*t+tube*.45,sin(t*3.141593)*1.5+(t-.5)*2.+sin(theta*3.+strand)*.3+tube);
+          vec3 stream=vec3(-.25-3.5*sin(t*3.141593)+4.6*t*t+tube*1.15,
+            5.7-10.3*t+tube*.55,sin(t*3.141593)*1.5+(t-.5)*2.+sin(theta*3.+strand)*.3+tube*1.1);
           vec3 wreath=vec3(cos(theta)*radius*1.2,sin(theta)*radius*.9,sin(theta*2.)*.9+tube);
           offset=mix(aOffset,mix(stream,wreath,ring),arrival);
-          offset.x-=smoothstep(.78,.94,uStory)*1.4;
+          // Scene four holds this wreath until the existing Work transition.
           // The very same larger hero grains join the stream and settle into its scale.
           local*=mix(1.,mix(1.,.32,aStory.w),arrival);
         }

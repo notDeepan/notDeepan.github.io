@@ -3,9 +3,9 @@ import * as THREE from 'three';
 /** Sparse optical foreground: analytic rice profiles, never full-screen post-processing. */
 export function depthGrains(mobile:boolean){
  const group=new THREE.Group();
- const positions=[[-.64,.12,0], [.68,.48,0], [.74,-.38,0], [-.12,-.8,0], [.43,-.7,0], [-.89,-.45,1], [.96,.14,1], [-.97,.36,1], [.26,.86,1], [.9,-.85,1], [-.46,-.32,1], [.64,.91,1]];
+ const positions=[[-.64,.12,0], [.68,.48,0], [.74,-.38,0], [-.12,-.8,0], [.43,-.7,0], [-.89,-.45,1], [.96,.14,1], [-.97,.36,1], [.26,.86,1], [.9,-.85,1], [-.46,-.32,1], [.64,.91,1], [-.76,-.76,1], [-.61,-.92,1], [-.84,-.2,1], [-.47,-.61,1], [.96,-.54,1], [.8,.78,1], [-.68,-.52,0], [.62,.08,0]];
  const geometry=new THREE.PlaneGeometry(.42,1.05);
- const grains=positions.map(([x,y,blur],i)=>{
+ const grains=positions.slice(0,mobile?16:20).map(([x,y,blur],i)=>{
   const material=new THREE.ShaderMaterial({transparent:true,depthWrite:false,uniforms:{uBlur:{value:blur?.48:.045},uAlpha:{value:blur?.24:.88}},
    vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
    fragmentShader:`varying vec2 vUv;uniform float uBlur;uniform float uAlpha;
@@ -19,7 +19,7 @@ export function depthGrains(mobile:boolean){
     gl_FragColor=vec4(c,mask*uAlpha);
     #include <colorspace_fragment>
    }`});
-  const mesh=new THREE.Mesh(geometry,material);mesh.rotation.z=[-1.03,-.9,.14,-1.18,1.03,-.2,-1.1,.5,1,.7,-.4,.9][i];group.add(mesh);return{mesh,material,x,y,blur,i};
+  const mesh=new THREE.Mesh(geometry,material);mesh.rotation.z=[-1.03,-.9,.14,-1.18,1.03,-.2,-1.1,.5,1,.7,-.4,.9][i%12];group.add(mesh);return{mesh,material,x,y,blur,i};
  });
  return{group,update(p:number,aspect:number){
   const gather=THREE.MathUtils.smoothstep(p,.06,.34);
@@ -28,7 +28,7 @@ export function depthGrains(mobile:boolean){
    const distance=12-depth,halfH=Math.tan(21*Math.PI/180)*distance;
    const angle=i*2.4+p*.6;
    mesh.position.set(THREE.MathUtils.lerp(x*halfH*aspect,Math.cos(angle)*5.5,gather),THREE.MathUtils.lerp(y*halfH,Math.sin(angle)*3.5,gather),depth);
-   const scale=(blur?.95:.62)*(mobile?.65:1);
+   const scale=(blur?.95:i>=18?.24:.62)*(mobile?.65:1);
    mesh.scale.setScalar(scale*(1-gather*.35));
    material.uniforms.uAlpha.value=(blur?.16:.82)*(1-gather*.6);
   });

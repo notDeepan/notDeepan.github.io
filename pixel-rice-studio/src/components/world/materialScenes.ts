@@ -79,7 +79,8 @@ export function createMaterialScenes(engine: ScrollEngine, options: MaterialScen
   // Both chapter slots reference this exact renderable: no renderer swap or wipe.
   const {scene: storyScene, camera: storyCamera}=makeScene();
   lighting(storyScene);
-  const storyField=riceField(options.mobile?1100:3900,71,'story');
+  const storyGrainCount=options.mobile?2800:16000;
+  const storyField=riceField(storyGrainCount,71,'story');
   storyScene.add(storyField.mesh);fields.push(storyField);
   if(options.mobile)storyField.material.uniforms.uWidth.value=.47;
   const ingredients=materialIngredient(options.mobile);
@@ -88,7 +89,9 @@ export function createMaterialScenes(engine: ScrollEngine, options: MaterialScen
   let storyTime=0,flow=0;
   const founder:SectionRenderable={scene:storyScene,camera:storyCamera,
     update(dt){
-      const p=storyProgress(engine.smooth,engine.section('projects').startPx,engine.narrativeViewportH);
+      const p=Math.min(.77,storyProgress(engine.smooth,engine.section('projects').startPx,engine.narrativeViewportH));
+      // Hidden arrivals need no vertex work during the quiet hero frame.
+      (storyField.mesh.geometry as THREE.InstancedBufferGeometry).instanceCount=p<=.06?72:storyGrainCount;
       const moving=Math.min(1,Math.abs(engine.velocity));
       storyTime+=Math.min(dt,.1)*(.035+moving*.6);
       flow+=Math.min(dt,.1)*(.012+moving*.28)*THREE.MathUtils.smoothstep(p,.08,.3);
