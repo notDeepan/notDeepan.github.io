@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { ScrollEngine } from '../src/lib/scrollEngine';
 
-function mountEngine(osReduced = false) {
+function mountEngine(osReduced = false, touch = false) {
   const previous = Object.getOwnPropertyDescriptor(globalThis, 'window');
   let motionListener: ((event: {matches: boolean}) => void) | undefined;
   const root = {
@@ -12,7 +12,7 @@ function mountEngine(osReduced = false) {
   Object.defineProperty(globalThis, 'window', {configurable:true,value:{
     innerWidth:1280,innerHeight:800,addEventListener() {},removeEventListener() {},
     matchMedia: (query:string) => ({
-      matches: query.includes('reduced-motion') && osReduced,
+      matches: query.includes('reduced-motion') ? osReduced : query.includes('hover: none') && touch,
       addEventListener: (_:string,listener:typeof motionListener) => { if(query.includes('reduced-motion'))motionListener=listener; },
       removeEventListener() {},
     }),
@@ -61,4 +61,16 @@ test('opening a modal during scroll holds its displayed position through prefere
     assert.equal(engine.isLocked,false);
     assert.equal(engine.smooth,displayed);
   } finally {fixture.dispose();}
+});
+
+
+test('touch animation follows native scroll immediately without a second inertia filter',()=>{
+ const fixture=mountEngine(false,true);
+ try {
+  fixture.root.scrollTop=1500;fixture.engine.update(1/60);
+  assert.equal(fixture.engine.raw,1500);assert.equal(fixture.engine.smooth,1500);
+  fixture.root.scrollTop=1200;fixture.engine.update(1/60);
+  assert.equal(fixture.engine.smooth,1200);
+  assert.equal(fixture.root.style.overflowY,'auto');
+ } finally {fixture.dispose();}
 });

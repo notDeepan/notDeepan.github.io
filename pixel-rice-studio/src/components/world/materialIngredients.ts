@@ -1,105 +1,70 @@
 import * as THREE from 'three';
-import { assetPath } from '@/lib/assetPath';
+import { projects } from '@/data/projects';
 
-/** One restrained library: cut glass, quarried stone, brushed metal and a folded sheet. */
-export function materialIngredient(index: number, mobile: boolean) {
+/** A small material library. Thin surfaces, one folded sheet, one machined frame. */
+export function materialIngredient(mobile: boolean) {
   const group = new THREE.Group();
-  const portraitTextures:THREE.Texture[]=[];
-  const portraitLoads:Array<()=>void>=[];
-  let disposed=false,portraitsStarted=false;
-  const stone = new THREE.MeshStandardMaterial({color:'#777770',roughness:.96,vertexColors:true});
-
-  stone.onBeforeCompile=shader=>{
-    shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nvarying vec3 vStone;').replace('#include <begin_vertex>','#include <begin_vertex>\nvStone=position;');
-    shader.fragmentShader=shader.fragmentShader.replace('#include <common>',`#include <common>
-      varying vec3 vStone;
-      float stoneNoise(vec3 p){return fract(sin(dot(p,vec3(127.1,311.7,74.7)))*43758.5453);}
-    `).replace('#include <color_fragment>',`#include <color_fragment>
-      float grit=stoneNoise(floor(vStone*280.));
-      float vein=sin(vStone.y*65.+sin(vStone.x*23.)*3.+vStone.z*29.);
-      diffuseColor.rgb*=.52+grit*.62+vein*.08;
-    `).replace('#include <normal_fragment_begin>',`#include <normal_fragment_begin>
-      float relief=stoneNoise(floor(vStone*140.))*.004;
-      vec3 surfaceX=dFdx(vStone),surfaceY=dFdy(vStone);
-      vec3 r1=cross(surfaceY,normal),r2=cross(normal,surfaceX);
-      float determinant=dot(surfaceX,r1);
-      normal=normalize(abs(determinant)*normal-sign(determinant)*(dFdx(relief)*r1+dFdy(relief)*r2));
-    `);
-  };
-  const glass = new THREE.MeshPhysicalMaterial({color:'#bac3c8',metalness:.72,roughness:.09,clearcoat:1,transparent:true,opacity:.09,transmission:0,thickness:.15,ior:1.48,side:THREE.DoubleSide,depthWrite:false,envMapIntensity:1.5});
-  const metal = new THREE.MeshStandardMaterial({color:'#d2cdc3',metalness:1,roughness:.14,envMapIntensity:1.2});
-  const paper = new THREE.MeshStandardMaterial({color:'#d4c9b8',roughness:.92,side:THREE.DoubleSide});
-  const edge = new THREE.LineBasicMaterial({color:'#e4ded3',transparent:true,opacity:.55});
-  const materials:THREE.Material[] = [stone,glass,metal,paper,edge];
-  const add=(geometry:THREE.BufferGeometry,material:THREE.Material,x=0,y=0,z=0)=>{const mesh=new THREE.Mesh(geometry,material);mesh.position.set(x,y,z);group.add(mesh);return mesh;};
-  const rockGeometry=()=>{
-    const geometry=new THREE.IcosahedronGeometry(1,mobile?16:40);
-    const points=geometry.getAttribute('position'),colors=new Float32Array(points.count*3);
-    for(let i=0;i<points.count;i++){
-      const x=points.getX(i),y=points.getY(i),z=points.getZ(i);
-      const strata=Math.sin(x*9+y*4+z*6)*.07+Math.sin(x*31-y*18+z*24)*.022;
-      const radius=1+strata+Math.sin(x*3+y*5)*.12+Math.sin(x*71+y*48+z*54)*.008;
-      points.setXYZ(i,x*radius*.82,y*radius*1.32,z*radius*.58);
-      const shade=.6+(Math.sin(x*77+y*63+z*81)*.5+.5)*.4;
-      colors.set([shade,shade*.98,shade*.94],i*3);
-    }
-    geometry.setAttribute('color',new THREE.BufferAttribute(colors,3));geometry.computeVertexNormals();return geometry;
-  };
-  const pane=(x:number,y:number,z:number,w:number,h:number,rx:number,ry:number,rz:number,person?:string)=>{
-    const geometry=new THREE.BoxGeometry(w,h,.025);
-    const mesh=add(geometry,glass,x,y,z);mesh.rotation.set(rx,ry,rz);
-    const outline=new THREE.LineSegments(new THREE.EdgesGeometry(geometry),edge);mesh.add(outline);
-    if(person){
-      // The original cutout is bonded to the pane, under its reflected surface.
-      const portraitMaterial=new THREE.MeshBasicMaterial({color:'#ddd8d0',transparent:true,opacity:.88,depthWrite:false,side:THREE.DoubleSide});
-      portraitMaterial.onBeforeCompile=shader=>{
-        shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nvarying vec2 vPortraitUv;').replace('#include <uv_vertex>','#include <uv_vertex>\nvPortraitUv=uv;');
-        shader.fragmentShader=shader.fragmentShader.replace('#include <common>','#include <common>\nvarying vec2 vPortraitUv;').replace('#include <map_fragment>',`#include <map_fragment>
-          float luminance=dot(diffuseColor.rgb,vec3(.2126,.7152,.0722));
-          diffuseColor.rgb=mix(vec3(luminance),diffuseColor.rgb,.65);
-          vec2 border=smoothstep(vec2(0.),vec2(.07),vPortraitUv)*smoothstep(vec2(0.),vec2(.07),1.-vPortraitUv);
-          diffuseColor.a*=border.x*border.y;
-        `);
-      };
-      const portrait=new THREE.Mesh(new THREE.PlaneGeometry(w-.035,h-.035),portraitMaterial);
-      portrait.position.z=.01;portrait.visible=false;portrait.renderOrder=1;
-      mesh.renderOrder=2;outline.renderOrder=3;mesh.add(portrait);materials.push(portraitMaterial);
-      portraitLoads.push(()=>{
-        const texture=new THREE.TextureLoader().load(assetPath(`/assets/founders/${person}-portrait.webp`),loaded=>{
-          if(disposed){loaded.dispose();return;}
-          portrait.visible=true;
-        });
-        texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=mobile?2:4;
-        // Preserve proportions, cropping toward the top so faces remain complete on the small pane.
-        const imageAspect=1024/1536,paneAspect=w/h;
-        texture.repeat.set(Math.min(1,paneAspect/imageAspect),Math.min(1,imageAspect/paneAspect));
-        texture.offset.set((1-texture.repeat.x)/2,1-texture.repeat.y);
-        portraitMaterial.map=texture;portraitMaterial.needsUpdate=true;portraitTextures.push(texture);
-      });
-    }
-    return mesh;
-  };
-  if(index===0){
-    const rock=add(rockGeometry(),stone);rock.scale.setScalar(3.4);rock.rotation.set(.2,-.3,-.2);
-  }else{
-    const rock=add(rockGeometry(),stone,-.9,.8,-.2);rock.rotation.set(.2,.4,-.27);rock.scale.setScalar(.92);
-    pane(.75,1.05,-.35,1.65,2.3,-.1,-.55,-.22,'junes');
-    pane(-.4,-1.15,.6,1.7,2.5,.14,.52,.38,'deepan');
-    pane(1.4,-.65,.1,1.2,1.25,.25,-.3,.2,'shikhar');
-    const sphere=add(new THREE.SphereGeometry(.43,mobile?20:40,mobile?12:28),metal,.55,-.12,.65);
-    sphere.scale.setScalar(index===4?.8:1);
-    if(index===2){
-      const sheet=new THREE.PlaneGeometry(1.3,1.05,24,20),points=sheet.getAttribute('position');
-      for(let i=0;i<points.count;i++){const x=points.getX(i),y=points.getY(i);points.setZ(i,.27*Math.sin(x*2.7)+.13*Math.cos(y*3+x));}
-      sheet.computeVertexNormals();add(sheet,paper,-1.1,-1.4,.75).rotation.set(-.35,.3,-.25);
-    }
+  const textures: THREE.Texture[]=[];
+  let disposed=false, started=false;
+  const glass = new THREE.MeshPhysicalMaterial({color:'#b5bec5',metalness:.6,roughness:.22,clearcoat:.6,transparent:true,opacity:.15,side:THREE.DoubleSide,depthWrite:false,envMapIntensity:.8});
+  const edge = new THREE.LineBasicMaterial({color:'#d6d3cc',transparent:true,opacity:.38});
+  const paper = new THREE.MeshStandardMaterial({color:'#c3b9a7',roughness:.95,side:THREE.DoubleSide,transparent:true});
+  const metal = new THREE.MeshStandardMaterial({color:'#aeaead',metalness:.95,roughness:.25,transparent:true,envMapIntensity:.8});
+  const planes=projects.slice(0,3).map((project,i)=>{
+    const root=new THREE.Group();group.add(root);
+    const geometry=new THREE.PlaneGeometry(2.7,1.7);
+    const coating=new THREE.Mesh(geometry,glass);coating.position.z=.018;coating.renderOrder=2;root.add(coating);
+    const outline=new THREE.LineSegments(new THREE.EdgesGeometry(geometry),edge);outline.position.z=.02;outline.renderOrder=3;root.add(outline);
+    // The real site screenshot is bonded beneath the reflective coating, never substituted.
+    const imageMaterial=new THREE.MeshBasicMaterial({color:'#dedbd3',transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false});
+    const image=new THREE.Mesh(new THREE.PlaneGeometry(2.64,1.64),imageMaterial);image.renderOrder=1;root.add(image);
+    return {root,image,imageMaterial,project,i};
+  });
+  const sheetGeometry=new THREE.PlaneGeometry(1.55,2.1,mobile?12:24,mobile?12:24);
+  const vertices=sheetGeometry.getAttribute('position');
+  for(let i=0;i<vertices.count;i++)vertices.setZ(i,.24*Math.sin(vertices.getY(i)*2)+.1*Math.cos(vertices.getX(i)*3));
+  sheetGeometry.computeVertexNormals();
+  const sheet=new THREE.Mesh(sheetGeometry,paper);group.add(sheet);
+  const frame=new THREE.Group();group.add(frame);
+  for(const [w,h,x,y] of [[1.35,.055,0,.9],[1.35,.055,0,-.9],[.055,1.8,-.65,0],[.055,1.8,.65,0]]){
+    const bar=new THREE.Mesh(new THREE.BoxGeometry(w,h,.075),metal);bar.position.set(x,y,0);frame.add(bar);
   }
-  const used=new Set<THREE.Material>();
-  group.traverse(object=>{const drawable=object as THREE.Mesh;if(drawable.material){for(const m of Array.isArray(drawable.material)?drawable.material:[drawable.material])used.add(m);}});
-  const baseOpacity=new Map([...used].map(m=>[m,m.opacity]));
-  materials.forEach(m=>{if(!used.has(m))m.dispose();});
+  function load(){
+    if(started||disposed)return;started=true;
+    planes.forEach(({image,imageMaterial,project})=>{
+      const texture=new THREE.TextureLoader().load(project.cover,loaded=>{
+        if(disposed){loaded.dispose();return;}
+        // Contain the complete screenshot; no fabricated project photography.
+        const aspect=loaded.image.width/loaded.image.height;
+        image.scale.set(Math.min(1,aspect/1.6),Math.min(1,1.6/aspect),1);
+        imageMaterial.map=loaded;imageMaterial.needsUpdate=true;
+      });
+      texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=mobile?2:4;textures.push(texture);
+    });
+  }
   return {group,
-    loadPortraits(){if(portraitsStarted||disposed)return;portraitsStarted=true;portraitLoads.forEach(load=>load());},
-    dispose(){disposed=true;portraitTextures.forEach(texture=>texture.dispose());},
-    fade(value:number){group.visible=value>.001;used.forEach(m=>{m.transparent=true;m.opacity=baseOpacity.get(m)!*value;m.depthWrite=m!==glass&&m!==edge&&!(m instanceof THREE.MeshBasicMaterial)&&value>.98;});}};
+    update(p:number,isMobile:boolean){
+      const enter=THREE.MathUtils.smoothstep(p,.36,.46);
+      const vision=THREE.MathUtils.smoothstep(p,.57,.74);
+      const preview=THREE.MathUtils.smoothstep(p,.78,.94);
+      if(p>.3)load();
+      group.visible=enter>.001;
+      group.scale.setScalar(isMobile?THREE.MathUtils.lerp(.48,.58,vision):1);
+      group.position.x=THREE.MathUtils.lerp(isMobile?-.8:-1.65,0,vision);
+      group.position.y=isMobile?.45:0;
+      glass.opacity=.15*enter;edge.opacity=.38*enter;
+      planes.forEach(({root,imageMaterial},i)=>{
+        const angle=i*Math.PI*2/3+.65;
+        const x=THREE.MathUtils.lerp([-1.1,1.1,.5][i],Math.cos(angle)*3.3,vision);
+        const y=THREE.MathUtils.lerp([1.25,.7,-1.65][i],Math.sin(angle)*2.55,vision);
+        root.position.set(THREE.MathUtils.lerp(x,i===0?(isMobile?0:-1.6):x*1.45,preview),THREE.MathUtils.lerp(y,i===0?(isMobile?1:0):y,preview),i===0?preview*1.3:0);
+        root.rotation.set(.08*(1-preview),(i===1?.5:-.4)*(1-preview*.7),[.2,-.3,.12][i]*(1-preview));
+        root.scale.setScalar(THREE.MathUtils.lerp(enter,i===0?(isMobile?1.42:1.7):.65,preview));
+        imageMaterial.opacity=THREE.MathUtils.smoothstep(p,.7+i*.025,.84+i*.025)*(i===0?.94:.6);
+      });
+      sheet.position.set(-1.25,-.65,.25);sheet.rotation.set(.12,-.35,-.18);sheet.scale.setScalar(enter*(1-vision));
+      frame.position.set(.45,.1,-.4);frame.rotation.set(.15,.5,-.3);frame.scale.setScalar(enter*(1-vision));
+    },
+    dispose(){disposed=true;textures.forEach(texture=>texture.dispose());}
+  };
 }

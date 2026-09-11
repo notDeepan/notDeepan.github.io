@@ -133,3 +133,35 @@
 
 .ambient-fallback .still-grain{position:absolute;width:3px;height:9px;border-radius:50%;background:linear-gradient(90deg,#a99579,#eae7e1);pointer-events:none}
 @media(max-width:767px){.immersive-redesign .fallback-project-media{top:22%;left:50%;width:min(82%,52svh);transform:translateX(-50%) perspective(700px) rotateY(9deg)}}
+
+/* Refinement: stillness, a continuous stream, then a small library of surfaces. */
+.immersive-redesign .hero-copy{left:28%;top:26%;width:65%;transform:translate3d(calc(var(--hero-drift,0)*-18px),0,0)}
+.immersive-redesign .hero-copy h1{font-size:clamp(42px,4.6vw,74px);letter-spacing:.115em;line-height:1.28;font-weight:300}
+.immersive-redesign .hero-copy>.eyebrow{font-size:11px;line-height:1.9;letter-spacing:.18em;color:#b6b4ae}
+.immersive-redesign .grain-field-copy{opacity:var(--flow-copy,0)}
+.immersive-redesign .ingredients-copy{opacity:var(--ingredients-copy,0);transform:none}
+.immersive-redesign .vision-copy{opacity:var(--vision-copy,0)}
+.immersive-redesign .identity-bottom{opacity:var(--ingredients-copy,0)}
+.preview-copy{position:absolute;left:70%;top:35%;width:26%;opacity:var(--preview-copy,0)}
+.preview-copy h2{font:300 clamp(28px,2.5vw,42px)/1.4 var(--body);letter-spacing:.13em;text-transform:uppercase;margin:22px 0}
+.preview-copy p{font-size:11px;line-height:1.9;letter-spacing:.12em;color:var(--muted)}
+.people-stage{left:14%;width:68%;top:17%;height:55%;perspective:1300px}
+.people-layer{width:32%;height:95%;opacity:.65;transform:translateX(calc(-50% + var(--person-offset)*104%)) translateY(calc(var(--person-offset)*-28px)) translateZ(-75px) rotateY(-19deg);filter:saturate(.35);background:linear-gradient(125deg,#b6bfc112,#0c111329 40%,#b9c5ce0b)}
+.people-layer.is-active{transform:translateX(calc(-50% + var(--person-offset)*104%)) translateY(calc(var(--person-offset)*-28px)) translateZ(60px) rotateY(-10deg);opacity:1;filter:saturate(.65)}
+.people-layer img{height:121%;object-position:50% 8%;filter:brightness(.94)}
+.people-layer:before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.26;background-image:radial-gradient(ellipse 1px 3px at 13% 19%,#eee4ce 80%,transparent),radial-gradient(ellipse 1px 3px at 83% 69%,#eee4ce 80%,transparent),radial-gradient(ellipse 1px 2px at 34% 92%,#eee4ce 80%,transparent);background-size:71px 101px,113px 127px,149px 167px;mask-image:linear-gradient(90deg,#000,transparent 28%,transparent 72%,#000);transform:translateY(calc(var(--people-progress,0)*-22px))}
+@media(max-width:767px){
+ .immersive-redesign .hero-copy{left:17%;top:29%;width:81%}.immersive-redesign .hero-copy h1{font-size:clamp(34px,8.5vw,49px);letter-spacing:.105em}.immersive-redesign .hero-copy>.eyebrow{font-size:10px}
+ .preview-copy{left:10%;top:61%;width:80%}.preview-copy h2{font-size:27px;margin:14px 0;line-height:1.3}.preview-copy h2 br{display:none}.preview-copy .eyebrow{font-size:9px}.preview-copy p{font-size:10px}
+ .people-stage{left:4%;width:92%;top:25%;height:34%}.people-layer{width:33%;transform:translateX(calc(-50% + var(--person-offset)*98%)) translateY(calc(var(--person-offset)*-13px)) rotateY(-15deg);opacity:.65}.people-layer.is-active{transform:translateX(calc(-50% + var(--person-offset)*98%)) translateY(calc(var(--person-offset)*-13px)) rotateY(-6deg) scale(1.06)}
+ .people-layer img{height:115%}.people-information{bottom:8%}.immersive-redesign .identity-bottom .service-list{display:none}
+}
+.immersive-redesign.simple-mode .hero-copy{opacity:1;transform:none}
+.immersive-redesign.simple-mode .preview-copy{display:none}
+.immersive-redesign.simple-mode .people-layer{transition:none}
+@media(prefers-reduced-motion:reduce){.people-layer:before{transform:none}}
+
+/* A soft local scrim keeps metadata readable when foreground grains pass it. */
+.ingredients-copy,.preview-copy{isolation:isolate}
+.ingredients-copy:before,.preview-copy:before{content:'';position:absolute;inset:-28px -20px;z-index:-1;pointer-events:none;background:radial-gradient(ellipse,#080b0ce0 15%,#080b0c90 55%,transparent 75%)}
+.immersive-redesign .identity-bottom p{text-shadow:0 1px 5px #080b0c,0 0 16px #080b0c}

@@ -6,6 +6,7 @@ import { PROJECT_WINDOWS, SECTIONS, type SectionId } from '@/lib/constants';
 import { site } from '@/data/site';
 import { projects } from '@/data/projects';
 import PeopleDepth from './PeopleDepth';
+import { storyProgress } from '@/lib/storyTimeline';
 import { PRESENTATION } from '@/lib/presentation';
 import ContactDialog from './contact/ContactDialog';
 import ProjectDialog from './projects/ProjectDialog';
@@ -48,19 +49,26 @@ export default function Studio() {
     }
     if(maximum>.2 && lastFrame.current.project!==closest){lastFrame.current.project=closest;setProjectIndex(closest);}
     const ip=ScrollEngine.stage(e.progressOf('founder'),.12,.9);
+    const story=storyProgress(e.smooth,e.section('projects').startPx,e.narrativeViewportH);
+    const sharedStory=e.index1<2&&!e.reducedMotion;
     const aspect=window.innerWidth/window.innerHeight,slant=-.099*aspect;
     const cutLeft=(1-e.transition)*(1-slant)*100,cutRight=cutLeft+slant*100;
     layerRefs.current.forEach((el,i)=>{
-      const visible=i===e.index1||(i===e.index2&&e.transition>0);
-      el.style.visibility=visible?'visible':'hidden';
+      const visible=(sharedStory&&i<2)||i===e.index1||(i===e.index2&&e.transition>0);
+      el.style.visibility=visible&&!(sharedStory&&i===0&&story>.44)?'visible':'hidden';
       el.setAttribute('aria-hidden',i===active?'false':'true');
       el.inert=i!==active;
-      el.style.clipPath=e.transition===0?'none':i===e.index1?`polygon(0 0,100% 0,100% ${cutRight}%,0 ${cutLeft}%)`:`polygon(0 ${cutLeft}%,100% ${cutRight}%,100% 100%,0 100%)`;
+      el.style.clipPath=(sharedStory&&i<2&&e.index2<2)||e.transition===0?'none':i===e.index1?`polygon(0 0,100% 0,100% ${cutRight}%,0 ${cutLeft}%)`:`polygon(0 ${cutLeft}%,100% ${cutRight}%,100% 100%,0 100%)`;
     });
     if(overlay.current){
       overlay.current.style.setProperty('--progress',String(e.overall));
       overlay.current.style.setProperty('--hero-drift',String(e.reducedMotion?0:ip));
-      const grainEntry=e.reducedMotion?0:ScrollEngine.stage(ip,.26,.54);
+      const grainEntry=e.reducedMotion?0:ScrollEngine.stage(story,.1,.23);
+      const beat=(a:number,b:number,c:number,d:number)=>ScrollEngine.stage(story,a,b)*(1-ScrollEngine.stage(story,c,d));
+      overlay.current.style.setProperty('--flow-copy',String(e.reducedMotion?0:beat(.21,.28,.37,.43)));
+      overlay.current.style.setProperty('--ingredients-copy',String(e.reducedMotion?1:beat(.39,.45,.59,.65)));
+      overlay.current.style.setProperty('--vision-copy',String(e.reducedMotion?1:beat(.62,.69,.77,.83)));
+      overlay.current.style.setProperty('--preview-copy',String(e.reducedMotion?0:ScrollEngine.stage(story,.85,.92)));
       overlay.current.style.setProperty('--grain-entry',String(grainEntry));
       const hero=layerRefs.current[0]?.querySelector<HTMLElement>('.hero-copy');
       if(hero)hero.inert=grainEntry>.95;
@@ -142,6 +150,7 @@ export default function Studio() {
       <section className="scene-overlay identity-scene" data-scene="identity" aria-label="Our approach">
         <div className="ingredients-copy"><h2 className="studio-statement">Different<br/>ingredients.</h2><span className="mini-rule"/><p className="material-index">TYPE<br/>IMAGE<br/>MOTION<br/>CODE<br/>IDEAS<br/>PEOPLE</p><p className="studio-manifesto">Thoughtfully made.<br/>Unexpectedly good.</p></div>
         <div className="vision-copy"><h2>One<br/>shared<br/>vision.</h2><span className="mini-rule"/></div>
+        <div className="preview-copy"><span className="eyebrow">FROM IDEAS TO EXPERIENCES</span><h2>Made<br/>to matter.</h2><p>KAO MING · DIGITAL SHOWROOM</p></div>
         <div className="identity-bottom"><p>A small independent studio at the intersection of design and technology. We bring the curiosity. You bring the ambition.</p><div className="service-list"><span>Brand & digital design</span><span>Websites & development</span><span>Interactive experiences</span></div></div>
       </section>
 

@@ -1,4 +1,4 @@
-import { SCROLL, SECTIONS, type SectionId } from './constants';
+import { SCROLL, SECTIONS, MOBILE_SECTION_UNITS, type SectionId } from './constants';
 
 export const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 export const damp = (value: number, target: number, lambda: number, dt: number) =>
@@ -23,11 +23,12 @@ export interface SectionLayout {
   heightPx: number;
 }
 
-export function createSectionLayout(viewport: number): SectionLayout[] {
+export function createSectionLayout(viewport: number, mobile = false): SectionLayout[] {
   let cursor = 0;
   return SECTIONS.map((section, index) => {
-    const heightPx = Math.round(section.units * Math.max(1, viewport) * SCROLL.SECTION_PADDING);
-    const result = { ...section, index, startPx: cursor, heightPx };
+    const units = mobile ? MOBILE_SECTION_UNITS[index] : section.units;
+    const heightPx = Math.round(units * Math.max(1, viewport) * SCROLL.SECTION_PADDING);
+    const result = { ...section, units, index, startPx: cursor, heightPx };
     cursor += heightPx;
     return result;
   });

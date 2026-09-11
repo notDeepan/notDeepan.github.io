@@ -124,7 +124,7 @@ export class ScrollEngine {
     const previousProgress = this.maxScroll ? clamp(this.root.scrollTop / this.maxScroll) : 0;
     this.layoutViewportW = w;
     this.layoutViewportH = h;
-    const layouts = createSectionLayout(h);
+    const layouts = createSectionLayout(h, window.innerWidth < 768);
     for (const section of this.sections) {
       Object.assign(section, layouts[section.index]);
       section.el = this.root.querySelector<HTMLElement>(`[data-section="${section.id}"]`);
@@ -150,7 +150,7 @@ export class ScrollEngine {
     }
     const previous = this.smooth;
     this.raw = clamp(this.root.scrollTop, 0, this.maxScroll);
-    this.smooth = this.reducedMotion ? this.raw : damp(this.smooth, this.raw, SCROLL.SCROLL_LAMBDA, d);
+    this.smooth = this.reducedMotion || this.isTouch ? this.raw : damp(this.smooth, this.raw, SCROLL.SCROLL_LAMBDA, d);
     if (Math.abs(this.raw - this.smooth) < .01) this.smooth = this.raw;
     const instant = d > 0 ? (this.smooth - previous) / d / this.viewportH : 0;
     const target = clamp(instant, -SCROLL.VELOCITY_CLAMP, SCROLL.VELOCITY_CLAMP);

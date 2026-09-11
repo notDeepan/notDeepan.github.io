@@ -130,12 +130,12 @@ export const COMPOSITOR = {
 
 /** Sections, in order. units = viewport heights of scroll travel. */
 export const SECTIONS = [
-  { id: 'founder', units: 4.0 },
-  { id: 'identity', units: 1.0 },
+  { id: 'founder', units: 2.5 },
+  { id: 'identity', units: 2.5 },
   { id: 'projects', units: 10.0 },
-  { id: 'reviews', units: 3.0 },
-  { id: 'brand', units: 1.5 },
-  { id: 'contact', units: 2.0 },
+  { id: 'reviews', units: 2.0 },
+  { id: 'brand', units: 1.0 },
+  { id: 'contact', units: 1.4 },
 ] as const;
 
 export type SectionId = (typeof SECTIONS)[number]['id'];
@@ -186,3 +186,6 @@ export const REDUCED_MOTION_OVERRIDES = {
   NOISE_VELOCITY: 0,
   PARTICLE_SCALE: 0.5,
 } as const;
+
+/** Shorter touch story; Work retains room for all five existing focal windows. */
+export const MOBILE_SECTION_UNITS = [1.65, 1.9, 7.5, 1.35, 1, 1.15] as const;

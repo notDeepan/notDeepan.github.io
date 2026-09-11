@@ -63,7 +63,8 @@ export class SectionCompositor {
 
   render(engine: ScrollEngine, dt: number, elapsed: number) {
     const { index1, index2, transition } = engine;
-    const directA = transition < COMPOSITOR.SKIP_THRESHOLD || index1 === index2;
+    const sharedWorld = this.sections[index1] === this.sections[index2];
+    const directA = sharedWorld || transition < COMPOSITOR.SKIP_THRESHOLD || index1 === index2;
     const directB = !directA && transition > 1 - COMPOSITOR.SKIP_THRESHOLD;
     const indices = directA ? [index1] : directB ? [index2] : [index1, index2];
     this.syncLifecycle(indices);
