@@ -120,16 +120,20 @@ export function riceField(count: number, seed: number, kind: 'edges' | 'cloud' |
           float strand=floor(aStory.y*5.);
           float strandWidth=sin(theta*3.+strand*1.7)*.24;
           float tube=(aStory.z-.5)*(.65+pow(aStory.y,2.)*3.4)+strandWidth;
-          float radius=2.78+tube*.66+sin(theta*3.+.4)*.18;
+          float radius=2.9+tube*.42+sin(theta*3.+.4)*.19;
           // Separate flowing ribbons, not an evenly populated circular outline.
           float t=phase/6.283185;
           vec3 stream=vec3(-.25-3.5*sin(t*3.141593)+4.6*t*t+tube*1.15,
             5.7-10.3*t+tube*.55,sin(t*3.141593)*1.5+(t-.5)*2.+sin(theta*3.+strand)*.3+tube*1.1);
-          vec3 wreath=vec3(cos(theta)*radius*1.2,sin(theta)*radius*.9,sin(theta*2.)*.9+tube);
+          vec3 wreath=vec3(cos(theta)*radius*1.07,sin(theta)*radius*.95,sin(theta*2.)*.58+tube*.65);
+          // A fine incoming strand connects the left edge to the sculptural wreath.
+          float tail=step(.88,aStory.y);
+          vec3 ribbon=vec3(-7.+6.*t,.2+sin(t*3.141593)*.6+tube*.22,-.6+tube*.4);
+          wreath=mix(wreath,ribbon,tail);
           offset=mix(aOffset,mix(stream,wreath,ring),arrival);
           // Scene four holds this wreath until the existing Work transition.
           // The very same larger hero grains join the stream and settle into its scale.
-          local*=mix(1.,mix(1.,.32,aStory.w),arrival);
+          local*=mix(1.,mix(1.,.32,aStory.w),arrival)*mix(1.,.66,ring);
         }
         offset.x += sin(time * .18 + aData.y) * .28 * uMotion;
         offset.y += sin(time * .16 + aData.x) * .38 * uMotion;
@@ -147,6 +151,7 @@ export function riceField(count: number, seed: number, kind: 'edges' | 'cloud' |
     `,
     fragmentShader: `
       uniform float uOpacity;
+      uniform float uStory;
       uniform float uIsStory;
       uniform vec3 uFog;
       varying vec3 vColor;
@@ -155,6 +160,7 @@ export function riceField(count: number, seed: number, kind: 'edges' | 'cloud' |
       void main() {
         float diffuse = .28 + max(0., dot(normalize(vNormal), normalize(vec3(-.4, .8, .6)))) * .8;
         if(uIsStory<.5)diffuse=.48+max(0.,dot(normalize(vNormal),normalize(vec3(-.4,.8,.6))))*.55;
+        else diffuse+=smoothstep(.51,.73,uStory)*pow(max(0.,dot(normalize(vNormal),normalize(vec3(-.3,.65,.8)))),24.)*.75;
         float fog = 1. - exp(-vDepth * vDepth * .0011);
         float nearFade = smoothstep(1.8, 4.0, vDepth);
         gl_FragColor = vec4(mix(vColor * diffuse, uFog, fog), uOpacity * nearFade * (1. - fog * .75));

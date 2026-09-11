@@ -27,7 +27,7 @@ export function materialIngredient(mobile: boolean) {
     for(let v=0;v<corners.count;v++)corners.setZ(v,corners.getX(v)*corners.getY(v)*.12);
     geometry.computeVertexNormals();
     const coating=new THREE.Mesh(geometry,glass);coating.position.z=.018;coating.renderOrder=2;root.add(coating);
-    const outline=new THREE.LineSegments(new THREE.EdgesGeometry(geometry),edge);outline.position.z=.02;outline.renderOrder=3;root.add(outline);
+    const outline=new THREE.LineSegments(new THREE.EdgesGeometry(geometry,35),edge);outline.position.z=.02;outline.renderOrder=3;root.add(outline);
     // The real site screenshot is bonded beneath the reflective coating, never substituted.
     const imageMaterial=new THREE.MeshBasicMaterial({color:'#dedbd3',transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false});
     const image=new THREE.Mesh(new THREE.PlaneGeometry(2.64,1.64),imageMaterial);image.renderOrder=1;root.add(image);
@@ -70,27 +70,28 @@ export function materialIngredient(mobile: boolean) {
       group.scale.setScalar(isMobile?THREE.MathUtils.lerp(.53,.58,vision):THREE.MathUtils.lerp(1.22,1.1,vision)*(1-preview)+preview);
       group.position.x=THREE.MathUtils.lerp(isMobile?-1.05:-1.65,0,vision);
       group.position.y=isMobile?.45:.3*(1-vision);
-      glass.opacity=.42*enter;edge.opacity=.5*enter;
-      planes.forEach(({root,imageMaterial,portraitMap,projectMap},i)=>{
-        const map=p<.7?portraitMap:projectMap;
+      glass.opacity=THREE.MathUtils.lerp(.42,.34,vision)*enter;edge.opacity=THREE.MathUtils.lerp(.5,.34,vision)*enter;
+      glass.roughness=THREE.MathUtils.lerp(.16,.08,vision);
+      glass.envMapIntensity=THREE.MathUtils.lerp(1.35,2.5,vision);
+      planes.forEach(({root,imageMaterial,portraitMap},i)=>{
+        const map=portraitMap;
         if(imageMaterial.map!==map){imageMaterial.map=map;imageMaterial.needsUpdate=true;}
-        const angle=[1.95,3.15,5.5][i];
-        const x=THREE.MathUtils.lerp([-1.1,1.1,.5][i],Math.cos(angle)*2.9,vision);
-        const y=THREE.MathUtils.lerp([1.25,.7,-1.65][i],Math.sin(angle)*(isMobile?3.1:2.4),vision);
-        root.position.set(THREE.MathUtils.lerp(x,i===0?(isMobile?0:-1.6):x*1.45,preview),THREE.MathUtils.lerp(y,i===0?(isMobile?1:0):y,preview),i===0?preview*1.3:0);
+        const x=THREE.MathUtils.lerp([-1.1,1.1,.5][i],[-1.35,-2.85,2.15][i],vision);
+        const y=THREE.MathUtils.lerp([1.25,.7,-1.65][i],[2.65,.05,-1.4][i]*(isMobile?1.22:1),vision);
+        root.position.set(THREE.MathUtils.lerp(x,i===0?(isMobile?0:-1.6):x*1.45,preview),THREE.MathUtils.lerp(y,i===0?(isMobile?1:0):y,preview),[-.35,.15,.45][i]*vision);
         root.rotation.set(
-          THREE.MathUtils.lerp([.24,-.38,.35][i],[1.12,.12,.35][i],vision)*(1-preview),
-          THREE.MathUtils.lerp([.5,-.7,.45][i],[-.25,1.0,.45][i],vision)*(1-preview*.7),
-          THREE.MathUtils.lerp([.35,-.32,.24][i],[.15,-.1,.24][i],vision)*(1-preview));
+          THREE.MathUtils.lerp([.24,-.38,.35][i],[1.55,.22,.25][i],vision)*(1-preview),
+          THREE.MathUtils.lerp([.5,-.7,.45][i],[.25,1.65,-.85][i],vision)*(1-preview*.7),
+          THREE.MathUtils.lerp([.35,-.32,.24][i],[-.12,-.2,.6][i],vision)*(1-preview));
         root.scale.setScalar(THREE.MathUtils.lerp(enter,i===0?(isMobile?1.42:1.7):.65,preview)*(isMobile?1-.16*vision*(1-preview):1));
-        imageMaterial.opacity=p<.7?THREE.MathUtils.smoothstep(p,.44,.51)*.42:THREE.MathUtils.smoothstep(p,.7+i*.025,.84+i*.025)*(i===0?.94:.6);
+        root.scale.y*=1+vision*(i===1?.6:0);
+        imageMaterial.opacity=THREE.MathUtils.smoothstep(p,.44,.51)*.42*(1-vision);
       });
       sheet.position.set(.75,1.15,-.6);sheet.rotation.set(.4,.8,-.22);sheet.scale.set(.65,1.05,1).multiplyScalar(enter*(1-vision));
       sphere.position.set(-.5,-.2,.85);sphere.scale.setScalar(enter*(1-vision));
       shards.forEach((mesh,i)=>{
-        const angle=[.8,4.7][i];
-        mesh.position.set(Math.cos(angle)*(i===0?3.2:2.85),Math.sin(angle)*(i===0?2.75:2.45),0);
-        mesh.rotation.set(THREE.MathUtils.lerp([.6,-.55][i],[.35,1.1][i],vision),[-.7,.5][i],THREE.MathUtils.lerp([.55,-.4][i],[.12,-1.25][i],vision));
+        mesh.position.set(i===0?2.05:.25,i===0?2.05:-2.8,-.15);
+        mesh.rotation.set(THREE.MathUtils.lerp([.6,-.55][i],[.22,1.16][i],vision),[-.6,.3][i],THREE.MathUtils.lerp([.55,-.4][i],[.36,-.55][i],vision));
         mesh.scale.setScalar(enter*(.45+vision*.55)*(1-preview));
         if(i===0)mesh.scale.y*=1+vision*1.15;
       });

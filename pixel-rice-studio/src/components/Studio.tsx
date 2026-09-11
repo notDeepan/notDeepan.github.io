@@ -55,7 +55,7 @@ export default function Studio() {
     const cutLeft=(1-e.transition)*(1-slant)*100,cutRight=cutLeft+slant*100;
     layerRefs.current.forEach((el,i)=>{
       const visible=(sharedStory&&i<2)||i===e.index1||(i===e.index2&&e.transition>0);
-      el.style.visibility=visible&&!(sharedStory&&i===0&&story>.44)?'visible':'hidden';
+      el.style.visibility=visible&&!(sharedStory&&i===0&&story>.48)?'visible':'hidden';
       el.setAttribute('aria-hidden',i===active?'false':'true');
       el.inert=i!==active;
       el.style.clipPath=(sharedStory&&i<2&&e.index2<2)||e.transition===0?'none':i===e.index1?`polygon(0 0,100% 0,100% ${cutRight}%,0 ${cutLeft}%)`:`polygon(0 ${cutLeft}%,100% ${cutRight}%,100% 100%,0 100%)`;
@@ -65,9 +65,9 @@ export default function Studio() {
       overlay.current.style.setProperty('--hero-drift',String(e.reducedMotion?0:ip));
       const grainEntry=e.reducedMotion?0:ScrollEngine.stage(story,.1,.23);
       const beat=(a:number,b:number,c:number,d:number)=>ScrollEngine.stage(story,a,b)*(1-ScrollEngine.stage(story,c,d));
-      overlay.current.style.setProperty('--flow-copy',String(e.reducedMotion?0:beat(.21,.28,.37,.43)));
-      overlay.current.style.setProperty('--ingredients-copy',String(e.reducedMotion?1:beat(.39,.45,.59,.65)));
-      overlay.current.style.setProperty('--vision-copy',String(e.reducedMotion?1:ScrollEngine.stage(story,.62,.69)));
+      overlay.current.style.setProperty('--flow-copy',String(e.reducedMotion?0:beat(.19,.26,.39,.46)));
+      overlay.current.style.setProperty('--ingredients-copy',String(e.reducedMotion?1:beat(.41,.47,.61,.68)));
+      overlay.current.style.setProperty('--vision-copy',String(e.reducedMotion?1:ScrollEngine.stage(story,.64,.72)));
       overlay.current.style.setProperty('--grain-entry',String(grainEntry));
       const hero=layerRefs.current[0]?.querySelector<HTMLElement>('.hero-copy');
       if(hero)hero.inert=grainEntry>.95;

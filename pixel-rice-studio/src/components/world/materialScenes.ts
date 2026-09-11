@@ -100,7 +100,7 @@ export function createMaterialScenes(engine: ScrollEngine, options: MaterialScen
       uniforms.uVelocity.value=engine.velocity;
       // Composition only: retain the same particles, path, phase and transition timings.
       const frameVision=THREE.MathUtils.smoothstep(p,.57,.74)*(1-THREE.MathUtils.smoothstep(p,.78,.94));
-      storyField.mesh.scale.set(1+frameVision*.13,1+frameVision*.08,1);
+      storyField.mesh.scale.set(1+frameVision*.025,1+frameVision*.08,1);
       const travel=THREE.MathUtils.smoothstep(p,.08,.4);
       storyCamera.position.set(options.mobile?0:Math.sin(p*Math.PI)*.25,0,12-travel*(options.mobile?.3:1));
       storyCamera.lookAt(0,0,0);
